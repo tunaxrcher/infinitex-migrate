@@ -1,0 +1,559 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/new-prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL_NEW_DB")
+}
+
+model admin_permissions {
+  id         String                       @id
+  adminId    String
+  permission admin_permissions_permission
+  grantedAt  DateTime                     @default(now())
+  grantedBy  String?                      @db.VarChar(255)
+
+  @@unique([adminId, permission])
+  @@index([adminId])
+}
+
+model admin_sessions {
+  id         String   @id
+  adminId    String
+  token      String   @unique @db.VarChar(500)
+  deviceInfo String?  @db.VarChar(500)
+  ipAddress  String?  @db.VarChar(45)
+  userAgent  String?  @db.Text
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+
+  @@index([adminId])
+  @@index([token])
+}
+
+model admins {
+  id          String      @id
+  email       String      @unique @db.VarChar(255)
+  password    String      @db.VarChar(255)
+  firstName   String      @db.VarChar(255)
+  lastName    String      @db.VarChar(255)
+  role        admins_role @default(LOAN_OFFICER)
+  isActive    Boolean     @default(true)
+  lastLoginAt DateTime?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime
+}
+
+model agent_customers {
+  id         String   @id
+  agentId    String
+  customerId String
+  assignedAt DateTime @default(now())
+  isActive   Boolean  @default(true)
+
+  @@unique([agentId, customerId])
+  @@index([agentId])
+  @@index([customerId])
+}
+
+model audit_logs {
+  id        String   @id
+  action    String   @db.VarChar(100)
+  entity    String   @db.VarChar(100)
+  entityId  String   @db.VarChar(255)
+  oldData   Json?
+  newData   Json?
+  ipAddress String?  @db.VarChar(45)
+  userAgent String?  @db.Text
+  createdAt DateTime @default(now())
+  adminId   String?  @db.VarChar(255)
+
+  @@index([adminId])
+  @@index([createdAt])
+  @@index([entity])
+}
+
+model banners {
+  id              String    @id
+  title           String    @db.VarChar(255)
+  description     String?   @db.Text
+  imageUrl        String    @db.VarChar(500)
+  actionUrl       String?   @db.VarChar(500)
+  isActive        Boolean   @default(true)
+  sortOrder       Int       @default(0)
+  targetUserTypes Json
+  startDate       DateTime?
+  endDate         DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime
+
+  @@index([isActive])
+  @@index([sortOrder])
+}
+
+model coin_transactions {
+  id          String                 @id
+  userId      String
+  type        coin_transactions_type
+  amount      Int
+  description String                 @db.VarChar(500)
+  loanId      String?
+  rewardId    String?
+  createdAt   DateTime               @default(now())
+
+  @@index([type])
+  @@index([userId])
+}
+
+model loan_applications {
+  id                String                     @id
+  customerId        String
+  agentId           String?
+  loanType          loan_applications_loanType @default(HOUSE_LAND_MORTGAGE)
+  status            loan_applications_status   @default(DRAFT)
+  currentStep       Int                        @default(1)
+  completedSteps    Json
+  isNewUser         Boolean                    @default(false)
+  submittedByAgent  Boolean                    @default(false)
+  titleDeedImage    String?                    @db.VarChar(500)
+  titleDeedData     Json?
+  supportingImages  Json
+  idCardFrontImage  String?                    @db.VarChar(500)
+  idCardBackImage   String?                    @db.VarChar(500)
+  requestedAmount   Decimal                    @default(0.00) @db.Decimal(15, 2)
+  approvedAmount    Decimal?                   @db.Decimal(15, 2)
+  maxApprovedAmount Decimal?                   @db.Decimal(15, 2)
+  propertyType      String?                    @db.VarChar(100)
+  propertyValue     Decimal?                   @db.Decimal(15, 2)
+  propertyArea      String?                    @db.VarChar(100)
+  propertyLocation  String?                    @db.Text
+  landNumber        String?                    @db.VarChar(100)
+  ownerName         String?                    @db.VarChar(255)
+  submittedAt       DateTime?
+  reviewedAt        DateTime?
+  reviewedBy        String?
+  reviewNotes       String?                    @db.Text
+  createdAt         DateTime                   @default(now())
+  updatedAt         DateTime
+
+  @@index([agentId])
+  @@index([customerId])
+  @@index([reviewedBy])
+  @@index([status])
+}
+
+model loan_installments {
+  id                String    @id
+  loanId            String
+  installmentNumber Int
+  dueDate           DateTime
+  principalAmount   Decimal   @db.Decimal(15, 2)
+  interestAmount    Decimal   @db.Decimal(15, 2)
+  totalAmount       Decimal   @db.Decimal(15, 2)
+  isPaid            Boolean   @default(false)
+  paidDate          DateTime?
+  paidAmount        Decimal?  @db.Decimal(15, 2)
+  isLate            Boolean   @default(false)
+  lateDays          Int?
+  lateFee           Decimal?  @db.Decimal(15, 2)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime
+
+  @@unique([loanId, installmentNumber])
+  @@index([dueDate])
+  @@index([loanId])
+}
+
+model loans {
+  id                 String         @id
+  loanNumber         String         @unique @db.VarChar(50)
+  customerId         String
+  agentId            String?
+  applicationId      String         @unique
+  loanType           loans_loanType
+  status             loans_status   @default(ACTIVE)
+  principalAmount    Decimal        @db.Decimal(15, 2)
+  interestRate       Decimal        @db.Decimal(5, 2)
+  termMonths         Int
+  monthlyPayment     Decimal        @db.Decimal(15, 2)
+  currentInstallment Int            @default(0)
+  totalInstallments  Int
+  remainingBalance   Decimal        @db.Decimal(15, 2)
+  nextPaymentDate    DateTime
+  contractDate       DateTime
+  expiryDate         DateTime
+  titleDeedNumber    String?        @db.VarChar(100)
+  collateralValue    Decimal?       @db.Decimal(15, 2)
+  collateralDetails  Json?
+  linkMap            String?        @db.Text
+  landAccountId      Int?
+  landAccountName    String?        @db.VarChar(200)
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime
+
+  @@index([agentId])
+  @@index([customerId])
+  @@index([loanNumber])
+  @@index([status])
+}
+
+model notifications {
+  id        String             @id
+  userId    String
+  type      notifications_type
+  title     String             @db.VarChar(255)
+  message   String             @db.Text
+  actionUrl String?            @db.VarChar(500)
+  isRead    Boolean            @default(false)
+  readAt    DateTime?
+  createdAt DateTime           @default(now())
+  updatedAt DateTime
+
+  @@index([isRead])
+  @@index([userId])
+}
+
+model payments {
+  id              String                 @id
+  userId          String
+  loanId          String
+  installmentId   String?
+  amount          Decimal                @db.Decimal(15, 2)
+  paymentMethod   payments_paymentMethod
+  status          payments_status        @default(PENDING)
+  referenceNumber String                 @unique @db.VarChar(100)
+  transactionId   String?                @db.VarChar(100)
+  qrCode          String?                @db.Text
+  barcodeNumber   String?                @db.VarChar(50)
+  bankName        String?                @db.VarChar(100)
+  accountNumber   String?                @db.VarChar(50)
+  accountName     String?                @db.VarChar(255)
+  dueDate         DateTime
+  paidDate        DateTime?
+  principalAmount Decimal                @default(0.00) @db.Decimal(15, 2)
+  interestAmount  Decimal                @default(0.00) @db.Decimal(15, 2)
+  feeAmount       Decimal                @default(0.00) @db.Decimal(15, 2)
+  createdAt       DateTime               @default(now())
+  updatedAt       DateTime
+
+  @@index([installmentId])
+  @@index([loanId])
+  @@index([referenceNumber])
+  @@index([status])
+  @@index([userId])
+}
+
+model privileges {
+  id              String    @id
+  title           String    @db.VarChar(255)
+  description     String    @db.Text
+  imageUrl        String?   @db.VarChar(500)
+  actionUrl       String?   @db.VarChar(500)
+  isActive        Boolean   @default(true)
+  sortOrder       Int       @default(0)
+  targetUserTypes Json
+  coinCost        Int?
+  requiresLoan    Boolean   @default(false)
+  validFrom       DateTime?
+  validUntil      DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime
+
+  @@index([isActive])
+  @@index([sortOrder])
+}
+
+model reward_redemptions {
+  id              String                    @id
+  userId          String
+  rewardId        String
+  coinSpent       Int
+  status          reward_redemptions_status @default(PENDING)
+  deliveryAddress String?                   @db.Text
+  trackingNumber  String?                   @db.VarChar(100)
+  redeemedAt      DateTime                  @default(now())
+  deliveredAt     DateTime?
+
+  @@index([rewardId])
+  @@index([status])
+  @@index([userId])
+}
+
+model rewards {
+  id          String   @id
+  name        String   @db.VarChar(255)
+  description String   @db.Text
+  coinCost    Int
+  imageUrl    String?  @db.VarChar(500)
+  isActive    Boolean  @default(true)
+  stockCount  Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime
+
+  @@index([isActive])
+}
+
+model sessions {
+  id         String   @id
+  userId     String
+  token      String   @unique @db.VarChar(500)
+  deviceInfo String?  @db.VarChar(500)
+  ipAddress  String?  @db.VarChar(45)
+  userAgent  String?  @db.Text
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+
+  @@index([token])
+  @@index([userId])
+}
+
+model system_config {
+  id          String   @id
+  key         String   @unique @db.VarChar(255)
+  value       String   @db.Text
+  description String?  @db.Text
+  updatedAt   DateTime
+
+  @@index([key])
+}
+
+model documents {
+  id           String            @id
+  docType      documents_docType
+  docNumber    String            @db.VarChar(100)
+  docDate      DateTime
+  title        String            @db.Text
+  price        Decimal           @db.Decimal(20, 2)
+  cashFlowName String            @db.VarChar(200)
+  employeeId   Int               @default(0)
+  username     String?           @db.VarChar(50)
+  docFile      String?           @db.Text
+  docFileDate  DateTime?
+  docFileTime  String?           @db.VarChar(10)
+  docFilePrice Decimal?          @db.Decimal(20, 2)
+  filePath     String?           @db.Text
+  note         String?           @db.Text
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime
+  deletedAt    DateTime?
+
+  @@index([docType])
+  @@index([docNumber])
+  @@index([employeeId])
+}
+
+model document_title_lists {
+  id        String                       @id
+  docType   document_title_lists_docType
+  title     String                       @db.Text
+  note      String?                      @db.Text
+  createdAt DateTime                     @default(now())
+  updatedAt DateTime
+  deletedAt DateTime?
+
+  @@index([docType])
+}
+
+model land_accounts {
+  id             String                 @id
+  accountName    String                 @db.VarChar(200)
+  accountBalance Decimal                @default(0.00) @db.Decimal(15, 2)
+  createdAt      DateTime               @default(now())
+  updatedAt      DateTime
+  deletedAt      DateTime?
+  logs           land_account_logs[]
+  reports        land_account_reports[]
+
+  @@index([accountName])
+}
+
+model land_account_logs {
+  id            String        @id
+  landAccountId String
+  landAccount   land_accounts @relation(fields: [landAccountId], references: [id])
+  detail        String        @db.VarChar(200)
+  amount        Decimal       @default(0.00) @db.Decimal(15, 2)
+  note          String?       @db.VarChar(200)
+  employeeId    Int
+  employeeName  String?       @db.VarChar(200)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime
+  deletedAt     DateTime?
+
+  @@index([landAccountId])
+  @@index([employeeId])
+  @@index([createdAt])
+}
+
+model land_account_reports {
+  id             String        @id
+  landAccountId  String
+  landAccount    land_accounts @relation(fields: [landAccountId], references: [id])
+  detail         String        @db.VarChar(200)
+  amount         Decimal       @default(0.00) @db.Decimal(15, 2)
+  note           String?       @db.VarChar(200)
+  accountBalance Decimal?      @default(0.00) @db.Decimal(15, 2)
+  employeeId     Int
+  employeeName   String?       @db.VarChar(200)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime
+  deletedAt      DateTime?
+
+  @@index([landAccountId])
+  @@index([employeeId])
+  @@index([createdAt])
+}
+
+model user_profiles {
+  id                  String    @id
+  userId              String    @unique
+  firstName           String?   @db.VarChar(255)
+  lastName            String?   @db.VarChar(255)
+  idCardNumber        String?   @unique @db.VarChar(13)
+  dateOfBirth         DateTime?
+  address             String?   @db.Text
+  email               String?   @db.VarChar(255)
+  lineId              String?   @db.VarChar(255)
+  idCardFrontImage    String?   @db.VarChar(500)
+  idCardBackImage     String?   @db.VarChar(500)
+  preferredLanguage   String    @default("th") @db.VarChar(10)
+  notificationEnabled Boolean   @default(true)
+  coinBalance         Int       @default(0)
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime
+}
+
+model users {
+  id            String         @id
+  phoneNumber   String         @unique @db.VarChar(20)
+  pin           String?        @db.VarChar(255)
+  otpSecret     String?        @db.VarChar(255)
+  otpEnabled    Boolean        @default(false)
+  lastOtpSentAt DateTime?
+  userType      users_userType @default(CUSTOMER)
+  isActive      Boolean        @default(true)
+  lastLoginAt   DateTime?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime
+}
+
+enum admin_permissions_permission {
+  VIEW_APPLICATIONS
+  APPROVE_APPLICATIONS
+  REJECT_APPLICATIONS
+  VIEW_LOANS
+  CREATE_LOANS
+  UPDATE_LOANS
+  DELETE_LOANS
+  VIEW_USERS
+  CREATE_USERS
+  UPDATE_USERS
+  DELETE_USERS
+  MANAGE_AGENTS
+  VIEW_PAYMENTS
+  PROCESS_PAYMENTS
+  REFUND_PAYMENTS
+  MANAGE_BANNERS
+  MANAGE_PRIVILEGES
+  MANAGE_REWARDS
+  MANAGE_SYSTEM_CONFIG
+  VIEW_AUDIT_LOGS
+  VIEW_REPORTS
+  EXPORT_DATA
+}
+
+enum coin_transactions_type {
+  EARNED_SIGNUP
+  EARNED_ON_TIME_PAYMENT
+  EARNED_DAILY_TASK
+  EARNED_PROMOTION
+  REDEEMED_REWARD
+  EXPIRED
+}
+
+enum notifications_type {
+  PAYMENT_DUE
+  PAYMENT_SUCCESS
+  PAYMENT_FAILED
+  LOAN_APPROVED
+  LOAN_REJECTED
+  SYSTEM_ANNOUNCEMENT
+  PROMOTION
+}
+
+enum loan_applications_loanType {
+  HOUSE_LAND_MORTGAGE
+  CAR_REGISTRATION
+  FINX_PLUS
+}
+
+enum loan_applications_status {
+  DRAFT
+  SUBMITTED
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+enum reward_redemptions_status {
+  PENDING
+  PROCESSING
+  DELIVERED
+  CANCELLED
+}
+
+enum admins_role {
+  SUPER_ADMIN
+  LOAN_OFFICER
+  CUSTOMER_SERVICE
+  FINANCE
+  CONTENT_MANAGER
+}
+
+enum loans_loanType {
+  HOUSE_LAND_MORTGAGE
+  CAR_REGISTRATION
+  FINX_PLUS
+}
+
+enum payments_paymentMethod {
+  CASH
+  QR_CODE
+  BARCODE
+  INTERNET_BANKING
+  BANK_TRANSFER
+}
+
+enum loans_status {
+  ACTIVE
+  COMPLETED
+  DEFAULTED
+  CANCELLED
+}
+
+enum payments_status {
+  PENDING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+enum users_userType {
+  CUSTOMER
+  AGENT
+}
+
+enum documents_docType {
+  RECEIPT
+  PAYMENT_VOUCHER
+  DISCOUNT_NOTE
+  EXPENSE
+}
+
+enum document_title_lists_docType {
+  RECEIPT
+  PAYMENT_VOUCHER
+}

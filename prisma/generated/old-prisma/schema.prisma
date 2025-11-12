@@ -1,0 +1,231 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/old-prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL_OLD_DB")
+}
+
+model document_title_lists {
+  id         Int                       @id @default(autoincrement())
+  doc_type   DocumentTitleListsDocType
+  title      String                    @db.MediumText
+  note       String?                   @db.MediumText
+  created_at DateTime?                 @default(now()) @db.DateTime(0)
+  updated_at DateTime?                 @db.DateTime(0)
+  deleted_at DateTime?                 @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model documents {
+  id             Int              @id @default(autoincrement())
+  doc_type       DocumentsDocType
+  doc_number     String           @db.VarChar(100)
+  doc_date       DateTime         @db.Date
+  title          String           @db.MediumText
+  price          Decimal          @db.Decimal(20, 2)
+  cash_flow_name String           @db.VarChar(200)
+  employee_id    Int              @default(0)
+  username       String?          @db.VarChar(50)
+  doc_file       String?          @db.MediumText
+  doc_file_date  DateTime?        @db.Date
+  doc_file_time  DateTime?        @db.Time(0)
+  doc_file_price Decimal?         @db.Decimal(20, 2)
+  filePath       String?          @db.MediumText
+  note           String?          @db.MediumText
+  created_at     DateTime         @default(now()) @db.DateTime(0)
+  updated_at     DateTime?        @db.DateTime(0)
+  deleted_at     DateTime?        @db.DateTime(0)
+}
+
+model ledger_land_logs {
+  id                    Int       @id @default(autoincrement())
+  land_logs_loan_amount Decimal   @default(0.00) @db.Decimal(20, 2)
+  land_logs_cash_flow   Decimal   @default(0.00) @db.Decimal(20, 2)
+  land_logs_interest    Decimal   @default(0.00) @db.Decimal(20, 2)
+  land_logs_summary_net Decimal   @default(0.00) @db.Decimal(20, 2)
+  created_at            DateTime? @default(now()) @db.DateTime(0)
+  updated_at            DateTime? @db.DateTime(0)
+  deleted_at            DateTime? @db.DateTime(0)
+}
+
+model loan {
+  id                           Int       @id @default(autoincrement())
+  loan_code                    String?   @db.Text
+  loan_customer                String?   @db.VarChar(100)
+  loan_address                 String?   @db.Text
+  loan_number                  String?   @db.Text
+  loan_area                    String?   @db.Text
+  loan_employee                String?   @db.VarChar(100)
+  loan_date_promise            DateTime? @db.DateTime(0)
+  loan_installment_date        DateTime? @db.Date
+  loan_summary_no_vat          Decimal   @default(0.00) @db.Decimal(10, 2)
+  loan_payment_sum_installment Decimal   @default(0.00) @db.Decimal(10, 2)
+  loan_sum_interest            Decimal   @default(0.00) @db.Decimal(10, 2)
+  loan_payment_year_counter    Int?
+  loan_payment_interest        Decimal   @default(0) @db.Decimal(10, 0)
+  loan_summary_all             Decimal   @default(0.00) @db.Decimal(10, 2)
+  loan_payment_month           Decimal   @default(0.00) @db.Decimal(10, 2)
+  loan_payment_process         Decimal   @default(0.00) @db.Decimal(10, 2)
+  loan_type                    LoanType
+  loan_tranfer                 Decimal   @default(0.00) @db.Decimal(10, 2)
+  loan_payment_other           Decimal   @default(0.00) @db.Decimal(10, 2)
+  land_deed_status             Int
+  loan_status                  String?   @db.Text
+  loan_remnark                 String?   @db.Text
+  loan_really_pay              Decimal?  @default(0.00) @db.Decimal(10, 2)
+  loan_close_payment           Decimal   @default(0.00) @db.Decimal(10, 2)
+  link_map                     String?   @db.Text
+  land_account_id              Int?
+  land_account_name            String?   @db.VarChar(100)
+  loan_date_close              DateTime? @db.Date
+  created_at                   DateTime? @default(now()) @db.DateTime(0)
+  updated_at                   DateTime? @db.DateTime(0)
+  deleted_at                   DateTime? @db.DateTime(0)
+}
+
+model loan_customer {
+  id                Int             @id @default(autoincrement())
+  loan_code         String          @db.Text
+  customer_fullname String?         @db.VarChar(50)
+  customer_phone    String?         @db.VarChar(20)
+  customer_birthday DateTime?       @db.Date
+  customer_card_id  String?         @db.VarChar(13)
+  customer_email    String?         @db.VarChar(255)
+  customer_gender   CustomerGender?
+  customer_address  String?         @db.MediumText
+  img               String?         @db.MediumText
+  created_at        DateTime?       @default(now()) @db.DateTime(0)
+  updated_at        DateTime?       @db.DateTime(0)
+  deleted_at        DateTime?       @db.DateTime(0)
+}
+
+model loan_payment {
+  id                       Int       @id @default(autoincrement())
+  loan_code                String?   @db.Text
+  loan_payment_amount      Decimal   @default(0.00) @db.Decimal(10, 2)
+  loan_change              Decimal   @default(0.00) @db.Decimal(10, 2)
+  loan_interest            Decimal   @default(0.00) @db.Decimal(10, 2)
+  loan_employee            String?   @db.VarChar(150)
+  loan_payment_type        String?   @db.VarChar(150)
+  loan_payment_pay_type    String?   @db.Text
+  loan_payment_installment String?   @db.VarChar(150)
+  loan_payment_customer    String?   @db.VarChar(150)
+  loan_payment_src         String?   @db.Text
+  payment_file_date        DateTime? @db.Date
+  payment_file_time        DateTime? @db.Time(0)
+  payment_file_ref_no      String?   @db.Text
+  payment_file_price       Decimal?  @db.Decimal(20, 2)
+  land_account_id          Int?
+  land_account_name        String?   @db.VarChar(100)
+  loan_payment_date_fix    DateTime? @db.Date
+  loan_payment_date        DateTime? @db.Date
+  loan_balance             Decimal   @default(0.00) @db.Decimal(10, 2)
+  created_at               DateTime? @default(now()) @db.DateTime(0)
+  updated_at               DateTime? @db.DateTime(0)
+  deleted_at               DateTime? @db.DateTime(0)
+}
+
+model loan_running {
+  id                Int     @id @default(autoincrement())
+  loan_running_code String? @db.VarChar(20)
+}
+
+model overdue_status {
+  id                 Int       @id @default(autoincrement())
+  token_loan         String?   @db.Text
+  token_overdue_loan Int
+  token_loan_status  Int       @default(0)
+  created_at         DateTime? @default(now()) @db.DateTime(0)
+  updated_at         DateTime? @db.DateTime(0)
+  deleted_at         DateTime? @db.DateTime(0)
+}
+
+model picture_loan_other {
+  id               Int       @id @default(autoincrement())
+  loan_code        String?   @db.Text
+  picture_loan_src String?   @db.MediumText
+  created_at       DateTime? @default(now()) @db.DateTime(0)
+  updated_at       DateTime? @db.DateTime(0)
+}
+
+model real_investment {
+  id         Int       @id @default(autoincrement())
+  investment Int
+  created_at DateTime? @default(now()) @db.DateTime(0)
+  updated_at DateTime? @db.DateTime(0)
+  deleted_at DateTime? @db.DateTime(0)
+}
+
+model setting_land {
+  id                Int       @id @default(autoincrement())
+  land_account_name String    @db.VarChar(200)
+  land_account_cash Decimal   @default(0.00) @db.Decimal(10, 2)
+  created_at        DateTime  @default(now()) @db.DateTime(0)
+  updated_at        DateTime? @db.DateTime(0)
+  deleted_at        DateTime? @db.DateTime(0)
+}
+
+model setting_land_logs {
+  id                  Int       @id @default(autoincrement())
+  setting_land_id     Int
+  setting_land_detail String    @db.VarChar(200)
+  setting_land_money  Decimal   @default(0.00) @db.Decimal(10, 2)
+  setting_land_note   String?   @db.VarChar(200)
+  employee_id         Int
+  employee_name       String?   @db.VarChar(200)
+  created_at_logs     DateTime? @default(now()) @db.DateTime(0)
+  updated_at_logs     DateTime? @db.DateTime(0)
+  deleted_at_logs     DateTime? @db.DateTime(0)
+}
+
+model setting_land_report {
+  id                                  Int       @id @default(autoincrement())
+  setting_land_id                     Int
+  setting_land_report_detail          String    @db.VarChar(200)
+  setting_land_report_money           Decimal   @default(0.00) @db.Decimal(10, 2)
+  setting_land_report_note            String?   @db.VarChar(200)
+  setting_land_report_account_balance Decimal?  @default(0.00) @db.Decimal(10, 2)
+  employee_id                         Int
+  employee_name                       String?   @db.VarChar(200)
+  created_at                          DateTime? @default(now()) @db.DateTime(0)
+  updated_at                          DateTime? @db.DateTime(0)
+  deleted_at                          DateTime? @db.DateTime(0)
+}
+
+/**
+ * ===== แก้ enum ให้ถูกต้อง และแมปกลับไปยังค่า/ชื่อ type ของ DB เดิม =====
+ */
+
+enum DocumentTitleListsDocType {
+  RECEIPT         @map("ใบสำคัญรับ")
+  PAYMENT_VOUCHER @map("ใบสำคัญจ่าย")
+
+  @@map("document_title_lists_doc_type")
+}
+
+enum DocumentsDocType {
+  RECEIPT         @map("ใบสำคัญรับ")
+  PAYMENT_VOUCHER @map("ใบสำคัญจ่าย")
+  DISCOUNT_NOTE   @map("ใบส่วนลด")
+  EXPENSE         @map("รายจ่าย")
+
+  @@map("documents_doc_type")
+}
+
+enum CustomerGender {
+  MALE    @map("ชาย")
+  FEMALE  @map("หญิง")
+  DIVERSE @map("เพศทางเลือก")
+
+  @@map("loan_customer_customer_gender")
+}
+
+enum LoanType {
+  CASH          @map("เงินสด")
+  HIRE_PURCHASE @map("เช่าซื้อ")
+
+  @@map("loan_loan_type")
+}

@@ -1,0 +1,31 @@
+{
+  "name": "infinitex-migrate",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "migrate": "ts-node src/migrate.ts",
+    "migrate:dry": "ts-node src/migrate.ts --dry-run",
+    "migrate:rollback": "ts-node src/rollback.ts",
+    "validate": "ts-node src/validate.ts",
+    "prisma:generate": "prisma generate --schema=./prisma/old/schema.prisma && prisma generate --schema=./prisma/new/schema.prisma",
+    "prisma:old": "prisma generate --schema=./prisma/old/schema.prisma",
+    "prisma:new": "prisma generate --schema=./prisma/new/schema.prisma",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "Data migration tool from old loan system to new system",
+  "dependencies": {
+    "@prisma/client": "^6.19.0",
+    "dotenv": "^16.4.7",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.25",
+    "@types/uuid": "^9.0.8",
+    "prisma": "^6.19.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}
