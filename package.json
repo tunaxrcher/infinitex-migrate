@@ -10,6 +10,7 @@
     "debug:status": "ts-node src/debug-loan-status.ts",
     "check:data": "ts-node src/check-existing-data.ts",
     "compare:data": "ts-node src/compare-data.ts",
+    "debug:pictures": "ts-node src/debug-pictures.ts",
     "prisma:generate": "prisma generate --schema=./prisma/old/schema.prisma && prisma generate --schema=./prisma/new/schema.prisma",
     "prisma:old": "prisma generate --schema=./prisma/old/schema.prisma",
     "prisma:new": "prisma generate --schema=./prisma/new/schema.prisma",

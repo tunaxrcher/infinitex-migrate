@@ -700,27 +700,48 @@ async function migratePictureLoans() {
       picturesByLoan[pic.loan_code].push(fullUrl);
     }
 
+    // Create lookup map: loan_code -> loan ID -> loan_application ID
+    const loanLookup = await oldDb.$queryRaw<any[]>`
+      SELECT loan_code, id as loan_id
+      FROM loan
+      WHERE deleted_at IS NULL
+    `;
+    
+    const loanCodeToOldId = new Map<string, number>();
+    for (const l of loanLookup) {
+      if (l.loan_code) {
+        loanCodeToOldId.set(l.loan_code, l.loan_id);
+      }
+    }
+
     let successCount = 0;
+    let notFoundCount = 0;
 
     if (!DRY_RUN) {
       for (const [loanCode, images] of Object.entries(picturesByLoan)) {
         try {
-          // Find loan application by loan code
-          const loanApp = await newDb.loan_applications.findFirst({
-            where: {
-              landNumber: loanCode,
+          // Find loan application ID from mapping
+          const oldLoanId = loanCodeToOldId.get(loanCode);
+          if (!oldLoanId) {
+            notFoundCount++;
+            continue;
+          }
+
+          const loanAppId = idMapper.get('loan_applications', oldLoanId);
+          if (!loanAppId) {
+            notFoundCount++;
+            continue;
+          }
+
+          // Update loan application with pictures
+          await newDb.loan_applications.update({
+            where: { id: loanAppId },
+            data: {
+              supportingImages: images,
             }
           });
-
-          if (loanApp) {
-            await newDb.loan_applications.update({
-              where: { id: loanApp.id },
-              data: {
-                supportingImages: images,
-              }
-            });
-            successCount++;
-          }
+          
+          successCount++;
         } catch (error: any) {
           helpers.logError(`Failed to update pictures for loan ${loanCode}`, error.message);
         }
@@ -730,6 +751,7 @@ async function migratePictureLoans() {
     }
 
     helpers.logSuccess('Pictures migrated', successCount);
+    if (notFoundCount > 0) helpers.log(`   ⚠️  Loan applications not found: ${notFoundCount}`);
 
     stats.push({
       tableName: 'picture_loan_other',
