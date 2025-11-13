@@ -56,11 +56,11 @@ async function migrate() {
     // 7. Migrate picture_loan_other -> update loan_applications
     await migratePictureLoans();
 
-    // 8. Migrate loan_payment -> payments
-    await migratePayments();
+    // 8. Migrate loan_payment -> loan_installments (ทุกงวด)
+    await migrateLoanInstallments();
 
-    // 9. Create loan_installments from loans + payments
-    await createLoanInstallments();
+    // 9. Migrate loan_payment (paid only) -> payments
+    await migratePayments();
 
     // 10. Migrate setting_land -> land_accounts
     await migrateLandAccounts();
@@ -738,11 +738,11 @@ async function migratePictureLoans() {
 }
 
 /**
- * 5. Migrate loan_payment -> payments
+ * 5. Migrate loan_payment -> loan_installments (ทุกงวด)
  */
-async function migratePayments() {
+async function migrateLoanInstallments() {
   const startTime = Date.now();
-  helpers.log('💳 Migrating payments...');
+  helpers.log('📅 Migrating loan installments from loan_payment...');
 
   try {
     // Use raw query to handle invalid dates
@@ -772,10 +772,138 @@ async function migratePayments() {
         updated_at
       FROM loan_payment
       WHERE deleted_at IS NULL
+      ORDER BY loan_code, id ASC
+    `;
+
+    helpers.log(`   📊 Found ${oldPayments.length} installment records to migrate`);
+
+    // Create lookup map for loans
+    const loanLookup = await oldDb.$queryRaw<any[]>`
+      SELECT loan_code, id as loan_id
+      FROM loan
+      WHERE deleted_at IS NULL
+    `;
+    
+    const loanCodeToLoanId = new Map<string, number>();
+    for (const l of loanLookup) {
+      if (l.loan_code) {
+        loanCodeToLoanId.set(l.loan_code, l.loan_id);
+      }
+    }
+
+    let installmentCount = 0;
+    let errorCount = 0;
+
+    // Group by loan_code to get installment numbers
+    const installmentsByLoan = new Map<string, any[]>();
+    for (const payment of oldPayments) {
+      if (!payment.loan_code) continue;
+      
+      if (!installmentsByLoan.has(payment.loan_code)) {
+        installmentsByLoan.set(payment.loan_code, []);
+      }
+      installmentsByLoan.get(payment.loan_code)!.push(payment);
+    }
+
+    if (!DRY_RUN) {
+      for (const [loanCode, installments] of installmentsByLoan.entries()) {
+        try {
+          // Find loan ID
+          const oldLoanId = loanCodeToLoanId.get(loanCode);
+          if (!oldLoanId) continue;
+          
+          const loanId = idMapper.get('loans', oldLoanId);
+          if (!loanId) continue;
+
+          // Create installments
+          for (let i = 0; i < installments.length; i++) {
+            const inst = installments[i];
+            const installmentNumber = i + 1;
+
+            // Check if paid
+            const isPaid = inst.loan_payment_type === 'Installment' || inst.loan_payment_type === 'Close';
+
+            await newDb.loan_installments.create({
+              data: {
+                id: idMapper.create('loan_installments', inst.id),
+                loanId,
+                installmentNumber,
+                dueDate: helpers.toISODate(inst.loan_payment_date_fix) || helpers.toISODate(inst.created_at) || new Date(),
+                principalAmount: helpers.toDecimal(inst.loan_payment_amount) - helpers.toDecimal(inst.loan_interest),
+                interestAmount: helpers.toDecimal(inst.loan_interest),
+                totalAmount: helpers.toDecimal(inst.loan_payment_amount),
+                isPaid,
+                paidDate: isPaid ? helpers.toISODate(inst.loan_payment_date) : undefined,
+                paidAmount: isPaid ? helpers.toDecimal(inst.loan_payment_amount) : undefined,
+                isLate: false, // TODO: calculate based on dates
+                lateDays: undefined,
+                createdAt: inst.created_at || new Date(),
+                updatedAt: inst.updated_at || new Date(),
+              }
+            });
+
+            installmentCount++;
+          }
+        } catch (error: any) {
+          helpers.logError(`Failed to create installments for loan ${loanCode}`, error.message);
+          errorCount++;
+        }
+      }
+    } else {
+      installmentCount = oldPayments.length;
+    }
+
+    helpers.logSuccess('Loan installments created', installmentCount);
+    if (errorCount > 0) helpers.log(`   ❌ Errors: ${errorCount}`);
+
+    stats.push({
+      tableName: 'loan_installments',
+      oldCount: oldPayments.length,
+      newCount: installmentCount,
+      skipped: 0,
+      errors: errorCount,
+      duration: Date.now() - startTime,
+    });
+
+  } catch (error) {
+    helpers.logError('Failed to migrate loan installments', error);
+  }
+}
+
+/**
+ * 6. Migrate loan_payment (paid only) -> payments
+ */
+async function migratePayments() {
+  const startTime = Date.now();
+  helpers.log('💳 Migrating payments (paid installments only)...');
+
+  try {
+    // Get only paid installments (Installment or Close)
+    const oldPayments = await oldDb.$queryRaw<any[]>`
+      SELECT 
+        id,
+        loan_code,
+        loan_payment_amount,
+        loan_interest,
+        loan_payment_type,
+        loan_payment_pay_type,
+        loan_payment_installment,
+        CAST(payment_file_date AS CHAR) as payment_file_date,
+        payment_file_ref_no,
+        payment_file_price,
+        land_account_id,
+        land_account_name,
+        CAST(loan_payment_date_fix AS CHAR) as loan_payment_date_fix,
+        CAST(loan_payment_date AS CHAR) as loan_payment_date,
+        created_at,
+        updated_at
+      FROM loan_payment
+      WHERE deleted_at IS NULL
+        AND (loan_payment_type = 'Installment' OR loan_payment_type = 'Close')
       ORDER BY id ASC
     `;
 
-    helpers.log(`   📊 Found ${oldPayments.length} payments to migrate`);
+    helpers.log(`   📊 Found ${oldPayments.length} paid installments to create payments`);
 
     // Create lookup maps
     const customerLookup = await oldDb.$queryRaw<any[]>`
@@ -808,32 +936,30 @@ async function migratePayments() {
     let skipCount = 0;
     let errorCount = 0;
 
-    for (const payment of oldPayments) {
-      try {
-        // Find loan ID from loan_code (optional)
-        let loanId: string | null = null;
-        if (payment.loan_code) {
-          const oldLoanId = loanCodeToLoanId.get(payment.loan_code);
-          if (oldLoanId) {
-            loanId = idMapper.get('loans', oldLoanId);
+    if (!DRY_RUN) {
+      for (const payment of oldPayments) {
+        try {
+          // Find loan ID
+          let loanId: string | null = null;
+          if (payment.loan_code) {
+            const oldLoanId = loanCodeToLoanId.get(payment.loan_code);
+            if (oldLoanId) {
+              loanId = idMapper.get('loans', oldLoanId);
+            }
           }
-        }
 
-        // Find user ID from loan_code -> customer (optional)
-        let userId: string | null = null;
-        if (payment.loan_code) {
-          const oldCustomerId = loanCodeToCustomerId.get(payment.loan_code);
-          if (oldCustomerId) {
-            userId = idMapper.get('loan_customer', oldCustomerId);
+          // Find user ID
+          let userId: string | null = null;
+          if (payment.loan_code) {
+            const oldCustomerId = loanCodeToCustomerId.get(payment.loan_code);
+            if (oldCustomerId) {
+              userId = idMapper.get('loan_customer', oldCustomerId);
+            }
           }
-        }
-        
-        // Log if missing references but continue
-        if (!loanId || !userId) {
-          helpers.log(`   ℹ️  Payment ID ${payment.id}: Missing references (loan: ${!!loanId}, user: ${!!userId}), migrating anyway`);
-        }
 
-        if (!DRY_RUN) {
+          // Find installment ID (from loan_installments we just created)
+          const installmentId = idMapper.get('loan_installments', payment.id);
+
           const paymentId = idMapper.create('payments', payment.id);
           const refNumber = payment.payment_file_ref_no || helpers.generateReferenceNumber('PAY', payment.id);
 
@@ -842,6 +968,7 @@ async function migratePayments() {
               id: paymentId,
               userId: userId || undefined,
               loanId: loanId || undefined,
+              installmentId: installmentId || undefined,
               amount: helpers.toDecimal(payment.loan_payment_amount),
               paymentMethod: helpers.mapPaymentMethod(payment.loan_payment_pay_type),
               status: 'COMPLETED',
@@ -849,7 +976,7 @@ async function migratePayments() {
               transactionId: payment.payment_file_ref_no || undefined,
               bankName: payment.land_account_name || undefined,
               dueDate: helpers.toISODate(payment.loan_payment_date_fix) || helpers.toISODate(payment.loan_payment_date) || new Date(),
-              paidDate: helpers.toISODate(payment.loan_payment_date),
+              paidDate: helpers.toISODate(payment.loan_payment_date) || new Date(),
               principalAmount: helpers.toDecimal(payment.loan_payment_amount) - helpers.toDecimal(payment.loan_interest),
               interestAmount: helpers.toDecimal(payment.loan_interest),
               feeAmount: 0,
@@ -859,18 +986,16 @@ async function migratePayments() {
           });
 
           successCount++;
-        } else {
-          idMapper.create('payments', payment.id);
-          successCount++;
+        } catch (error: any) {
+          helpers.logError(`Failed to create payment ID ${payment.id}`, error.message);
+          errorCount++;
         }
-
-      } catch (error: any) {
-        helpers.logError(`Failed to migrate payment ID ${payment.id}`, error.message);
-        errorCount++;
       }
+    } else {
+      successCount = oldPayments.length;
     }
 
-    helpers.logSuccess('Payments migrated', successCount);
+    helpers.logSuccess('Payments created', successCount);
     if (skipCount > 0) helpers.log(`   ⚠️  Skipped: ${skipCount}`);
     if (errorCount > 0) helpers.log(`   ❌ Errors: ${errorCount}`);
 
@@ -888,89 +1013,10 @@ async function migratePayments() {
   }
 }
 
-/**
- * 6. Create loan_installments from loans + payments
- */
-async function createLoanInstallments() {
-  const startTime = Date.now();
-  helpers.log('📅 Creating loan installments...');
-
-  try {
-    const loans = await newDb.loans.findMany();
-
-    helpers.log(`   📊 Found ${loans.length} loans to process`);
-
-    let successCount = 0;
-    let installmentCounter = 0;
-
-    if (!DRY_RUN) {
-      for (const loan of loans) {
-        try {
-          // Get payments for this loan
-          const payments = await newDb.payments.findMany({
-            where: { loanId: loan.id, status: 'COMPLETED' }
-          });
-
-          // Create installments based on termMonths
-          for (let i = 1; i <= loan.totalInstallments; i++) {
-            const dueDate = new Date(loan.contractDate);
-            dueDate.setMonth(dueDate.getMonth() + i);
-
-            // Check if this installment was paid
-            const payment = payments.find(p => 
-              p.dueDate && p.dueDate >= dueDate
-            );
-
-            // Convert Decimal to number for calculations
-            const monthlyPaymentAmount = helpers.toDecimal(loan.monthlyPayment);
-
-            await newDb.loan_installments.create({
-              data: {
-                id: idMapper.create('loan_installments', installmentCounter++),
-                loanId: loan.id,
-                installmentNumber: i,
-                dueDate,
-                principalAmount: monthlyPaymentAmount * 0.8, // Estimate: 80% principal
-                interestAmount: monthlyPaymentAmount * 0.2, // Estimate: 20% interest
-                totalAmount: monthlyPaymentAmount,
-                isPaid: !!payment,
-                paidDate: payment?.paidDate,
-                paidAmount: payment ? helpers.toDecimal(payment.amount) : undefined,
-                isLate: payment ? helpers.calculateLateDays(dueDate, payment.paidDate || null) > 0 : false,
-                lateDays: payment ? helpers.calculateLateDays(dueDate, payment.paidDate || null) : undefined,
-                createdAt: new Date(),
-                updatedAt: new Date(),
-              }
-            });
-          }
-
-          successCount++;
-        } catch (error: any) {
-          helpers.logError(`Failed to create installments for loan ${loan.loanNumber}`, error.message);
-        }
-      }
-    } else {
-      successCount = loans.length;
-    }
-
-    helpers.logSuccess('Loan installments created', successCount);
-
-    stats.push({
-      tableName: 'loan_installments',
-      oldCount: 0,
-      newCount: successCount,
-      skipped: 0,
-      errors: 0,
-      duration: Date.now() - startTime,
-    });
-
-  } catch (error) {
-    helpers.logError('Failed to create installments', error);
-  }
-}
+// Old function removed - now using migrateLoanInstallments + migratePayments
 
 /**
- * 7. Migrate setting_land -> land_accounts
+ * 10. Migrate setting_land -> land_accounts
  */
 async function migrateLandAccounts() {
   const startTime = Date.now();
@@ -1035,7 +1081,7 @@ async function migrateLandAccounts() {
 }
 
 /**
- * 8. Migrate documents -> documents table
+ * 13. Migrate documents -> documents table
  */
 async function migrateDocuments() {
   const startTime = Date.now();
@@ -1138,7 +1184,7 @@ async function migrateDocuments() {
 }
 
 /**
- * 9. Migrate setting_land_logs -> land_account_logs
+ * 11. Migrate setting_land_logs -> land_account_logs
  */
 async function migrateLandAccountLogs() {
   const startTime = Date.now();
@@ -1215,7 +1261,7 @@ async function migrateLandAccountLogs() {
 }
 
 /**
- * 10. Migrate setting_land_report -> land_account_reports
+ * 12. Migrate setting_land_report -> land_account_reports
  */
 async function migrateLandAccountReports() {
   const startTime = Date.now();
@@ -1294,7 +1340,7 @@ async function migrateLandAccountReports() {
 }
 
 /**
- * 11. Migrate document_title_lists
+ * 14. Migrate document_title_lists
  */
 async function migrateDocumentTitleLists() {
   const startTime = Date.now();
