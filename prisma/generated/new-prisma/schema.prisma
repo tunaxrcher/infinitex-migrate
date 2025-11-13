@@ -109,9 +109,10 @@ model coin_transactions {
 
 model loan_applications {
   id                String                     @id
-  customerId        String
+  customerId        String?
   agentId           String?
   loanType          loan_applications_loanType @default(HOUSE_LAND_MORTGAGE)
+  hirePurchase      Boolean                    @default(false)
   status            loan_applications_status   @default(DRAFT)
   currentStep       Int                        @default(1)
   completedSteps    Json
@@ -169,10 +170,11 @@ model loan_installments {
 model loans {
   id                 String         @id
   loanNumber         String         @unique @db.VarChar(50)
-  customerId         String
+  customerId         String?
   agentId            String?
   applicationId      String         @unique
   loanType           loans_loanType
+  hirePurchase       Boolean        @default(false)
   status             loans_status   @default(ACTIVE)
   principalAmount    Decimal        @db.Decimal(15, 2)
   interestRate       Decimal        @db.Decimal(5, 2)
@@ -217,8 +219,8 @@ model notifications {
 
 model payments {
   id              String                 @id
-  userId          String
-  loanId          String
+  userId          String?
+  loanId          String?
   installmentId   String?
   amount          Decimal                @db.Decimal(15, 2)
   paymentMethod   payments_paymentMethod
@@ -376,14 +378,14 @@ model land_account_logs {
   detail        String        @db.VarChar(200)
   amount        Decimal       @default(0.00) @db.Decimal(15, 2)
   note          String?       @db.VarChar(200)
-  employeeId    Int
-  employeeName  String?       @db.VarChar(200)
+  adminId       String?
+  adminName     String?       @db.VarChar(200)
   createdAt     DateTime      @default(now())
   updatedAt     DateTime
   deletedAt     DateTime?
 
   @@index([landAccountId])
-  @@index([employeeId])
+  @@index([adminId])
   @@index([createdAt])
 }
 
@@ -395,14 +397,14 @@ model land_account_reports {
   amount         Decimal       @default(0.00) @db.Decimal(15, 2)
   note           String?       @db.VarChar(200)
   accountBalance Decimal?      @default(0.00) @db.Decimal(15, 2)
-  employeeId     Int
-  employeeName   String?       @db.VarChar(200)
+  adminId        String?
+  adminName      String?       @db.VarChar(200)
   createdAt      DateTime      @default(now())
   updatedAt      DateTime
   deletedAt      DateTime?
 
   @@index([landAccountId])
-  @@index([employeeId])
+  @@index([adminId])
   @@index([createdAt])
 }
 

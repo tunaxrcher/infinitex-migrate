@@ -205,6 +205,7 @@ exports.Prisma.Loan_applicationsScalarFieldEnum = {
   customerId: 'customerId',
   agentId: 'agentId',
   loanType: 'loanType',
+  hirePurchase: 'hirePurchase',
   status: 'status',
   currentStep: 'currentStep',
   completedSteps: 'completedSteps',
@@ -257,6 +258,7 @@ exports.Prisma.LoansScalarFieldEnum = {
   agentId: 'agentId',
   applicationId: 'applicationId',
   loanType: 'loanType',
+  hirePurchase: 'hirePurchase',
   status: 'status',
   principalAmount: 'principalAmount',
   interestRate: 'interestRate',
@@ -421,8 +423,8 @@ exports.Prisma.Land_account_logsScalarFieldEnum = {
   detail: 'detail',
   amount: 'amount',
   note: 'note',
-  employeeId: 'employeeId',
-  employeeName: 'employeeName',
+  adminId: 'adminId',
+  adminName: 'adminName',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'
@@ -435,8 +437,8 @@ exports.Prisma.Land_account_reportsScalarFieldEnum = {
   amount: 'amount',
   note: 'note',
   accountBalance: 'accountBalance',
-  employeeId: 'employeeId',
-  employeeName: 'employeeName',
+  adminId: 'adminId',
+  adminName: 'adminName',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'
@@ -681,7 +683,8 @@ exports.Prisma.land_account_logsOrderByRelevanceFieldEnum = {
   landAccountId: 'landAccountId',
   detail: 'detail',
   note: 'note',
-  employeeName: 'employeeName'
+  adminId: 'adminId',
+  adminName: 'adminName'
 };
 
 exports.Prisma.land_account_reportsOrderByRelevanceFieldEnum = {
@@ -689,7 +692,8 @@ exports.Prisma.land_account_reportsOrderByRelevanceFieldEnum = {
   landAccountId: 'landAccountId',
   detail: 'detail',
   note: 'note',
-  employeeName: 'employeeName'
+  adminId: 'adminId',
+  adminName: 'adminName'
 };
 
 exports.Prisma.user_profilesOrderByRelevanceFieldEnum = {

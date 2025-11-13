@@ -41,37 +41,43 @@ async function migrate() {
     // 2. Create default admin
     await migrateAdmins();
 
-    // 3. Migrate loan_customer -> users + user_profiles
+    // 3. Create admins from employees
+    await migrateEmployeesToAdmins();
+
+    // 4. Create agent user
+    await createAgentUser();
+
+    // 5. Migrate loan_customer -> users + user_profiles
     await migrateCustomers();
 
-    // 4. Migrate loan -> loan_applications + loans
+    // 6. Migrate loan -> loan_applications + loans
     await migrateLoans();
 
-    // 5. Migrate picture_loan_other -> update loan_applications
+    // 7. Migrate picture_loan_other -> update loan_applications
     await migratePictureLoans();
 
-    // 6. Migrate loan_payment -> payments
+    // 8. Migrate loan_payment -> payments
     await migratePayments();
 
-    // 7. Create loan_installments from loans + payments
+    // 9. Create loan_installments from loans + payments
     await createLoanInstallments();
 
-    // 8. Migrate setting_land -> land_accounts
+    // 10. Migrate setting_land -> land_accounts
     await migrateLandAccounts();
 
-    // 9. Migrate setting_land_logs -> land_account_logs
+    // 11. Migrate setting_land_logs -> land_account_logs
     await migrateLandAccountLogs();
 
-    // 10. Migrate setting_land_report -> land_account_reports
+    // 12. Migrate setting_land_report -> land_account_reports
     await migrateLandAccountReports();
 
-    // 11. Migrate documents -> documents table
+    // 13. Migrate documents -> documents table
     await migrateDocuments();
 
-    // 12. Migrate document_title_lists
+    // 14. Migrate document_title_lists
     await migrateDocumentTitleLists();
 
-    // 13. Show summary
+    // 15. Show summary
     showMigrationSummary(startTime);
 
   } catch (error) {
@@ -160,7 +166,204 @@ async function migrateAdmins() {
 }
 
 /**
- * 2. Migrate loan_customer -> users + user_profiles
+ * 2. Create Agent User
+ */
+async function createAgentUser() {
+  const startTime = Date.now();
+  helpers.log('🤵 Creating Agent user...');
+
+  try {
+    const agentPhone = '0646267394';
+    const agentPin = '7898';
+    
+    // Check if agent exists
+    const existingAgent = await newDb.users.findUnique({
+      where: { phoneNumber: agentPhone }
+    });
+
+    if (existingAgent) {
+      helpers.log('   ℹ️  Agent already exists, using existing ID');
+      idMapper.create('agent', 1); // Store mapping with dummy ID
+      return;
+    }
+
+    if (!DRY_RUN) {
+      const agentId = idMapper.create('agent', 1);
+      
+      // Create agent user
+      await newDb.users.create({
+        data: {
+          id: agentId,
+          phoneNumber: agentPhone,
+          pin: agentPin,
+          userType: 'AGENT',
+          isActive: true,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        }
+      });
+
+      // Create agent profile
+      await newDb.user_profiles.create({
+        data: {
+          id: idMapper.create('agent_profile', 1),
+          userId: agentId,
+          firstName: 'Agent',
+          lastName: 'Infinitex',
+          preferredLanguage: 'th',
+          coinBalance: 0,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        }
+      });
+
+      helpers.logSuccess('Agent user created', 1);
+    } else {
+      idMapper.create('agent', 1);
+      helpers.log('   ✅ Agent will be created');
+    }
+
+    stats.push({
+      tableName: 'agent',
+      oldCount: 0,
+      newCount: 1,
+      skipped: 0,
+      errors: 0,
+      duration: Date.now() - startTime,
+    });
+
+  } catch (error) {
+    helpers.logError('Failed to create agent', error);
+    throw error;
+  }
+}
+
+/**
+ * 3. Migrate employees (from various tables) -> admins
+ */
+async function migrateEmployeesToAdmins() {
+  const startTime = Date.now();
+  helpers.log('👨‍💼 Creating admins from employees...');
+
+  try {
+    // Get unique employees from setting_land_logs
+    const employeesFromLogs = await oldDb.$queryRaw<any[]>`
+      SELECT DISTINCT employee_id, employee_name
+      FROM setting_land_logs
+      WHERE deleted_at_logs IS NULL 
+        AND employee_id IS NOT NULL
+        AND employee_id > 0
+      ORDER BY employee_id
+    `;
+
+    // Get unique employees from setting_land_report
+    const employeesFromReports = await oldDb.$queryRaw<any[]>`
+      SELECT DISTINCT employee_id, employee_name
+      FROM setting_land_report
+      WHERE deleted_at IS NULL 
+        AND employee_id IS NOT NULL
+        AND employee_id > 0
+      ORDER BY employee_id
+    `;
+
+    // Merge and deduplicate
+    const employeeMap = new Map<number, string>();
+    
+    for (const emp of employeesFromLogs) {
+      if (emp.employee_id && !employeeMap.has(emp.employee_id)) {
+        employeeMap.set(emp.employee_id, emp.employee_name || `Employee ${emp.employee_id}`);
+      }
+    }
+    
+    for (const emp of employeesFromReports) {
+      if (emp.employee_id && !employeeMap.has(emp.employee_id)) {
+        employeeMap.set(emp.employee_id, emp.employee_name || `Employee ${emp.employee_id}`);
+      }
+    }
+
+    helpers.log(`   📊 Found ${employeeMap.size} unique employees to create as admins`);
+
+    let successCount = 0;
+    let skipCount = 0;
+    let errorCount = 0;
+
+    if (!DRY_RUN) {
+      for (const [employeeId, employeeName] of employeeMap.entries()) {
+        try {
+          // Special email for "อมฤต"
+          let email = `employee${employeeId}@infinitex.com`;
+          if (employeeName && (employeeName.includes('อมฤต') || employeeName.includes('Amarit'))) {
+            email = 'amarit@infinitex.com';
+          }
+          
+          // Check if admin already exists
+          const existingAdmin = await newDb.admins.findUnique({
+            where: { email }
+          });
+
+          if (existingAdmin) {
+            // Store mapping
+            idMapper.create('employees', employeeId);
+            skipCount++;
+            continue;
+          }
+
+          const adminId = idMapper.create('employees', employeeId);
+          const { firstName, lastName } = helpers.splitFullName(employeeName);
+          
+          // Password: 2525 for all employees
+          const hashedPassword = bcrypt.createHash('sha256')
+            .update('2525')
+            .digest('hex');
+
+          await newDb.admins.create({
+            data: {
+              id: adminId,
+              email,
+              password: hashedPassword,
+              firstName,
+              lastName,
+              role: 'LOAN_OFFICER',
+              isActive: true,
+              updatedAt: new Date(),
+            }
+          });
+
+          successCount++;
+        } catch (error: any) {
+          helpers.logError(`Failed to create admin for employee ID ${employeeId}`, error.message);
+          errorCount++;
+        }
+      }
+    } else {
+      // In dry run, still create mappings
+      for (const [employeeId] of employeeMap.entries()) {
+        idMapper.create('employees', employeeId);
+      }
+      successCount = employeeMap.size;
+    }
+
+    helpers.logSuccess('Employee admins created', successCount);
+    if (skipCount > 0) helpers.log(`   ⚠️  Skipped: ${skipCount}`);
+    if (errorCount > 0) helpers.log(`   ❌ Errors: ${errorCount}`);
+
+    stats.push({
+      tableName: 'employees (admins)',
+      oldCount: employeeMap.size,
+      newCount: successCount,
+      skipped: skipCount,
+      errors: errorCount,
+      duration: Date.now() - startTime,
+    });
+
+  } catch (error) {
+    helpers.logError('Failed to migrate employees', error);
+    throw error;
+  }
+}
+
+/**
+ * 4. Migrate loan_customer -> users + user_profiles
  */
 async function migrateCustomers() {
   const startTime = Date.now();
@@ -189,18 +392,27 @@ async function migrateCustomers() {
 
     helpers.log(`   📊 Found ${oldCustomers.length} customers to migrate`);
 
+    // Get agent ID
+    const agentId = idMapper.get('agent', 1);
+    if (!agentId) {
+      helpers.log('   ⚠️  Warning: Agent not found, customers will not be linked to agent');
+    }
+
     let successCount = 0;
     let skipCount = 0;
     let errorCount = 0;
+    let autoPhoneCounter = 1; // Counter for auto-generated phone numbers
 
     for (const customer of oldCustomers) {
       try {
-        // Validate phone number (required in new schema)
-        const phoneNumber = helpers.normalizePhoneNumber(customer.customer_phone);
+        // Validate or generate phone number
+        let phoneNumber = helpers.normalizePhoneNumber(customer.customer_phone);
+        
+        // If no valid phone, generate one
         if (!phoneNumber) {
-          helpers.log(`   ⚠️  Skipping customer ID ${customer.id}: No valid phone number`);
-          skipCount++;
-          continue;
+          phoneNumber = String(autoPhoneCounter).padStart(10, '0');
+          autoPhoneCounter++;
+          helpers.log(`   📱 Generated phone for customer ID ${customer.id}: ${phoneNumber}`);
         }
 
         // Check if phone already exists
@@ -220,11 +432,14 @@ async function migrateCustomers() {
           const userId = idMapper.create('loan_customer', customer.id);
           const { firstName, lastName } = helpers.splitFullName(customer.customer_fullname);
 
-          // Create user
+          // Create user with PIN = 1234
+          const pinHash = bcrypt.createHash('sha256').update('1234').digest('hex');
+          
           await newDb.users.create({
             data: {
               id: userId,
               phoneNumber,
+              pin: pinHash,
               userType: 'CUSTOMER',
               isActive: true,
               createdAt: customer.created_at || new Date(),
@@ -249,6 +464,19 @@ async function migrateCustomers() {
               updatedAt: customer.updated_at || new Date(),
             }
           });
+
+          // Link customer to agent
+          if (agentId) {
+            await newDb.agent_customers.create({
+              data: {
+                id: idMapper.create('agent_customers', customer.id),
+                agentId,
+                customerId: userId,
+                assignedAt: new Date(),
+                isActive: true,
+              }
+            });
+          }
 
           successCount++;
         } else {
@@ -289,6 +517,23 @@ async function migrateLoans() {
   helpers.log('💰 Migrating loans (loan -> loan_applications + loans)...');
 
   try {
+    // First, create a lookup map: loan_code -> old customer ID
+    const customerLookup = await oldDb.$queryRaw<any[]>`
+      SELECT loan_code, id as customer_id
+      FROM loan_customer
+      WHERE deleted_at IS NULL
+      ORDER BY id
+    `;
+    
+    const loanCodeToCustomerId = new Map<string, number>();
+    for (const c of customerLookup) {
+      if (c.loan_code) {
+        loanCodeToCustomerId.set(c.loan_code, c.customer_id);
+      }
+    }
+    
+    helpers.log(`   📋 Created lookup map for ${loanCodeToCustomerId.size} loan codes`);
+
     const oldLoans = await oldDb.loan.findMany({
       where: { deleted_at: null },
       orderBy: { id: 'asc' }
@@ -302,20 +547,24 @@ async function migrateLoans() {
 
     for (const loan of oldLoans) {
       try {
-        // Find customer ID mapping
-        const customerId = idMapper.get('loan_customer', null);
+        // Find customer ID from loan_code (optional now)
+        let customerId: string | null = null;
         
-        // Try to find customer by loan_code or loan_customer name
-        // This is a simplified approach - in real scenario you'd need better matching
+        if (loan.loan_code) {
+          const oldCustomerId = loanCodeToCustomerId.get(loan.loan_code);
+          if (oldCustomerId) {
+            customerId = idMapper.get('loan_customer', oldCustomerId);
+          }
+        }
+        
+        // Allow loans without customers (customerId is now optional)
         if (!customerId) {
-          helpers.log(`   ⚠️  Skipping loan ID ${loan.id}: Customer not found`);
-          skipCount++;
-          continue;
+          helpers.log(`   ℹ️  Loan ID ${loan.id} (code: ${loan.loan_code}): No customer, migrating anyway`);
         }
 
         if (!DRY_RUN) {
           const applicationId = idMapper.create('loan_applications', loan.id);
-          const loanType = helpers.mapLoanType(loan.loan_type);
+          const hirePurchase = helpers.isHirePurchase(loan.loan_type);
           const loanStatus = helpers.mapLoanStatus(loan.loan_status);
 
           // Create loan application
@@ -323,7 +572,8 @@ async function migrateLoans() {
             data: {
               id: applicationId,
               customerId,
-              loanType,
+              loanType: 'HOUSE_LAND_MORTGAGE', // ทุกรายการเป็นบ้านที่ดิน
+              hirePurchase, // วิธีการจ่าย: เงินสด/เช่าซื้อ
               status: loanStatus === 'ACTIVE' ? 'APPROVED' : 'SUBMITTED',
               currentStep: 5,
               completedSteps: [1, 2, 3, 4, 5],
@@ -352,7 +602,8 @@ async function migrateLoans() {
                 loanNumber: loan.loan_code || `LOAN-${loan.id}`,
                 customerId,
                 applicationId,
-                loanType,
+                loanType: 'HOUSE_LAND_MORTGAGE', // ทุกรายการเป็นบ้านที่ดิน
+                hirePurchase, // วิธีการจ่าย: เงินสด/เช่าซื้อ
                 status: loanStatus,
                 principalAmount: helpers.toDecimal(loan.loan_summary_no_vat),
                 interestRate: helpers.toDecimal(loan.loan_payment_interest),
@@ -491,12 +742,64 @@ async function migratePayments() {
   helpers.log('💳 Migrating payments...');
 
   try {
-    const oldPayments = await oldDb.loan_payment.findMany({
-      where: { deleted_at: null },
-      orderBy: { id: 'asc' }
-    });
+    // Use raw query to handle invalid dates
+    const oldPayments = await oldDb.$queryRaw<any[]>`
+      SELECT 
+        id,
+        loan_code,
+        loan_payment_amount,
+        loan_change,
+        loan_interest,
+        loan_employee,
+        loan_payment_type,
+        loan_payment_pay_type,
+        loan_payment_installment,
+        loan_payment_customer,
+        loan_payment_src,
+        CAST(payment_file_date AS CHAR) as payment_file_date,
+        CAST(payment_file_time AS CHAR) as payment_file_time,
+        payment_file_ref_no,
+        payment_file_price,
+        land_account_id,
+        land_account_name,
+        CAST(loan_payment_date_fix AS CHAR) as loan_payment_date_fix,
+        CAST(loan_payment_date AS CHAR) as loan_payment_date,
+        loan_balance,
+        created_at,
+        updated_at
+      FROM loan_payment
+      WHERE deleted_at IS NULL
+      ORDER BY id ASC
+    `;
 
     helpers.log(`   📊 Found ${oldPayments.length} payments to migrate`);
+
+    // Create lookup maps
+    const customerLookup = await oldDb.$queryRaw<any[]>`
+      SELECT loan_code, id as customer_id
+      FROM loan_customer
+      WHERE deleted_at IS NULL
+    `;
+    
+    const loanCodeToCustomerId = new Map<string, number>();
+    for (const c of customerLookup) {
+      if (c.loan_code) {
+        loanCodeToCustomerId.set(c.loan_code, c.customer_id);
+      }
+    }
+
+    const loanLookup = await oldDb.$queryRaw<any[]>`
+      SELECT loan_code, id as loan_id
+      FROM loan
+      WHERE deleted_at IS NULL
+    `;
+    
+    const loanCodeToLoanId = new Map<string, number>();
+    for (const l of loanLookup) {
+      if (l.loan_code) {
+        loanCodeToLoanId.set(l.loan_code, l.loan_id);
+      }
+    }
 
     let successCount = 0;
     let skipCount = 0;
@@ -504,18 +807,27 @@ async function migratePayments() {
 
     for (const payment of oldPayments) {
       try {
-        // Find loan by loan_code
-        const loanId = idMapper.get('loans', null);
-        if (!loanId) {
-          skipCount++;
-          continue;
+        // Find loan ID from loan_code (optional)
+        let loanId: string | null = null;
+        if (payment.loan_code) {
+          const oldLoanId = loanCodeToLoanId.get(payment.loan_code);
+          if (oldLoanId) {
+            loanId = idMapper.get('loans', oldLoanId);
+          }
         }
 
-        // Find user
-        const userId = idMapper.get('loan_customer', null);
-        if (!userId) {
-          skipCount++;
-          continue;
+        // Find user ID from loan_code -> customer (optional)
+        let userId: string | null = null;
+        if (payment.loan_code) {
+          const oldCustomerId = loanCodeToCustomerId.get(payment.loan_code);
+          if (oldCustomerId) {
+            userId = idMapper.get('loan_customer', oldCustomerId);
+          }
+        }
+        
+        // Log if missing references but continue
+        if (!loanId || !userId) {
+          helpers.log(`   ℹ️  Payment ID ${payment.id}: Missing references (loan: ${!!loanId}, user: ${!!userId}), migrating anyway`);
         }
 
         if (!DRY_RUN) {
@@ -525,16 +837,16 @@ async function migratePayments() {
           await newDb.payments.create({
             data: {
               id: paymentId,
-              userId,
-              loanId,
+              userId: userId || undefined,
+              loanId: loanId || undefined,
               amount: helpers.toDecimal(payment.loan_payment_amount),
               paymentMethod: helpers.mapPaymentMethod(payment.loan_payment_pay_type),
               status: 'COMPLETED',
               referenceNumber: refNumber,
               transactionId: payment.payment_file_ref_no || undefined,
               bankName: payment.land_account_name || undefined,
-              dueDate: payment.loan_payment_date_fix || payment.loan_payment_date || new Date(),
-              paidDate: payment.loan_payment_date,
+              dueDate: helpers.toISODate(payment.loan_payment_date_fix) || helpers.toISODate(payment.loan_payment_date) || new Date(),
+              paidDate: helpers.toISODate(payment.loan_payment_date),
               principalAmount: helpers.toDecimal(payment.loan_payment_amount) - helpers.toDecimal(payment.loan_interest),
               interestAmount: helpers.toDecimal(payment.loan_interest),
               feeAmount: 0,
@@ -853,6 +1165,9 @@ async function migrateLandAccountLogs() {
             continue;
           }
 
+          // Find admin mapping from employee
+          const adminId = idMapper.get('employees', log.employee_id);
+
           await newDb.land_account_logs.create({
             data: {
               id: idMapper.create('land_account_logs', log.id),
@@ -860,8 +1175,8 @@ async function migrateLandAccountLogs() {
               detail: log.setting_land_detail,
               amount: helpers.toDecimal(log.setting_land_money),
               note: log.setting_land_note || undefined,
-              employeeId: log.employee_id,
-              employeeName: log.employee_name || undefined,
+              adminId: adminId || undefined,
+              adminName: log.employee_name || undefined,
               createdAt: log.created_at_logs || new Date(),
               updatedAt: log.updated_at_logs || new Date(),
               deletedAt: log.deleted_at_logs || undefined,
@@ -927,6 +1242,9 @@ async function migrateLandAccountReports() {
             continue;
           }
 
+          // Find admin mapping from employee
+          const adminId = idMapper.get('employees', report.employee_id);
+
           await newDb.land_account_reports.create({
             data: {
               id: idMapper.create('land_account_reports', report.id),
@@ -936,8 +1254,8 @@ async function migrateLandAccountReports() {
               note: report.setting_land_report_note || undefined,
               accountBalance: report.setting_land_report_account_balance ? 
                 helpers.toDecimal(report.setting_land_report_account_balance) : undefined,
-              employeeId: report.employee_id,
-              employeeName: report.employee_name || undefined,
+              adminId: adminId || undefined,
+              adminName: report.employee_name || undefined,
               createdAt: report.created_at || new Date(),
               updatedAt: report.updated_at || new Date(),
               deletedAt: report.deleted_at || undefined,

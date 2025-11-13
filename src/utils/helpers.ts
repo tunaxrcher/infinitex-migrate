@@ -60,20 +60,12 @@ export function normalizePhoneNumber(phone: string | null | undefined): string |
 }
 
 /**
- * แปลง Enum จากระบบเก่าเป็นระบบใหม่
+ * แปลง loan_type (วิธีการจ่าย) จากระบบเก่า
+ * Old: CASH = เงินสด, HIRE_PURCHASE = เช่าซื้อ
+ * New: hirePurchase = true/false
  */
-export function mapLoanType(oldType: string): 'HOUSE_LAND_MORTGAGE' | 'CAR_REGISTRATION' | 'FINX_PLUS' {
-  // Old: CASH, HIRE_PURCHASE
-  // New: HOUSE_LAND_MORTGAGE, CAR_REGISTRATION, FINX_PLUS
-  
-  switch (oldType) {
-    case 'CASH':
-      return 'HOUSE_LAND_MORTGAGE';
-    case 'HIRE_PURCHASE':
-      return 'CAR_REGISTRATION';
-    default:
-      return 'HOUSE_LAND_MORTGAGE';
-  }
+export function isHirePurchase(oldType: string): boolean {
+  return oldType === 'HIRE_PURCHASE';
 }
 
 /**
