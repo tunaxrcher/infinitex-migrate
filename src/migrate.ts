@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import { oldDb, newDb, connectDatabases, disconnectDatabases } from './config/database';
 import { idMapper } from './utils/id-mapper';
 import * as helpers from './utils/helpers';
-import bcrypt from 'crypto';
+import bcrypt from 'bcryptjs';
 
 dotenv.config();
 
@@ -109,9 +109,9 @@ async function migrateAdmins() {
     if (!DRY_RUN) {
       const adminId = idMapper.create('admins', 1);
       
-      // Simple password hashing (in production, use bcrypt)
+      // Hash password with bcrypt
       const password = process.env.DEFAULT_ADMIN_PASSWORD || 'ChangeMe123!';
-      const hashedPassword = bcrypt.createHash('sha256').update(password).digest('hex');
+      const hashedPassword = await bcrypt.hash(password, 10);
 
       await newDb.admins.create({
         data: {
@@ -190,12 +190,15 @@ async function createAgentUser() {
     if (!DRY_RUN) {
       const agentId = idMapper.create('agent', 1);
       
+      // Hash agent PIN with bcrypt
+      const hashedPin = await bcrypt.hash(agentPin, 10);
+      
       // Create agent user
       await newDb.users.create({
         data: {
           id: agentId,
           phoneNumber: agentPhone,
-          pin: agentPin,
+          pin: hashedPin,
           userType: 'AGENT',
           isActive: true,
           createdAt: new Date(),
@@ -312,9 +315,7 @@ async function migrateEmployeesToAdmins() {
           const { firstName, lastName } = helpers.splitFullName(employeeName);
           
           // Password: 2525 for all employees
-          const hashedPassword = bcrypt.createHash('sha256')
-            .update('2525')
-            .digest('hex');
+          const hashedPassword = await bcrypt.hash('2525', 10);
 
           await newDb.admins.create({
             data: {
@@ -433,7 +434,7 @@ async function migrateCustomers() {
           const { firstName, lastName } = helpers.splitFullName(customer.customer_fullname);
 
           // Create user with PIN = 1234
-          const pinHash = bcrypt.createHash('sha256').update('1234').digest('hex');
+          const pinHash = await bcrypt.hash('1234', 10);
           
           await newDb.users.create({
             data: {
