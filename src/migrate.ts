@@ -595,12 +595,11 @@ async function migrateLoans() {
             }
           });
 
-          // Create loan (only if approved)
-          if (loanStatus !== 'CANCELLED') {
-            const loanId = idMapper.create('loans', loan.id);
-            const termMonths = (loan.loan_payment_year_counter || 1) * 12;
+          // Create loan for all statuses (including CANCELLED)
+          const loanId = idMapper.create('loans', loan.id);
+          const termMonths = (loan.loan_payment_year_counter || 1) * 12;
 
-            await newDb.loans.create({
+          await newDb.loans.create({
               data: {
                 id: loanId,
                 loanNumber: loan.loan_code || `LOAN-${loan.id}`,
@@ -628,8 +627,7 @@ async function migrateLoans() {
                 createdAt: loan.created_at || new Date(),
                 updatedAt: loan.updated_at || new Date(),
               }
-            });
-          }
+          });
 
           successCount++;
         } else {

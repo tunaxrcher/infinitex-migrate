@@ -100,7 +100,6 @@
 | loan_customer | customerId | lookup จาก users | FK |
 | loan_employee | agentId | lookup จาก admins | FK (optional) |
 | loan_type | loanType | CASH → HOUSE_LAND_MORTGAGE<br>HIRE_PURCHASE → CAR_REGISTRATION | Enum mapping |
-| loan_status | status | 'active' → APPROVED<br>'closed' → APPROVED<br>อื่นๆ → SUBMITTED | |
 | loan_summary_no_vat | requestedAmount | คัดลอก Decimal | |
 | loan_summary_no_vat | approvedAmount | คัดลอก Decimal | |
 | loan_area | propertyArea | คัดลอก | |
@@ -119,7 +118,6 @@
 | loan_customer | customerId | lookup จาก users | FK |
 | - | applicationId | จาก loan_applications | FK, Unique |
 | loan_type | loanType | แปลง Enum | เหมือน loan_applications |
-| loan_status | status | 'active' → ACTIVE<br>'closed'/'ปิด' → COMPLETED<br>'cancel' → CANCELLED<br>'default'/'ค้าง' → DEFAULTED | |
 | loan_summary_no_vat | principalAmount | คัดลอก Decimal(15,2) | เงินต้น |
 | loan_payment_interest | interestRate | คัดลอก Decimal(5,2) | % ดอกเบี้ย |
 | loan_payment_year_counter | termMonths | คูณ 12 | ปี → เดือน |

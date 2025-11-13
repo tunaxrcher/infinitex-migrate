@@ -70,24 +70,41 @@ export function isHirePurchase(oldType: string): boolean {
 
 /**
  * แปลงสถานะ loan จากระบบเก่า
+ * Old: ON_STATE, CLOSE_STATE, CANCEL_STATE
+ * New: ACTIVE, COMPLETED, DEFAULTED, CANCELLED
  */
 export function mapLoanStatus(oldStatus: string | null): 'ACTIVE' | 'COMPLETED' | 'DEFAULTED' | 'CANCELLED' {
   if (!oldStatus) return 'ACTIVE';
   
-  const status = oldStatus.toLowerCase();
+  const status = oldStatus.toUpperCase().trim();
   
-  if (status.includes('close') || status.includes('ปิด')) {
+  // Exact match first
+  if (status === 'ON_STATE') {
+    return 'ACTIVE';
+  }
+  
+  if (status === 'CLOSE_STATE') {
     return 'COMPLETED';
   }
   
-  if (status.includes('cancel') || status.includes('ยกเลิก')) {
+  if (status === 'CANCEL_STATE') {
     return 'CANCELLED';
   }
   
-  if (status.includes('default') || status.includes('ค้าง')) {
+  // Fallback: check contains (for backward compatibility)
+  if (status.includes('CLOSE') || status.includes('ปิด')) {
+    return 'COMPLETED';
+  }
+  
+  if (status.includes('CANCEL') || status.includes('ยกเลิก')) {
+    return 'CANCELLED';
+  }
+  
+  if (status.includes('DEFAULT') || status.includes('ค้าง')) {
     return 'DEFAULTED';
   }
   
+  // Default
   return 'ACTIVE';
 }
 
