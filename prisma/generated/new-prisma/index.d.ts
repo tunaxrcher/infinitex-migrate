@@ -29659,12 +29659,12 @@ export namespace Prisma {
   export type user_profilesWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     userId?: string
-    idCardNumber?: string
     AND?: user_profilesWhereInput | user_profilesWhereInput[]
     OR?: user_profilesWhereInput[]
     NOT?: user_profilesWhereInput | user_profilesWhereInput[]
     firstName?: StringNullableFilter<"user_profiles"> | string | null
     lastName?: StringNullableFilter<"user_profiles"> | string | null
+    idCardNumber?: StringNullableFilter<"user_profiles"> | string | null
     dateOfBirth?: DateTimeNullableFilter<"user_profiles"> | Date | string | null
     address?: StringNullableFilter<"user_profiles"> | string | null
     email?: StringNullableFilter<"user_profiles"> | string | null
@@ -29676,7 +29676,7 @@ export namespace Prisma {
     coinBalance?: IntFilter<"user_profiles"> | number
     createdAt?: DateTimeFilter<"user_profiles"> | Date | string
     updatedAt?: DateTimeFilter<"user_profiles"> | Date | string
-  }, "id" | "userId" | "idCardNumber">
+  }, "id" | "userId">
 
   export type user_profilesOrderByWithAggregationInput = {
     id?: SortOrder

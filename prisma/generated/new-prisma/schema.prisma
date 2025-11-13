@@ -413,7 +413,7 @@ model user_profiles {
   userId              String    @unique
   firstName           String?   @db.VarChar(255)
   lastName            String?   @db.VarChar(255)
-  idCardNumber        String?   @unique @db.VarChar(13)
+  idCardNumber        String?   @db.VarChar(13)
   dateOfBirth         DateTime?
   address             String?   @db.Text
   email               String?   @db.VarChar(255)
