@@ -567,11 +567,15 @@ async function migrateLoans() {
           const hirePurchase = helpers.isHirePurchase(loan.loan_type);
           const loanStatus = helpers.mapLoanStatus(loan.loan_status);
 
+          // Get agent ID (always use the main agent)
+          const agentId = idMapper.get('agent', 1);
+
           // Create loan application
           await newDb.loan_applications.create({
             data: {
               id: applicationId,
               customerId,
+              agentId: agentId || undefined,
               loanType: 'HOUSE_LAND_MORTGAGE', // ทุกรายการเป็นบ้านที่ดิน
               hirePurchase, // วิธีการจ่าย: เงินสด/เช่าซื้อ
               status: loanStatus === 'ACTIVE' ? 'APPROVED' : 'SUBMITTED',
@@ -601,6 +605,7 @@ async function migrateLoans() {
                 id: loanId,
                 loanNumber: loan.loan_code || `LOAN-${loan.id}`,
                 customerId,
+                agentId: agentId || undefined,
                 applicationId,
                 loanType: 'HOUSE_LAND_MORTGAGE', // ทุกรายการเป็นบ้านที่ดิน
                 hirePurchase, // วิธีการจ่าย: เงินสด/เช่าซื้อ
@@ -974,8 +979,8 @@ async function migrateLandAccounts() {
   helpers.log('🏦 Migrating land accounts...');
 
   try {
+    // Get all settings (including soft-deleted ones to ensure we get all data)
     const oldSettings = await oldDb.setting_land.findMany({
-      where: { deleted_at: null },
       orderBy: { id: 'asc' }
     });
 
