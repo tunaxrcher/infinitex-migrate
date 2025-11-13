@@ -447,6 +447,14 @@ async function migrateCustomers() {
             }
           });
 
+          // Convert customer image to full URL
+          const CUSTOMER_IMG_BASE_URL = 'https://evxspst.sgp1.cdn.digitaloceanspaces.com/uploads/loan_customer_img';
+          let idCardImageUrl: string | undefined = undefined;
+          if (customer.img) {
+            const filename = customer.img.trim();
+            idCardImageUrl = `${CUSTOMER_IMG_BASE_URL}/${filename}`;
+          }
+
           // Create user profile
           await newDb.user_profiles.create({
             data: {
@@ -458,7 +466,7 @@ async function migrateCustomers() {
               dateOfBirth: helpers.toISODate(customer.customer_birthday),
               address: customer.customer_address,
               email: customer.customer_email,
-              idCardFrontImage: customer.img || undefined,
+              idCardFrontImage: idCardImageUrl,
               coinBalance: 0,
               createdAt: customer.created_at || new Date(),
               updatedAt: customer.updated_at || new Date(),
@@ -676,7 +684,7 @@ async function migratePictureLoans() {
     helpers.log(`   📊 Found ${oldPictures.length} pictures to migrate`);
 
     // Group by loan_code and convert to full URLs
-    const BASE_URL = process.env.STORAGE_URL || 'https://infinitex-demo.sgp1.digitaloceanspaces.com/supporting-images';
+    const BASE_URL = process.env.STORAGE_URL || 'https://evxspst.sgp1.cdn.digitaloceanspaces.com/uploads/loan_payment_img';
     const picturesByLoan: Record<string, string[]> = {};
     
     for (const pic of oldPictures) {
@@ -1130,9 +1138,24 @@ async function migrateDocuments() {
       }
     };
 
+    const DOC_BASE_URL = 'https://evxspst.sgp1.cdn.digitaloceanspaces.com/uploads/file_loan';
+
     if (!DRY_RUN) {
       for (const doc of oldDocuments) {
         try {
+          // Convert filenames to full URLs
+          let docFileUrl: string | undefined = undefined;
+          if (doc.doc_file) {
+            const filename = doc.doc_file.trim();
+            docFileUrl = `${DOC_BASE_URL}/${filename}`;
+          }
+
+          let filePathUrl: string | undefined = undefined;
+          if (doc.filePath) {
+            const filename = doc.filePath.trim();
+            filePathUrl = `${DOC_BASE_URL}/${filename}`;
+          }
+
           await newDb.documents.create({
             data: {
               id: idMapper.create('documents', doc.id),
@@ -1144,11 +1167,11 @@ async function migrateDocuments() {
               cashFlowName: doc.cash_flow_name,
               employeeId: doc.employee_id || 0,
               username: doc.username || undefined,
-              docFile: doc.doc_file || undefined,
+              docFile: docFileUrl,
               docFileDate: helpers.toISODate(doc.doc_file_date),
               docFileTime: doc.doc_file_time || undefined,
               docFilePrice: doc.doc_file_price ? helpers.toDecimal(doc.doc_file_price) : undefined,
-              filePath: doc.filePath || undefined,
+              filePath: filePathUrl,
               note: doc.note || undefined,
               createdAt: doc.created_at || new Date(),
               updatedAt: doc.updated_at || new Date(),
