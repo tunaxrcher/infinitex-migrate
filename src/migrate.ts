@@ -902,39 +902,40 @@ async function migrateLoanInstallments() {
 }
 
 /**
- * 6. Migrate loan_payment (paid only) -> payments
+ * 6. Migrate setting_land_report (payments) -> payments
  */
 async function migratePayments() {
   const startTime = Date.now();
-  helpers.log('💳 Migrating payments (paid installments only)...');
+  helpers.log('💳 Migrating payments from setting_land_report...');
 
   try {
-    // Get only paid installments (Installment or Close)
+    // Get payment records from setting_land_report
+    // Pattern 1: ชำระสินเชื่อ LOA000011(งวดที่ 1)
+    // Pattern 2: ชำระสินเชื่อ LOA000152(ชำระปิดสินเชื่อ)
+    // Pattern 3: ชำระสินเชื่อ LOA000002(ชำระทั้งหมด)
     const oldPayments = await oldDb.$queryRaw<any[]>`
       SELECT 
         id,
-        loan_code,
-        loan_payment_amount,
-        loan_interest,
-        loan_payment_type,
-        loan_payment_pay_type,
-        loan_payment_installment,
-        CAST(payment_file_date AS CHAR) as payment_file_date,
-        payment_file_ref_no,
-        payment_file_price,
-        land_account_id,
-        land_account_name,
-        CAST(loan_payment_date_fix AS CHAR) as loan_payment_date_fix,
-        CAST(loan_payment_date AS CHAR) as loan_payment_date,
+        setting_land_id,
+        setting_land_report_detail,
+        setting_land_report_money,
+        setting_land_report_note,
+        setting_land_report_account_balance,
+        employee_id,
+        employee_name,
         created_at,
         updated_at
-      FROM loan_payment
+      FROM setting_land_report
       WHERE deleted_at IS NULL
-        AND (loan_payment_type = 'Installment' OR loan_payment_type = 'Close')
+        AND (
+          (setting_land_report_detail LIKE 'ชำระสินเชื่อ%' AND setting_land_report_detail LIKE '%งวดที่%')
+          OR setting_land_report_detail LIKE '%ชำระปิดสินเชื่อ%'
+          OR setting_land_report_detail LIKE '%ชำระทั้งหมด%'
+        )
       ORDER BY id ASC
     `;
 
-    helpers.log(`   📊 Found ${oldPayments.length} paid installments to create payments`);
+    helpers.log(`   📊 Found ${oldPayments.length} payment records from setting_land_report`);
 
     // Create lookup maps
     const customerLookup = await oldDb.$queryRaw<any[]>`
@@ -970,29 +971,49 @@ async function migratePayments() {
     if (!DRY_RUN) {
       for (const payment of oldPayments) {
         try {
-          // Find loan ID
-          let loanId: string | null = null;
-          if (payment.loan_code) {
-            const oldLoanId = loanCodeToLoanId.get(payment.loan_code);
-            if (oldLoanId) {
-              loanId = idMapper.get('loans', oldLoanId);
-            }
+          // Parse payment detail
+          const { loanCode, installmentNumber, isClosing } = helpers.parsePaymentDetail(payment.setting_land_report_detail);
+          
+          if (!loanCode) {
+            helpers.log(`   ⚠️  Skipping payment ID ${payment.id}: Cannot parse loan code from "${payment.setting_land_report_detail}"`);
+            skipCount++;
+            continue;
           }
+
+          // Find loan ID
+          const oldLoanId = loanCodeToLoanId.get(loanCode);
+          const loanId = oldLoanId ? idMapper.get('loans', oldLoanId) : null;
 
           // Find user ID
-          let userId: string | null = null;
-          if (payment.loan_code) {
-            const oldCustomerId = loanCodeToCustomerId.get(payment.loan_code);
-            if (oldCustomerId) {
-              userId = idMapper.get('loan_customer', oldCustomerId);
-            }
+          const oldCustomerId = loanCodeToCustomerId.get(loanCode);
+          const userId = oldCustomerId ? idMapper.get('loan_customer', oldCustomerId) : null;
+
+          // Find installment ID (if has installment number)
+          let installmentId: string | null = null;
+          if (installmentNumber && loanId) {
+            // Find installment by loanId and installmentNumber
+            const installment = await newDb.loan_installments.findFirst({
+              where: {
+                loanId,
+                installmentNumber,
+              }
+            });
+            installmentId = installment?.id || null;
           }
 
-          // Find installment ID (from loan_installments we just created)
-          const installmentId = idMapper.get('loan_installments', payment.id);
-
           const paymentId = idMapper.create('payments', payment.id);
-          const refNumber = payment.payment_file_ref_no || helpers.generateReferenceNumber('PAY', payment.id);
+          const refNumber = helpers.generateReferenceNumber('PAY', payment.id);
+
+          // Get land account name
+          const landAccountId = payment.setting_land_id;
+          const landAccount = landAccountId ? idMapper.get('land_accounts', landAccountId) : null;
+          let landAccountName: string | undefined = undefined;
+          if (landAccount) {
+            const account = await newDb.land_accounts.findUnique({
+              where: { id: landAccount }
+            });
+            landAccountName = account?.accountName || undefined;
+          }
 
           await newDb.payments.create({
             data: {
@@ -1000,16 +1021,16 @@ async function migratePayments() {
               userId: userId || undefined,
               loanId: loanId || undefined,
               installmentId: installmentId || undefined,
-              amount: helpers.toDecimal(payment.loan_payment_amount),
-              paymentMethod: helpers.mapPaymentMethod(payment.loan_payment_pay_type),
+              amount: helpers.toDecimal(payment.setting_land_report_money),
+              paymentMethod: 'CASH', // Default from setting_land_report
               status: 'COMPLETED',
               referenceNumber: refNumber,
-              transactionId: payment.payment_file_ref_no || undefined,
-              bankName: payment.land_account_name || undefined,
-              dueDate: helpers.toISODate(payment.loan_payment_date_fix) || helpers.toISODate(payment.loan_payment_date) || new Date(),
-              paidDate: helpers.toISODate(payment.loan_payment_date) || new Date(),
-              principalAmount: helpers.toDecimal(payment.loan_payment_amount) - helpers.toDecimal(payment.loan_interest),
-              interestAmount: helpers.toDecimal(payment.loan_interest),
+              transactionId: `LAND-${payment.id}`,
+              bankName: landAccountName,
+              dueDate: payment.created_at || new Date(),
+              paidDate: payment.created_at || new Date(),
+              principalAmount: 0, // isClosing ? helpers.toDecimal(payment.setting_land_report_money) : helpers.toDecimal(payment.setting_land_report_money) * 0.8,
+              interestAmount: 0, // isClosing ? 0 : helpers.toDecimal(payment.setting_land_report_money) * 0.2,
               feeAmount: 0,
               createdAt: payment.created_at || new Date(),
               updatedAt: payment.updated_at || new Date(),

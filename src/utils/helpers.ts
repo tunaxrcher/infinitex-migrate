@@ -225,3 +225,38 @@ export function logSuccess(message: string, count?: number) {
   console.log(`[${timestamp}] ✅ ${message}${countStr}`);
 }
 
+/**
+ * Parse payment detail from setting_land_report_detail
+ * Example: "ชำระสินเชื่อ LOA000011(งวดที่ 1)" → { loanCode: 'LOA000011', installmentNumber: 1, isClosing: false }
+ * Example: "ชำระสินเชื่อ LOA000152(ชำระปิดสินเชื่อ)" → { loanCode: 'LOA000152', installmentNumber: null, isClosing: true }
+ */
+export function parsePaymentDetail(detail: string): {
+  loanCode: string | null;
+  installmentNumber: number | null;
+  isClosing: boolean;
+} {
+  if (!detail) {
+    return { loanCode: null, installmentNumber: null, isClosing: false };
+  }
+
+  // Extract loan code (pattern: LOA000XXX or similar)
+  const loanCodeMatch = detail.match(/LOA\d+/);
+  const loanCode = loanCodeMatch ? loanCodeMatch[0] : null;
+
+  // Check if closing payment
+  const isClosing = detail.includes('ชำระปิดสินเชื่อ') || 
+                    detail.includes('ชำระทั้งหมด') ||
+                    detail.includes('ปิดบัญชี');
+
+  // Extract installment number (pattern: งวดที่ X)
+  let installmentNumber: number | null = null;
+  if (!isClosing) {
+    const installmentMatch = detail.match(/งวดที่\s*(\d+)/);
+    if (installmentMatch) {
+      installmentNumber = parseInt(installmentMatch[1], 10);
+    }
+  }
+
+  return { loanCode, installmentNumber, isClosing };
+}
+
