@@ -837,6 +837,8 @@ async function migrateLoanInstallments() {
     }
 
     if (!DRY_RUN) {
+      const PAYMENT_IMG_BASE_URL = 'https://evxspst.sgp1.cdn.digitaloceanspaces.com/uploads/loan_payment_img';
+      
       for (const [loanCode, installments] of installmentsByLoan.entries()) {
         try {
           // Find loan ID
@@ -846,26 +848,43 @@ async function migrateLoanInstallments() {
           const loanId = idMapper.get('loans', oldLoanId);
           if (!loanId) continue;
 
+          // หาวันกำหนดชำระแรกจาก installment แรก
+          const firstDueDateStr = installments[0]?.loan_payment_date_fix;
+          const firstDueDate = helpers.toISODate(firstDueDateStr) || new Date();
+
           // Create installments
           for (let i = 0; i < installments.length; i++) {
             const inst = installments[i];
             const installmentNumber = i + 1;
 
+            // คำนวณ dueDate โดยเพิ่มเดือนตามลำดับงวด
+            const calculatedDueDate = new Date(firstDueDate);
+            calculatedDueDate.setMonth(calculatedDueDate.getMonth() + i);
+
             // Check if paid
             const isPaid = inst.loan_payment_type === 'Installment' || inst.loan_payment_type === 'Close';
+
+            // Convert payment proof image to full URL
+            let paymentProofUrl: string | undefined = undefined;
+            if (inst.loan_payment_src) {
+              const filename = inst.loan_payment_src.trim();
+              paymentProofUrl = `${PAYMENT_IMG_BASE_URL}/${filename}`;
+            }
 
             await newDb.loan_installments.create({
               data: {
                 id: idMapper.create('loan_installments', inst.id),
                 loanId,
                 installmentNumber,
-                dueDate: helpers.toISODate(inst.loan_payment_date_fix) || helpers.toISODate(inst.created_at) || new Date(),
+                dueDate: calculatedDueDate,
                 principalAmount: helpers.toDecimal(inst.loan_payment_amount) - helpers.toDecimal(inst.loan_interest),
                 interestAmount: helpers.toDecimal(inst.loan_interest),
                 totalAmount: helpers.toDecimal(inst.loan_payment_amount),
                 isPaid,
                 paidDate: isPaid ? helpers.toISODate(inst.loan_payment_date) : undefined,
                 paidAmount: isPaid ? helpers.toDecimal(inst.loan_payment_amount) : undefined,
+                paymentProofUrl,
+                refNo: inst.payment_file_ref_no || undefined,
                 isLate: false, // TODO: calculate based on dates
                 lateDays: undefined,
                 createdAt: inst.created_at || new Date(),

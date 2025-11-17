@@ -10745,6 +10745,10 @@ export namespace Prisma {
     paidDate: Date | null
     paidAmount: Decimal | null
     isLate: boolean | null
+    paymentProofUrl: string | null
+    paymentProofUploadedAt: Date | null
+    refNo: string | null
+    note: string | null
     lateDays: number | null
     lateFee: Decimal | null
     createdAt: Date | null
@@ -10763,6 +10767,10 @@ export namespace Prisma {
     paidDate: Date | null
     paidAmount: Decimal | null
     isLate: boolean | null
+    paymentProofUrl: string | null
+    paymentProofUploadedAt: Date | null
+    refNo: string | null
+    note: string | null
     lateDays: number | null
     lateFee: Decimal | null
     createdAt: Date | null
@@ -10781,6 +10789,11 @@ export namespace Prisma {
     paidDate: number
     paidAmount: number
     isLate: number
+    paymentProofUrl: number
+    paymentProofUploadedAt: number
+    refNo: number
+    filePayload: number
+    note: number
     lateDays: number
     lateFee: number
     createdAt: number
@@ -10821,6 +10834,10 @@ export namespace Prisma {
     paidDate?: true
     paidAmount?: true
     isLate?: true
+    paymentProofUrl?: true
+    paymentProofUploadedAt?: true
+    refNo?: true
+    note?: true
     lateDays?: true
     lateFee?: true
     createdAt?: true
@@ -10839,6 +10856,10 @@ export namespace Prisma {
     paidDate?: true
     paidAmount?: true
     isLate?: true
+    paymentProofUrl?: true
+    paymentProofUploadedAt?: true
+    refNo?: true
+    note?: true
     lateDays?: true
     lateFee?: true
     createdAt?: true
@@ -10857,6 +10878,11 @@ export namespace Prisma {
     paidDate?: true
     paidAmount?: true
     isLate?: true
+    paymentProofUrl?: true
+    paymentProofUploadedAt?: true
+    refNo?: true
+    filePayload?: true
+    note?: true
     lateDays?: true
     lateFee?: true
     createdAt?: true
@@ -10962,6 +10988,11 @@ export namespace Prisma {
     paidDate: Date | null
     paidAmount: Decimal | null
     isLate: boolean
+    paymentProofUrl: string | null
+    paymentProofUploadedAt: Date | null
+    refNo: string | null
+    filePayload: JsonValue | null
+    note: string | null
     lateDays: number | null
     lateFee: Decimal | null
     createdAt: Date
@@ -10999,6 +11030,11 @@ export namespace Prisma {
     paidDate?: boolean
     paidAmount?: boolean
     isLate?: boolean
+    paymentProofUrl?: boolean
+    paymentProofUploadedAt?: boolean
+    refNo?: boolean
+    filePayload?: boolean
+    note?: boolean
     lateDays?: boolean
     lateFee?: boolean
     createdAt?: boolean
@@ -11019,13 +11055,18 @@ export namespace Prisma {
     paidDate?: boolean
     paidAmount?: boolean
     isLate?: boolean
+    paymentProofUrl?: boolean
+    paymentProofUploadedAt?: boolean
+    refNo?: boolean
+    filePayload?: boolean
+    note?: boolean
     lateDays?: boolean
     lateFee?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type loan_installmentsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "loanId" | "installmentNumber" | "dueDate" | "principalAmount" | "interestAmount" | "totalAmount" | "isPaid" | "paidDate" | "paidAmount" | "isLate" | "lateDays" | "lateFee" | "createdAt" | "updatedAt", ExtArgs["result"]["loan_installments"]>
+  export type loan_installmentsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "loanId" | "installmentNumber" | "dueDate" | "principalAmount" | "interestAmount" | "totalAmount" | "isPaid" | "paidDate" | "paidAmount" | "isLate" | "paymentProofUrl" | "paymentProofUploadedAt" | "refNo" | "filePayload" | "note" | "lateDays" | "lateFee" | "createdAt" | "updatedAt", ExtArgs["result"]["loan_installments"]>
 
   export type $loan_installmentsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "loan_installments"
@@ -11042,6 +11083,11 @@ export namespace Prisma {
       paidDate: Date | null
       paidAmount: Prisma.Decimal | null
       isLate: boolean
+      paymentProofUrl: string | null
+      paymentProofUploadedAt: Date | null
+      refNo: string | null
+      filePayload: Prisma.JsonValue | null
+      note: string | null
       lateDays: number | null
       lateFee: Prisma.Decimal | null
       createdAt: Date
@@ -11426,6 +11472,11 @@ export namespace Prisma {
     readonly paidDate: FieldRef<"loan_installments", 'DateTime'>
     readonly paidAmount: FieldRef<"loan_installments", 'Decimal'>
     readonly isLate: FieldRef<"loan_installments", 'Boolean'>
+    readonly paymentProofUrl: FieldRef<"loan_installments", 'String'>
+    readonly paymentProofUploadedAt: FieldRef<"loan_installments", 'DateTime'>
+    readonly refNo: FieldRef<"loan_installments", 'String'>
+    readonly filePayload: FieldRef<"loan_installments", 'Json'>
+    readonly note: FieldRef<"loan_installments", 'String'>
     readonly lateDays: FieldRef<"loan_installments", 'Int'>
     readonly lateFee: FieldRef<"loan_installments", 'Decimal'>
     readonly createdAt: FieldRef<"loan_installments", 'DateTime'>
@@ -26900,6 +26951,11 @@ export namespace Prisma {
     paidDate: 'paidDate',
     paidAmount: 'paidAmount',
     isLate: 'isLate',
+    paymentProofUrl: 'paymentProofUrl',
+    paymentProofUploadedAt: 'paymentProofUploadedAt',
+    refNo: 'refNo',
+    filePayload: 'filePayload',
+    note: 'note',
     lateDays: 'lateDays',
     lateFee: 'lateFee',
     createdAt: 'createdAt',
@@ -27325,7 +27381,10 @@ export namespace Prisma {
 
   export const loan_installmentsOrderByRelevanceFieldEnum: {
     id: 'id',
-    loanId: 'loanId'
+    loanId: 'loanId',
+    paymentProofUrl: 'paymentProofUrl',
+    refNo: 'refNo',
+    note: 'note'
   };
 
   export type loan_installmentsOrderByRelevanceFieldEnum = (typeof loan_installmentsOrderByRelevanceFieldEnum)[keyof typeof loan_installmentsOrderByRelevanceFieldEnum]
@@ -28359,6 +28418,11 @@ export namespace Prisma {
     paidDate?: DateTimeNullableFilter<"loan_installments"> | Date | string | null
     paidAmount?: DecimalNullableFilter<"loan_installments"> | Decimal | DecimalJsLike | number | string | null
     isLate?: BoolFilter<"loan_installments"> | boolean
+    paymentProofUrl?: StringNullableFilter<"loan_installments"> | string | null
+    paymentProofUploadedAt?: DateTimeNullableFilter<"loan_installments"> | Date | string | null
+    refNo?: StringNullableFilter<"loan_installments"> | string | null
+    filePayload?: JsonNullableFilter<"loan_installments">
+    note?: StringNullableFilter<"loan_installments"> | string | null
     lateDays?: IntNullableFilter<"loan_installments"> | number | null
     lateFee?: DecimalNullableFilter<"loan_installments"> | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFilter<"loan_installments"> | Date | string
@@ -28377,6 +28441,11 @@ export namespace Prisma {
     paidDate?: SortOrderInput | SortOrder
     paidAmount?: SortOrderInput | SortOrder
     isLate?: SortOrder
+    paymentProofUrl?: SortOrderInput | SortOrder
+    paymentProofUploadedAt?: SortOrderInput | SortOrder
+    refNo?: SortOrderInput | SortOrder
+    filePayload?: SortOrderInput | SortOrder
+    note?: SortOrderInput | SortOrder
     lateDays?: SortOrderInput | SortOrder
     lateFee?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -28400,6 +28469,11 @@ export namespace Prisma {
     paidDate?: DateTimeNullableFilter<"loan_installments"> | Date | string | null
     paidAmount?: DecimalNullableFilter<"loan_installments"> | Decimal | DecimalJsLike | number | string | null
     isLate?: BoolFilter<"loan_installments"> | boolean
+    paymentProofUrl?: StringNullableFilter<"loan_installments"> | string | null
+    paymentProofUploadedAt?: DateTimeNullableFilter<"loan_installments"> | Date | string | null
+    refNo?: StringNullableFilter<"loan_installments"> | string | null
+    filePayload?: JsonNullableFilter<"loan_installments">
+    note?: StringNullableFilter<"loan_installments"> | string | null
     lateDays?: IntNullableFilter<"loan_installments"> | number | null
     lateFee?: DecimalNullableFilter<"loan_installments"> | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFilter<"loan_installments"> | Date | string
@@ -28418,6 +28492,11 @@ export namespace Prisma {
     paidDate?: SortOrderInput | SortOrder
     paidAmount?: SortOrderInput | SortOrder
     isLate?: SortOrder
+    paymentProofUrl?: SortOrderInput | SortOrder
+    paymentProofUploadedAt?: SortOrderInput | SortOrder
+    refNo?: SortOrderInput | SortOrder
+    filePayload?: SortOrderInput | SortOrder
+    note?: SortOrderInput | SortOrder
     lateDays?: SortOrderInput | SortOrder
     lateFee?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -28444,6 +28523,11 @@ export namespace Prisma {
     paidDate?: DateTimeNullableWithAggregatesFilter<"loan_installments"> | Date | string | null
     paidAmount?: DecimalNullableWithAggregatesFilter<"loan_installments"> | Decimal | DecimalJsLike | number | string | null
     isLate?: BoolWithAggregatesFilter<"loan_installments"> | boolean
+    paymentProofUrl?: StringNullableWithAggregatesFilter<"loan_installments"> | string | null
+    paymentProofUploadedAt?: DateTimeNullableWithAggregatesFilter<"loan_installments"> | Date | string | null
+    refNo?: StringNullableWithAggregatesFilter<"loan_installments"> | string | null
+    filePayload?: JsonNullableWithAggregatesFilter<"loan_installments">
+    note?: StringNullableWithAggregatesFilter<"loan_installments"> | string | null
     lateDays?: IntNullableWithAggregatesFilter<"loan_installments"> | number | null
     lateFee?: DecimalNullableWithAggregatesFilter<"loan_installments"> | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeWithAggregatesFilter<"loan_installments"> | Date | string
@@ -30603,6 +30687,11 @@ export namespace Prisma {
     paidDate?: Date | string | null
     paidAmount?: Decimal | DecimalJsLike | number | string | null
     isLate?: boolean
+    paymentProofUrl?: string | null
+    paymentProofUploadedAt?: Date | string | null
+    refNo?: string | null
+    filePayload?: NullableJsonNullValueInput | InputJsonValue
+    note?: string | null
     lateDays?: number | null
     lateFee?: Decimal | DecimalJsLike | number | string | null
     createdAt?: Date | string
@@ -30621,6 +30710,11 @@ export namespace Prisma {
     paidDate?: Date | string | null
     paidAmount?: Decimal | DecimalJsLike | number | string | null
     isLate?: boolean
+    paymentProofUrl?: string | null
+    paymentProofUploadedAt?: Date | string | null
+    refNo?: string | null
+    filePayload?: NullableJsonNullValueInput | InputJsonValue
+    note?: string | null
     lateDays?: number | null
     lateFee?: Decimal | DecimalJsLike | number | string | null
     createdAt?: Date | string
@@ -30639,6 +30733,11 @@ export namespace Prisma {
     paidDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paidAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     isLate?: BoolFieldUpdateOperationsInput | boolean
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refNo?: NullableStringFieldUpdateOperationsInput | string | null
+    filePayload?: NullableJsonNullValueInput | InputJsonValue
+    note?: NullableStringFieldUpdateOperationsInput | string | null
     lateDays?: NullableIntFieldUpdateOperationsInput | number | null
     lateFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -30657,6 +30756,11 @@ export namespace Prisma {
     paidDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paidAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     isLate?: BoolFieldUpdateOperationsInput | boolean
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refNo?: NullableStringFieldUpdateOperationsInput | string | null
+    filePayload?: NullableJsonNullValueInput | InputJsonValue
+    note?: NullableStringFieldUpdateOperationsInput | string | null
     lateDays?: NullableIntFieldUpdateOperationsInput | number | null
     lateFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -30675,6 +30779,11 @@ export namespace Prisma {
     paidDate?: Date | string | null
     paidAmount?: Decimal | DecimalJsLike | number | string | null
     isLate?: boolean
+    paymentProofUrl?: string | null
+    paymentProofUploadedAt?: Date | string | null
+    refNo?: string | null
+    filePayload?: NullableJsonNullValueInput | InputJsonValue
+    note?: string | null
     lateDays?: number | null
     lateFee?: Decimal | DecimalJsLike | number | string | null
     createdAt?: Date | string
@@ -30693,6 +30802,11 @@ export namespace Prisma {
     paidDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paidAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     isLate?: BoolFieldUpdateOperationsInput | boolean
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refNo?: NullableStringFieldUpdateOperationsInput | string | null
+    filePayload?: NullableJsonNullValueInput | InputJsonValue
+    note?: NullableStringFieldUpdateOperationsInput | string | null
     lateDays?: NullableIntFieldUpdateOperationsInput | number | null
     lateFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -30711,6 +30825,11 @@ export namespace Prisma {
     paidDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paidAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     isLate?: BoolFieldUpdateOperationsInput | boolean
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refNo?: NullableStringFieldUpdateOperationsInput | string | null
+    filePayload?: NullableJsonNullValueInput | InputJsonValue
+    note?: NullableStringFieldUpdateOperationsInput | string | null
     lateDays?: NullableIntFieldUpdateOperationsInput | number | null
     lateFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -33151,6 +33270,11 @@ export namespace Prisma {
     paidDate?: SortOrder
     paidAmount?: SortOrder
     isLate?: SortOrder
+    paymentProofUrl?: SortOrder
+    paymentProofUploadedAt?: SortOrder
+    refNo?: SortOrder
+    filePayload?: SortOrder
+    note?: SortOrder
     lateDays?: SortOrder
     lateFee?: SortOrder
     createdAt?: SortOrder
@@ -33179,6 +33303,10 @@ export namespace Prisma {
     paidDate?: SortOrder
     paidAmount?: SortOrder
     isLate?: SortOrder
+    paymentProofUrl?: SortOrder
+    paymentProofUploadedAt?: SortOrder
+    refNo?: SortOrder
+    note?: SortOrder
     lateDays?: SortOrder
     lateFee?: SortOrder
     createdAt?: SortOrder
@@ -33197,6 +33325,10 @@ export namespace Prisma {
     paidDate?: SortOrder
     paidAmount?: SortOrder
     isLate?: SortOrder
+    paymentProofUrl?: SortOrder
+    paymentProofUploadedAt?: SortOrder
+    refNo?: SortOrder
+    note?: SortOrder
     lateDays?: SortOrder
     lateFee?: SortOrder
     createdAt?: SortOrder

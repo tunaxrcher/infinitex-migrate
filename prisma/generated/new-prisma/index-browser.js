@@ -245,6 +245,11 @@ exports.Prisma.Loan_installmentsScalarFieldEnum = {
   paidDate: 'paidDate',
   paidAmount: 'paidAmount',
   isLate: 'isLate',
+  paymentProofUrl: 'paymentProofUrl',
+  paymentProofUploadedAt: 'paymentProofUploadedAt',
+  refNo: 'refNo',
+  filePayload: 'filePayload',
+  note: 'note',
   lateDays: 'lateDays',
   lateFee: 'lateFee',
   createdAt: 'createdAt',
@@ -580,7 +585,10 @@ exports.Prisma.loan_applicationsOrderByRelevanceFieldEnum = {
 
 exports.Prisma.loan_installmentsOrderByRelevanceFieldEnum = {
   id: 'id',
-  loanId: 'loanId'
+  loanId: 'loanId',
+  paymentProofUrl: 'paymentProofUrl',
+  refNo: 'refNo',
+  note: 'note'
 };
 
 exports.Prisma.loansOrderByRelevanceFieldEnum = {
