@@ -579,6 +579,19 @@ async function migrateLoans() {
           // Get agent ID (always use the main agent)
           const agentId = idMapper.get('agent', 1);
 
+          // Map loan application status
+          // ON_STATE (ACTIVE) → APPROVED
+          // CLOSE_STATE (COMPLETED) → APPROVED
+          // CANCEL_STATE (CANCELLED) → CANCELLED
+          let applicationStatus: 'DRAFT' | 'SUBMITTED' | 'UNDER_REVIEW' | 'APPROVED' | 'REJECTED' | 'CANCELLED';
+          if (loanStatus === 'CANCELLED') {
+            applicationStatus = 'CANCELLED';
+          } else if (loanStatus === 'ACTIVE' || loanStatus === 'COMPLETED') {
+            applicationStatus = 'APPROVED';
+          } else {
+            applicationStatus = 'SUBMITTED';
+          }
+
           // Create loan application
           await newDb.loan_applications.create({
             data: {
@@ -587,7 +600,7 @@ async function migrateLoans() {
               agentId: agentId || undefined,
               loanType: 'HOUSE_LAND_MORTGAGE', // ทุกรายการเป็นบ้านที่ดิน
               hirePurchase, // วิธีการจ่าย: เงินสด/เช่าซื้อ
-              status: loanStatus === 'ACTIVE' ? 'APPROVED' : 'SUBMITTED',
+              status: applicationStatus,
               currentStep: 5,
               completedSteps: [1, 2, 3, 4, 5],
               requestedAmount: helpers.toDecimal(loan.loan_summary_no_vat),
