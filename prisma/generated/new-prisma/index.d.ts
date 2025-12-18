@@ -133,6 +133,11 @@ export type user_profiles = $Result.DefaultSelection<Prisma.$user_profilesPayloa
  * 
  */
 export type users = $Result.DefaultSelection<Prisma.$usersPayload>
+/**
+ * Model real_investment
+ * 
+ */
+export type real_investment = $Result.DefaultSelection<Prisma.$real_investmentPayload>
 
 /**
  * Enums
@@ -293,7 +298,9 @@ export type documents_docType = (typeof documents_docType)[keyof typeof document
 
 export const document_title_lists_docType: {
   RECEIPT: 'RECEIPT',
-  PAYMENT_VOUCHER: 'PAYMENT_VOUCHER'
+  PAYMENT_VOUCHER: 'PAYMENT_VOUCHER',
+  DISCOUNT_NOTE: 'DISCOUNT_NOTE',
+  EXPENSE: 'EXPENSE'
 };
 
 export type document_title_lists_docType = (typeof document_title_lists_docType)[keyof typeof document_title_lists_docType]
@@ -713,6 +720,16 @@ export class PrismaClient<
     * ```
     */
   get users(): Prisma.usersDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.real_investment`: Exposes CRUD operations for the **real_investment** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Real_investments
+    * const real_investments = await prisma.real_investment.findMany()
+    * ```
+    */
+  get real_investment(): Prisma.real_investmentDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1177,7 +1194,8 @@ export namespace Prisma {
     land_account_logs: 'land_account_logs',
     land_account_reports: 'land_account_reports',
     user_profiles: 'user_profiles',
-    users: 'users'
+    users: 'users',
+    real_investment: 'real_investment'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1196,7 +1214,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "admin_permissions" | "admin_sessions" | "admins" | "agent_customers" | "audit_logs" | "banners" | "coin_transactions" | "loan_applications" | "loan_installments" | "loans" | "notifications" | "payments" | "privileges" | "reward_redemptions" | "rewards" | "sessions" | "system_config" | "documents" | "document_title_lists" | "land_accounts" | "land_account_logs" | "land_account_reports" | "user_profiles" | "users"
+      modelProps: "admin_permissions" | "admin_sessions" | "admins" | "agent_customers" | "audit_logs" | "banners" | "coin_transactions" | "loan_applications" | "loan_installments" | "loans" | "notifications" | "payments" | "privileges" | "reward_redemptions" | "rewards" | "sessions" | "system_config" | "documents" | "document_title_lists" | "land_accounts" | "land_account_logs" | "land_account_reports" | "user_profiles" | "users" | "real_investment"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2784,6 +2802,72 @@ export namespace Prisma {
           }
         }
       }
+      real_investment: {
+        payload: Prisma.$real_investmentPayload<ExtArgs>
+        fields: Prisma.real_investmentFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.real_investmentFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$real_investmentPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.real_investmentFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$real_investmentPayload>
+          }
+          findFirst: {
+            args: Prisma.real_investmentFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$real_investmentPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.real_investmentFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$real_investmentPayload>
+          }
+          findMany: {
+            args: Prisma.real_investmentFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$real_investmentPayload>[]
+          }
+          create: {
+            args: Prisma.real_investmentCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$real_investmentPayload>
+          }
+          createMany: {
+            args: Prisma.real_investmentCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.real_investmentDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$real_investmentPayload>
+          }
+          update: {
+            args: Prisma.real_investmentUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$real_investmentPayload>
+          }
+          deleteMany: {
+            args: Prisma.real_investmentDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.real_investmentUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.real_investmentUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$real_investmentPayload>
+          }
+          aggregate: {
+            args: Prisma.Real_investmentAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateReal_investment>
+          }
+          groupBy: {
+            args: Prisma.real_investmentGroupByArgs<ExtArgs>
+            result: $Utils.Optional<Real_investmentGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.real_investmentCountArgs<ExtArgs>
+            result: $Utils.Optional<Real_investmentCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2904,6 +2988,7 @@ export namespace Prisma {
     land_account_reports?: land_account_reportsOmit
     user_profiles?: user_profilesOmit
     users?: usersOmit
+    real_investment?: real_investmentOmit
   }
 
   /* Types for Logging */
@@ -2978,45 +3063,6 @@ export namespace Prisma {
    * Count Types
    */
 
-
-  /**
-   * Count Type Land_accountsCountOutputType
-   */
-
-  export type Land_accountsCountOutputType = {
-    logs: number
-    reports: number
-  }
-
-  export type Land_accountsCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    logs?: boolean | Land_accountsCountOutputTypeCountLogsArgs
-    reports?: boolean | Land_accountsCountOutputTypeCountReportsArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * Land_accountsCountOutputType without action
-   */
-  export type Land_accountsCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Land_accountsCountOutputType
-     */
-    select?: Land_accountsCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * Land_accountsCountOutputType without action
-   */
-  export type Land_accountsCountOutputTypeCountLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: land_account_logsWhereInput
-  }
-
-  /**
-   * Land_accountsCountOutputType without action
-   */
-  export type Land_accountsCountOutputTypeCountReportsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: land_account_reportsWhereInput
-  }
 
 
   /**
@@ -9524,6 +9570,11 @@ export namespace Prisma {
     approvedAmount: Decimal | null
     maxApprovedAmount: Decimal | null
     propertyValue: Decimal | null
+    interestRate: Decimal | null
+    operationFee: Decimal | null
+    otherFee: Decimal | null
+    termMonths: number | null
+    transferFee: Decimal | null
   }
 
   export type Loan_applicationsSumAggregateOutputType = {
@@ -9532,6 +9583,11 @@ export namespace Prisma {
     approvedAmount: Decimal | null
     maxApprovedAmount: Decimal | null
     propertyValue: Decimal | null
+    interestRate: Decimal | null
+    operationFee: Decimal | null
+    otherFee: Decimal | null
+    termMonths: number | null
+    transferFee: Decimal | null
   }
 
   export type Loan_applicationsMinAggregateOutputType = {
@@ -9539,7 +9595,6 @@ export namespace Prisma {
     customerId: string | null
     agentId: string | null
     loanType: $Enums.loan_applications_loanType | null
-    hirePurchase: boolean | null
     status: $Enums.loan_applications_status | null
     currentStep: number | null
     isNewUser: boolean | null
@@ -9562,6 +9617,12 @@ export namespace Prisma {
     reviewNotes: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    hirePurchase: boolean | null
+    interestRate: Decimal | null
+    operationFee: Decimal | null
+    otherFee: Decimal | null
+    termMonths: number | null
+    transferFee: Decimal | null
   }
 
   export type Loan_applicationsMaxAggregateOutputType = {
@@ -9569,7 +9630,6 @@ export namespace Prisma {
     customerId: string | null
     agentId: string | null
     loanType: $Enums.loan_applications_loanType | null
-    hirePurchase: boolean | null
     status: $Enums.loan_applications_status | null
     currentStep: number | null
     isNewUser: boolean | null
@@ -9592,6 +9652,12 @@ export namespace Prisma {
     reviewNotes: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    hirePurchase: boolean | null
+    interestRate: Decimal | null
+    operationFee: Decimal | null
+    otherFee: Decimal | null
+    termMonths: number | null
+    transferFee: Decimal | null
   }
 
   export type Loan_applicationsCountAggregateOutputType = {
@@ -9599,7 +9665,6 @@ export namespace Prisma {
     customerId: number
     agentId: number
     loanType: number
-    hirePurchase: number
     status: number
     currentStep: number
     completedSteps: number
@@ -9625,6 +9690,12 @@ export namespace Prisma {
     reviewNotes: number
     createdAt: number
     updatedAt: number
+    hirePurchase: number
+    interestRate: number
+    operationFee: number
+    otherFee: number
+    termMonths: number
+    transferFee: number
     _all: number
   }
 
@@ -9635,6 +9706,11 @@ export namespace Prisma {
     approvedAmount?: true
     maxApprovedAmount?: true
     propertyValue?: true
+    interestRate?: true
+    operationFee?: true
+    otherFee?: true
+    termMonths?: true
+    transferFee?: true
   }
 
   export type Loan_applicationsSumAggregateInputType = {
@@ -9643,6 +9719,11 @@ export namespace Prisma {
     approvedAmount?: true
     maxApprovedAmount?: true
     propertyValue?: true
+    interestRate?: true
+    operationFee?: true
+    otherFee?: true
+    termMonths?: true
+    transferFee?: true
   }
 
   export type Loan_applicationsMinAggregateInputType = {
@@ -9650,7 +9731,6 @@ export namespace Prisma {
     customerId?: true
     agentId?: true
     loanType?: true
-    hirePurchase?: true
     status?: true
     currentStep?: true
     isNewUser?: true
@@ -9673,6 +9753,12 @@ export namespace Prisma {
     reviewNotes?: true
     createdAt?: true
     updatedAt?: true
+    hirePurchase?: true
+    interestRate?: true
+    operationFee?: true
+    otherFee?: true
+    termMonths?: true
+    transferFee?: true
   }
 
   export type Loan_applicationsMaxAggregateInputType = {
@@ -9680,7 +9766,6 @@ export namespace Prisma {
     customerId?: true
     agentId?: true
     loanType?: true
-    hirePurchase?: true
     status?: true
     currentStep?: true
     isNewUser?: true
@@ -9703,6 +9788,12 @@ export namespace Prisma {
     reviewNotes?: true
     createdAt?: true
     updatedAt?: true
+    hirePurchase?: true
+    interestRate?: true
+    operationFee?: true
+    otherFee?: true
+    termMonths?: true
+    transferFee?: true
   }
 
   export type Loan_applicationsCountAggregateInputType = {
@@ -9710,7 +9801,6 @@ export namespace Prisma {
     customerId?: true
     agentId?: true
     loanType?: true
-    hirePurchase?: true
     status?: true
     currentStep?: true
     completedSteps?: true
@@ -9736,6 +9826,12 @@ export namespace Prisma {
     reviewNotes?: true
     createdAt?: true
     updatedAt?: true
+    hirePurchase?: true
+    interestRate?: true
+    operationFee?: true
+    otherFee?: true
+    termMonths?: true
+    transferFee?: true
     _all?: true
   }
 
@@ -9830,7 +9926,6 @@ export namespace Prisma {
     customerId: string | null
     agentId: string | null
     loanType: $Enums.loan_applications_loanType
-    hirePurchase: boolean
     status: $Enums.loan_applications_status
     currentStep: number
     completedSteps: JsonValue
@@ -9856,6 +9951,12 @@ export namespace Prisma {
     reviewNotes: string | null
     createdAt: Date
     updatedAt: Date
+    hirePurchase: boolean
+    interestRate: Decimal | null
+    operationFee: Decimal | null
+    otherFee: Decimal | null
+    termMonths: number | null
+    transferFee: Decimal | null
     _count: Loan_applicationsCountAggregateOutputType | null
     _avg: Loan_applicationsAvgAggregateOutputType | null
     _sum: Loan_applicationsSumAggregateOutputType | null
@@ -9882,7 +9983,6 @@ export namespace Prisma {
     customerId?: boolean
     agentId?: boolean
     loanType?: boolean
-    hirePurchase?: boolean
     status?: boolean
     currentStep?: boolean
     completedSteps?: boolean
@@ -9908,6 +10008,12 @@ export namespace Prisma {
     reviewNotes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    hirePurchase?: boolean
+    interestRate?: boolean
+    operationFee?: boolean
+    otherFee?: boolean
+    termMonths?: boolean
+    transferFee?: boolean
   }, ExtArgs["result"]["loan_applications"]>
 
 
@@ -9917,7 +10023,6 @@ export namespace Prisma {
     customerId?: boolean
     agentId?: boolean
     loanType?: boolean
-    hirePurchase?: boolean
     status?: boolean
     currentStep?: boolean
     completedSteps?: boolean
@@ -9943,9 +10048,15 @@ export namespace Prisma {
     reviewNotes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    hirePurchase?: boolean
+    interestRate?: boolean
+    operationFee?: boolean
+    otherFee?: boolean
+    termMonths?: boolean
+    transferFee?: boolean
   }
 
-  export type loan_applicationsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "customerId" | "agentId" | "loanType" | "hirePurchase" | "status" | "currentStep" | "completedSteps" | "isNewUser" | "submittedByAgent" | "titleDeedImage" | "titleDeedData" | "supportingImages" | "idCardFrontImage" | "idCardBackImage" | "requestedAmount" | "approvedAmount" | "maxApprovedAmount" | "propertyType" | "propertyValue" | "propertyArea" | "propertyLocation" | "landNumber" | "ownerName" | "submittedAt" | "reviewedAt" | "reviewedBy" | "reviewNotes" | "createdAt" | "updatedAt", ExtArgs["result"]["loan_applications"]>
+  export type loan_applicationsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "customerId" | "agentId" | "loanType" | "status" | "currentStep" | "completedSteps" | "isNewUser" | "submittedByAgent" | "titleDeedImage" | "titleDeedData" | "supportingImages" | "idCardFrontImage" | "idCardBackImage" | "requestedAmount" | "approvedAmount" | "maxApprovedAmount" | "propertyType" | "propertyValue" | "propertyArea" | "propertyLocation" | "landNumber" | "ownerName" | "submittedAt" | "reviewedAt" | "reviewedBy" | "reviewNotes" | "createdAt" | "updatedAt" | "hirePurchase" | "interestRate" | "operationFee" | "otherFee" | "termMonths" | "transferFee", ExtArgs["result"]["loan_applications"]>
 
   export type $loan_applicationsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "loan_applications"
@@ -9955,7 +10066,6 @@ export namespace Prisma {
       customerId: string | null
       agentId: string | null
       loanType: $Enums.loan_applications_loanType
-      hirePurchase: boolean
       status: $Enums.loan_applications_status
       currentStep: number
       completedSteps: Prisma.JsonValue
@@ -9981,6 +10091,12 @@ export namespace Prisma {
       reviewNotes: string | null
       createdAt: Date
       updatedAt: Date
+      hirePurchase: boolean
+      interestRate: Prisma.Decimal | null
+      operationFee: Prisma.Decimal | null
+      otherFee: Prisma.Decimal | null
+      termMonths: number | null
+      transferFee: Prisma.Decimal | null
     }, ExtArgs["result"]["loan_applications"]>
     composites: {}
   }
@@ -10354,7 +10470,6 @@ export namespace Prisma {
     readonly customerId: FieldRef<"loan_applications", 'String'>
     readonly agentId: FieldRef<"loan_applications", 'String'>
     readonly loanType: FieldRef<"loan_applications", 'loan_applications_loanType'>
-    readonly hirePurchase: FieldRef<"loan_applications", 'Boolean'>
     readonly status: FieldRef<"loan_applications", 'loan_applications_status'>
     readonly currentStep: FieldRef<"loan_applications", 'Int'>
     readonly completedSteps: FieldRef<"loan_applications", 'Json'>
@@ -10380,6 +10495,12 @@ export namespace Prisma {
     readonly reviewNotes: FieldRef<"loan_applications", 'String'>
     readonly createdAt: FieldRef<"loan_applications", 'DateTime'>
     readonly updatedAt: FieldRef<"loan_applications", 'DateTime'>
+    readonly hirePurchase: FieldRef<"loan_applications", 'Boolean'>
+    readonly interestRate: FieldRef<"loan_applications", 'Decimal'>
+    readonly operationFee: FieldRef<"loan_applications", 'Decimal'>
+    readonly otherFee: FieldRef<"loan_applications", 'Decimal'>
+    readonly termMonths: FieldRef<"loan_applications", 'Int'>
+    readonly transferFee: FieldRef<"loan_applications", 'Decimal'>
   }
     
 
@@ -10745,14 +10866,14 @@ export namespace Prisma {
     paidDate: Date | null
     paidAmount: Decimal | null
     isLate: boolean | null
-    paymentProofUrl: string | null
-    paymentProofUploadedAt: Date | null
-    refNo: string | null
-    note: string | null
     lateDays: number | null
     lateFee: Decimal | null
     createdAt: Date | null
     updatedAt: Date | null
+    note: string | null
+    paymentProofUploadedAt: Date | null
+    paymentProofUrl: string | null
+    refNo: string | null
   }
 
   export type Loan_installmentsMaxAggregateOutputType = {
@@ -10767,14 +10888,14 @@ export namespace Prisma {
     paidDate: Date | null
     paidAmount: Decimal | null
     isLate: boolean | null
-    paymentProofUrl: string | null
-    paymentProofUploadedAt: Date | null
-    refNo: string | null
-    note: string | null
     lateDays: number | null
     lateFee: Decimal | null
     createdAt: Date | null
     updatedAt: Date | null
+    note: string | null
+    paymentProofUploadedAt: Date | null
+    paymentProofUrl: string | null
+    refNo: string | null
   }
 
   export type Loan_installmentsCountAggregateOutputType = {
@@ -10789,15 +10910,15 @@ export namespace Prisma {
     paidDate: number
     paidAmount: number
     isLate: number
-    paymentProofUrl: number
-    paymentProofUploadedAt: number
-    refNo: number
-    filePayload: number
-    note: number
     lateDays: number
     lateFee: number
     createdAt: number
     updatedAt: number
+    filePayload: number
+    note: number
+    paymentProofUploadedAt: number
+    paymentProofUrl: number
+    refNo: number
     _all: number
   }
 
@@ -10834,14 +10955,14 @@ export namespace Prisma {
     paidDate?: true
     paidAmount?: true
     isLate?: true
-    paymentProofUrl?: true
-    paymentProofUploadedAt?: true
-    refNo?: true
-    note?: true
     lateDays?: true
     lateFee?: true
     createdAt?: true
     updatedAt?: true
+    note?: true
+    paymentProofUploadedAt?: true
+    paymentProofUrl?: true
+    refNo?: true
   }
 
   export type Loan_installmentsMaxAggregateInputType = {
@@ -10856,14 +10977,14 @@ export namespace Prisma {
     paidDate?: true
     paidAmount?: true
     isLate?: true
-    paymentProofUrl?: true
-    paymentProofUploadedAt?: true
-    refNo?: true
-    note?: true
     lateDays?: true
     lateFee?: true
     createdAt?: true
     updatedAt?: true
+    note?: true
+    paymentProofUploadedAt?: true
+    paymentProofUrl?: true
+    refNo?: true
   }
 
   export type Loan_installmentsCountAggregateInputType = {
@@ -10878,15 +10999,15 @@ export namespace Prisma {
     paidDate?: true
     paidAmount?: true
     isLate?: true
-    paymentProofUrl?: true
-    paymentProofUploadedAt?: true
-    refNo?: true
-    filePayload?: true
-    note?: true
     lateDays?: true
     lateFee?: true
     createdAt?: true
     updatedAt?: true
+    filePayload?: true
+    note?: true
+    paymentProofUploadedAt?: true
+    paymentProofUrl?: true
+    refNo?: true
     _all?: true
   }
 
@@ -10988,15 +11109,15 @@ export namespace Prisma {
     paidDate: Date | null
     paidAmount: Decimal | null
     isLate: boolean
-    paymentProofUrl: string | null
-    paymentProofUploadedAt: Date | null
-    refNo: string | null
-    filePayload: JsonValue | null
-    note: string | null
     lateDays: number | null
     lateFee: Decimal | null
     createdAt: Date
     updatedAt: Date
+    filePayload: JsonValue | null
+    note: string | null
+    paymentProofUploadedAt: Date | null
+    paymentProofUrl: string | null
+    refNo: string | null
     _count: Loan_installmentsCountAggregateOutputType | null
     _avg: Loan_installmentsAvgAggregateOutputType | null
     _sum: Loan_installmentsSumAggregateOutputType | null
@@ -11030,15 +11151,15 @@ export namespace Prisma {
     paidDate?: boolean
     paidAmount?: boolean
     isLate?: boolean
-    paymentProofUrl?: boolean
-    paymentProofUploadedAt?: boolean
-    refNo?: boolean
-    filePayload?: boolean
-    note?: boolean
     lateDays?: boolean
     lateFee?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    filePayload?: boolean
+    note?: boolean
+    paymentProofUploadedAt?: boolean
+    paymentProofUrl?: boolean
+    refNo?: boolean
   }, ExtArgs["result"]["loan_installments"]>
 
 
@@ -11055,18 +11176,18 @@ export namespace Prisma {
     paidDate?: boolean
     paidAmount?: boolean
     isLate?: boolean
-    paymentProofUrl?: boolean
-    paymentProofUploadedAt?: boolean
-    refNo?: boolean
-    filePayload?: boolean
-    note?: boolean
     lateDays?: boolean
     lateFee?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    filePayload?: boolean
+    note?: boolean
+    paymentProofUploadedAt?: boolean
+    paymentProofUrl?: boolean
+    refNo?: boolean
   }
 
-  export type loan_installmentsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "loanId" | "installmentNumber" | "dueDate" | "principalAmount" | "interestAmount" | "totalAmount" | "isPaid" | "paidDate" | "paidAmount" | "isLate" | "paymentProofUrl" | "paymentProofUploadedAt" | "refNo" | "filePayload" | "note" | "lateDays" | "lateFee" | "createdAt" | "updatedAt", ExtArgs["result"]["loan_installments"]>
+  export type loan_installmentsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "loanId" | "installmentNumber" | "dueDate" | "principalAmount" | "interestAmount" | "totalAmount" | "isPaid" | "paidDate" | "paidAmount" | "isLate" | "lateDays" | "lateFee" | "createdAt" | "updatedAt" | "filePayload" | "note" | "paymentProofUploadedAt" | "paymentProofUrl" | "refNo", ExtArgs["result"]["loan_installments"]>
 
   export type $loan_installmentsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "loan_installments"
@@ -11083,15 +11204,15 @@ export namespace Prisma {
       paidDate: Date | null
       paidAmount: Prisma.Decimal | null
       isLate: boolean
-      paymentProofUrl: string | null
-      paymentProofUploadedAt: Date | null
-      refNo: string | null
-      filePayload: Prisma.JsonValue | null
-      note: string | null
       lateDays: number | null
       lateFee: Prisma.Decimal | null
       createdAt: Date
       updatedAt: Date
+      filePayload: Prisma.JsonValue | null
+      note: string | null
+      paymentProofUploadedAt: Date | null
+      paymentProofUrl: string | null
+      refNo: string | null
     }, ExtArgs["result"]["loan_installments"]>
     composites: {}
   }
@@ -11472,15 +11593,15 @@ export namespace Prisma {
     readonly paidDate: FieldRef<"loan_installments", 'DateTime'>
     readonly paidAmount: FieldRef<"loan_installments", 'Decimal'>
     readonly isLate: FieldRef<"loan_installments", 'Boolean'>
-    readonly paymentProofUrl: FieldRef<"loan_installments", 'String'>
-    readonly paymentProofUploadedAt: FieldRef<"loan_installments", 'DateTime'>
-    readonly refNo: FieldRef<"loan_installments", 'String'>
-    readonly filePayload: FieldRef<"loan_installments", 'Json'>
-    readonly note: FieldRef<"loan_installments", 'String'>
     readonly lateDays: FieldRef<"loan_installments", 'Int'>
     readonly lateFee: FieldRef<"loan_installments", 'Decimal'>
     readonly createdAt: FieldRef<"loan_installments", 'DateTime'>
     readonly updatedAt: FieldRef<"loan_installments", 'DateTime'>
+    readonly filePayload: FieldRef<"loan_installments", 'Json'>
+    readonly note: FieldRef<"loan_installments", 'String'>
+    readonly paymentProofUploadedAt: FieldRef<"loan_installments", 'DateTime'>
+    readonly paymentProofUrl: FieldRef<"loan_installments", 'String'>
+    readonly refNo: FieldRef<"loan_installments", 'String'>
   }
     
 
@@ -11824,6 +11945,7 @@ export namespace Prisma {
     remainingBalance: Decimal | null
     collateralValue: Decimal | null
     landAccountId: number | null
+    estimatedValue: Decimal | null
   }
 
   export type LoansSumAggregateOutputType = {
@@ -11836,6 +11958,7 @@ export namespace Prisma {
     remainingBalance: Decimal | null
     collateralValue: Decimal | null
     landAccountId: number | null
+    estimatedValue: Decimal | null
   }
 
   export type LoansMinAggregateOutputType = {
@@ -11845,7 +11968,6 @@ export namespace Prisma {
     agentId: string | null
     applicationId: string | null
     loanType: $Enums.loans_loanType | null
-    hirePurchase: boolean | null
     status: $Enums.loans_status | null
     principalAmount: Decimal | null
     interestRate: Decimal | null
@@ -11859,11 +11981,14 @@ export namespace Prisma {
     expiryDate: Date | null
     titleDeedNumber: string | null
     collateralValue: Decimal | null
-    linkMap: string | null
-    landAccountId: number | null
-    landAccountName: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    hirePurchase: boolean | null
+    landAccountId: number | null
+    landAccountName: string | null
+    linkMap: string | null
+    estimatedValue: Decimal | null
+    valuationDate: Date | null
   }
 
   export type LoansMaxAggregateOutputType = {
@@ -11873,7 +11998,6 @@ export namespace Prisma {
     agentId: string | null
     applicationId: string | null
     loanType: $Enums.loans_loanType | null
-    hirePurchase: boolean | null
     status: $Enums.loans_status | null
     principalAmount: Decimal | null
     interestRate: Decimal | null
@@ -11887,11 +12011,14 @@ export namespace Prisma {
     expiryDate: Date | null
     titleDeedNumber: string | null
     collateralValue: Decimal | null
-    linkMap: string | null
-    landAccountId: number | null
-    landAccountName: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    hirePurchase: boolean | null
+    landAccountId: number | null
+    landAccountName: string | null
+    linkMap: string | null
+    estimatedValue: Decimal | null
+    valuationDate: Date | null
   }
 
   export type LoansCountAggregateOutputType = {
@@ -11901,7 +12028,6 @@ export namespace Prisma {
     agentId: number
     applicationId: number
     loanType: number
-    hirePurchase: number
     status: number
     principalAmount: number
     interestRate: number
@@ -11916,11 +12042,15 @@ export namespace Prisma {
     titleDeedNumber: number
     collateralValue: number
     collateralDetails: number
-    linkMap: number
-    landAccountId: number
-    landAccountName: number
     createdAt: number
     updatedAt: number
+    hirePurchase: number
+    landAccountId: number
+    landAccountName: number
+    linkMap: number
+    estimatedValue: number
+    valuationDate: number
+    valuationResult: number
     _all: number
   }
 
@@ -11935,6 +12065,7 @@ export namespace Prisma {
     remainingBalance?: true
     collateralValue?: true
     landAccountId?: true
+    estimatedValue?: true
   }
 
   export type LoansSumAggregateInputType = {
@@ -11947,6 +12078,7 @@ export namespace Prisma {
     remainingBalance?: true
     collateralValue?: true
     landAccountId?: true
+    estimatedValue?: true
   }
 
   export type LoansMinAggregateInputType = {
@@ -11956,7 +12088,6 @@ export namespace Prisma {
     agentId?: true
     applicationId?: true
     loanType?: true
-    hirePurchase?: true
     status?: true
     principalAmount?: true
     interestRate?: true
@@ -11970,11 +12101,14 @@ export namespace Prisma {
     expiryDate?: true
     titleDeedNumber?: true
     collateralValue?: true
-    linkMap?: true
-    landAccountId?: true
-    landAccountName?: true
     createdAt?: true
     updatedAt?: true
+    hirePurchase?: true
+    landAccountId?: true
+    landAccountName?: true
+    linkMap?: true
+    estimatedValue?: true
+    valuationDate?: true
   }
 
   export type LoansMaxAggregateInputType = {
@@ -11984,7 +12118,6 @@ export namespace Prisma {
     agentId?: true
     applicationId?: true
     loanType?: true
-    hirePurchase?: true
     status?: true
     principalAmount?: true
     interestRate?: true
@@ -11998,11 +12131,14 @@ export namespace Prisma {
     expiryDate?: true
     titleDeedNumber?: true
     collateralValue?: true
-    linkMap?: true
-    landAccountId?: true
-    landAccountName?: true
     createdAt?: true
     updatedAt?: true
+    hirePurchase?: true
+    landAccountId?: true
+    landAccountName?: true
+    linkMap?: true
+    estimatedValue?: true
+    valuationDate?: true
   }
 
   export type LoansCountAggregateInputType = {
@@ -12012,7 +12148,6 @@ export namespace Prisma {
     agentId?: true
     applicationId?: true
     loanType?: true
-    hirePurchase?: true
     status?: true
     principalAmount?: true
     interestRate?: true
@@ -12027,11 +12162,15 @@ export namespace Prisma {
     titleDeedNumber?: true
     collateralValue?: true
     collateralDetails?: true
-    linkMap?: true
-    landAccountId?: true
-    landAccountName?: true
     createdAt?: true
     updatedAt?: true
+    hirePurchase?: true
+    landAccountId?: true
+    landAccountName?: true
+    linkMap?: true
+    estimatedValue?: true
+    valuationDate?: true
+    valuationResult?: true
     _all?: true
   }
 
@@ -12128,7 +12267,6 @@ export namespace Prisma {
     agentId: string | null
     applicationId: string
     loanType: $Enums.loans_loanType
-    hirePurchase: boolean
     status: $Enums.loans_status
     principalAmount: Decimal
     interestRate: Decimal
@@ -12143,11 +12281,15 @@ export namespace Prisma {
     titleDeedNumber: string | null
     collateralValue: Decimal | null
     collateralDetails: JsonValue | null
-    linkMap: string | null
-    landAccountId: number | null
-    landAccountName: string | null
     createdAt: Date
     updatedAt: Date
+    hirePurchase: boolean
+    landAccountId: number | null
+    landAccountName: string | null
+    linkMap: string | null
+    estimatedValue: Decimal | null
+    valuationDate: Date | null
+    valuationResult: JsonValue | null
     _count: LoansCountAggregateOutputType | null
     _avg: LoansAvgAggregateOutputType | null
     _sum: LoansSumAggregateOutputType | null
@@ -12176,7 +12318,6 @@ export namespace Prisma {
     agentId?: boolean
     applicationId?: boolean
     loanType?: boolean
-    hirePurchase?: boolean
     status?: boolean
     principalAmount?: boolean
     interestRate?: boolean
@@ -12191,11 +12332,15 @@ export namespace Prisma {
     titleDeedNumber?: boolean
     collateralValue?: boolean
     collateralDetails?: boolean
-    linkMap?: boolean
-    landAccountId?: boolean
-    landAccountName?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    hirePurchase?: boolean
+    landAccountId?: boolean
+    landAccountName?: boolean
+    linkMap?: boolean
+    estimatedValue?: boolean
+    valuationDate?: boolean
+    valuationResult?: boolean
   }, ExtArgs["result"]["loans"]>
 
 
@@ -12207,7 +12352,6 @@ export namespace Prisma {
     agentId?: boolean
     applicationId?: boolean
     loanType?: boolean
-    hirePurchase?: boolean
     status?: boolean
     principalAmount?: boolean
     interestRate?: boolean
@@ -12222,14 +12366,18 @@ export namespace Prisma {
     titleDeedNumber?: boolean
     collateralValue?: boolean
     collateralDetails?: boolean
-    linkMap?: boolean
-    landAccountId?: boolean
-    landAccountName?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    hirePurchase?: boolean
+    landAccountId?: boolean
+    landAccountName?: boolean
+    linkMap?: boolean
+    estimatedValue?: boolean
+    valuationDate?: boolean
+    valuationResult?: boolean
   }
 
-  export type loansOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "loanNumber" | "customerId" | "agentId" | "applicationId" | "loanType" | "hirePurchase" | "status" | "principalAmount" | "interestRate" | "termMonths" | "monthlyPayment" | "currentInstallment" | "totalInstallments" | "remainingBalance" | "nextPaymentDate" | "contractDate" | "expiryDate" | "titleDeedNumber" | "collateralValue" | "collateralDetails" | "linkMap" | "landAccountId" | "landAccountName" | "createdAt" | "updatedAt", ExtArgs["result"]["loans"]>
+  export type loansOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "loanNumber" | "customerId" | "agentId" | "applicationId" | "loanType" | "status" | "principalAmount" | "interestRate" | "termMonths" | "monthlyPayment" | "currentInstallment" | "totalInstallments" | "remainingBalance" | "nextPaymentDate" | "contractDate" | "expiryDate" | "titleDeedNumber" | "collateralValue" | "collateralDetails" | "createdAt" | "updatedAt" | "hirePurchase" | "landAccountId" | "landAccountName" | "linkMap" | "estimatedValue" | "valuationDate" | "valuationResult", ExtArgs["result"]["loans"]>
 
   export type $loansPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "loans"
@@ -12241,7 +12389,6 @@ export namespace Prisma {
       agentId: string | null
       applicationId: string
       loanType: $Enums.loans_loanType
-      hirePurchase: boolean
       status: $Enums.loans_status
       principalAmount: Prisma.Decimal
       interestRate: Prisma.Decimal
@@ -12256,11 +12403,15 @@ export namespace Prisma {
       titleDeedNumber: string | null
       collateralValue: Prisma.Decimal | null
       collateralDetails: Prisma.JsonValue | null
-      linkMap: string | null
-      landAccountId: number | null
-      landAccountName: string | null
       createdAt: Date
       updatedAt: Date
+      hirePurchase: boolean
+      landAccountId: number | null
+      landAccountName: string | null
+      linkMap: string | null
+      estimatedValue: Prisma.Decimal | null
+      valuationDate: Date | null
+      valuationResult: Prisma.JsonValue | null
     }, ExtArgs["result"]["loans"]>
     composites: {}
   }
@@ -12636,7 +12787,6 @@ export namespace Prisma {
     readonly agentId: FieldRef<"loans", 'String'>
     readonly applicationId: FieldRef<"loans", 'String'>
     readonly loanType: FieldRef<"loans", 'loans_loanType'>
-    readonly hirePurchase: FieldRef<"loans", 'Boolean'>
     readonly status: FieldRef<"loans", 'loans_status'>
     readonly principalAmount: FieldRef<"loans", 'Decimal'>
     readonly interestRate: FieldRef<"loans", 'Decimal'>
@@ -12651,11 +12801,15 @@ export namespace Prisma {
     readonly titleDeedNumber: FieldRef<"loans", 'String'>
     readonly collateralValue: FieldRef<"loans", 'Decimal'>
     readonly collateralDetails: FieldRef<"loans", 'Json'>
-    readonly linkMap: FieldRef<"loans", 'String'>
-    readonly landAccountId: FieldRef<"loans", 'Int'>
-    readonly landAccountName: FieldRef<"loans", 'String'>
     readonly createdAt: FieldRef<"loans", 'DateTime'>
     readonly updatedAt: FieldRef<"loans", 'DateTime'>
+    readonly hirePurchase: FieldRef<"loans", 'Boolean'>
+    readonly landAccountId: FieldRef<"loans", 'Int'>
+    readonly landAccountName: FieldRef<"loans", 'String'>
+    readonly linkMap: FieldRef<"loans", 'String'>
+    readonly estimatedValue: FieldRef<"loans", 'Decimal'>
+    readonly valuationDate: FieldRef<"loans", 'DateTime'>
+    readonly valuationResult: FieldRef<"loans", 'Json'>
   }
     
 
@@ -21931,9 +22085,6 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
-    logs?: boolean | land_accounts$logsArgs<ExtArgs>
-    reports?: boolean | land_accounts$reportsArgs<ExtArgs>
-    _count?: boolean | Land_accountsCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["land_accounts"]>
 
 
@@ -21948,18 +22099,10 @@ export namespace Prisma {
   }
 
   export type land_accountsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "accountName" | "accountBalance" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["land_accounts"]>
-  export type land_accountsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    logs?: boolean | land_accounts$logsArgs<ExtArgs>
-    reports?: boolean | land_accounts$reportsArgs<ExtArgs>
-    _count?: boolean | Land_accountsCountOutputTypeDefaultArgs<ExtArgs>
-  }
 
   export type $land_accountsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "land_accounts"
-    objects: {
-      logs: Prisma.$land_account_logsPayload<ExtArgs>[]
-      reports: Prisma.$land_account_reportsPayload<ExtArgs>[]
-    }
+    objects: {}
     scalars: $Extensions.GetPayloadResult<{
       id: string
       accountName: string
@@ -22307,8 +22450,6 @@ export namespace Prisma {
    */
   export interface Prisma__land_accountsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    logs<T extends land_accounts$logsArgs<ExtArgs> = {}>(args?: Subset<T, land_accounts$logsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$land_account_logsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    reports<T extends land_accounts$reportsArgs<ExtArgs> = {}>(args?: Subset<T, land_accounts$reportsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$land_account_reportsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -22361,10 +22502,6 @@ export namespace Prisma {
      */
     omit?: land_accountsOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: land_accountsInclude<ExtArgs> | null
-    /**
      * Filter, which land_accounts to fetch.
      */
     where: land_accountsWhereUniqueInput
@@ -22383,10 +22520,6 @@ export namespace Prisma {
      */
     omit?: land_accountsOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: land_accountsInclude<ExtArgs> | null
-    /**
      * Filter, which land_accounts to fetch.
      */
     where: land_accountsWhereUniqueInput
@@ -22404,10 +22537,6 @@ export namespace Prisma {
      * Omit specific fields from the land_accounts
      */
     omit?: land_accountsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: land_accountsInclude<ExtArgs> | null
     /**
      * Filter, which land_accounts to fetch.
      */
@@ -22457,10 +22586,6 @@ export namespace Prisma {
      */
     omit?: land_accountsOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: land_accountsInclude<ExtArgs> | null
-    /**
      * Filter, which land_accounts to fetch.
      */
     where?: land_accountsWhereInput
@@ -22509,10 +22634,6 @@ export namespace Prisma {
      */
     omit?: land_accountsOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: land_accountsInclude<ExtArgs> | null
-    /**
      * Filter, which land_accounts to fetch.
      */
     where?: land_accountsWhereInput
@@ -22556,10 +22677,6 @@ export namespace Prisma {
      */
     omit?: land_accountsOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: land_accountsInclude<ExtArgs> | null
-    /**
      * The data needed to create a land_accounts.
      */
     data: XOR<land_accountsCreateInput, land_accountsUncheckedCreateInput>
@@ -22588,10 +22705,6 @@ export namespace Prisma {
      * Omit specific fields from the land_accounts
      */
     omit?: land_accountsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: land_accountsInclude<ExtArgs> | null
     /**
      * The data needed to update a land_accounts.
      */
@@ -22633,10 +22746,6 @@ export namespace Prisma {
      */
     omit?: land_accountsOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: land_accountsInclude<ExtArgs> | null
-    /**
      * The filter to search for the land_accounts to update in case it exists.
      */
     where: land_accountsWhereUniqueInput
@@ -22663,10 +22772,6 @@ export namespace Prisma {
      */
     omit?: land_accountsOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: land_accountsInclude<ExtArgs> | null
-    /**
      * Filter which land_accounts to delete.
      */
     where: land_accountsWhereUniqueInput
@@ -22687,54 +22792,6 @@ export namespace Prisma {
   }
 
   /**
-   * land_accounts.logs
-   */
-  export type land_accounts$logsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the land_account_logs
-     */
-    select?: land_account_logsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the land_account_logs
-     */
-    omit?: land_account_logsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: land_account_logsInclude<ExtArgs> | null
-    where?: land_account_logsWhereInput
-    orderBy?: land_account_logsOrderByWithRelationInput | land_account_logsOrderByWithRelationInput[]
-    cursor?: land_account_logsWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: Land_account_logsScalarFieldEnum | Land_account_logsScalarFieldEnum[]
-  }
-
-  /**
-   * land_accounts.reports
-   */
-  export type land_accounts$reportsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the land_account_reports
-     */
-    select?: land_account_reportsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the land_account_reports
-     */
-    omit?: land_account_reportsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: land_account_reportsInclude<ExtArgs> | null
-    where?: land_account_reportsWhereInput
-    orderBy?: land_account_reportsOrderByWithRelationInput | land_account_reportsOrderByWithRelationInput[]
-    cursor?: land_account_reportsWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: Land_account_reportsScalarFieldEnum | Land_account_reportsScalarFieldEnum[]
-  }
-
-  /**
    * land_accounts without action
    */
   export type land_accountsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -22746,10 +22803,6 @@ export namespace Prisma {
      * Omit specific fields from the land_accounts
      */
     omit?: land_accountsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: land_accountsInclude<ExtArgs> | null
   }
 
 
@@ -22991,7 +23044,6 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
-    landAccount?: boolean | land_accountsDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["land_account_logs"]>
 
 
@@ -23010,15 +23062,10 @@ export namespace Prisma {
   }
 
   export type land_account_logsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "landAccountId" | "detail" | "amount" | "note" | "adminId" | "adminName" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["land_account_logs"]>
-  export type land_account_logsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    landAccount?: boolean | land_accountsDefaultArgs<ExtArgs>
-  }
 
   export type $land_account_logsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "land_account_logs"
-    objects: {
-      landAccount: Prisma.$land_accountsPayload<ExtArgs>
-    }
+    objects: {}
     scalars: $Extensions.GetPayloadResult<{
       id: string
       landAccountId: string
@@ -23370,7 +23417,6 @@ export namespace Prisma {
    */
   export interface Prisma__land_account_logsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    landAccount<T extends land_accountsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, land_accountsDefaultArgs<ExtArgs>>): Prisma__land_accountsClient<$Result.GetResult<Prisma.$land_accountsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -23427,10 +23473,6 @@ export namespace Prisma {
      */
     omit?: land_account_logsOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: land_account_logsInclude<ExtArgs> | null
-    /**
      * Filter, which land_account_logs to fetch.
      */
     where: land_account_logsWhereUniqueInput
@@ -23449,10 +23491,6 @@ export namespace Prisma {
      */
     omit?: land_account_logsOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: land_account_logsInclude<ExtArgs> | null
-    /**
      * Filter, which land_account_logs to fetch.
      */
     where: land_account_logsWhereUniqueInput
@@ -23470,10 +23508,6 @@ export namespace Prisma {
      * Omit specific fields from the land_account_logs
      */
     omit?: land_account_logsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: land_account_logsInclude<ExtArgs> | null
     /**
      * Filter, which land_account_logs to fetch.
      */
@@ -23523,10 +23557,6 @@ export namespace Prisma {
      */
     omit?: land_account_logsOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: land_account_logsInclude<ExtArgs> | null
-    /**
      * Filter, which land_account_logs to fetch.
      */
     where?: land_account_logsWhereInput
@@ -23575,10 +23605,6 @@ export namespace Prisma {
      */
     omit?: land_account_logsOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: land_account_logsInclude<ExtArgs> | null
-    /**
      * Filter, which land_account_logs to fetch.
      */
     where?: land_account_logsWhereInput
@@ -23622,10 +23648,6 @@ export namespace Prisma {
      */
     omit?: land_account_logsOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: land_account_logsInclude<ExtArgs> | null
-    /**
      * The data needed to create a land_account_logs.
      */
     data: XOR<land_account_logsCreateInput, land_account_logsUncheckedCreateInput>
@@ -23654,10 +23676,6 @@ export namespace Prisma {
      * Omit specific fields from the land_account_logs
      */
     omit?: land_account_logsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: land_account_logsInclude<ExtArgs> | null
     /**
      * The data needed to update a land_account_logs.
      */
@@ -23699,10 +23717,6 @@ export namespace Prisma {
      */
     omit?: land_account_logsOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: land_account_logsInclude<ExtArgs> | null
-    /**
      * The filter to search for the land_account_logs to update in case it exists.
      */
     where: land_account_logsWhereUniqueInput
@@ -23728,10 +23742,6 @@ export namespace Prisma {
      * Omit specific fields from the land_account_logs
      */
     omit?: land_account_logsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: land_account_logsInclude<ExtArgs> | null
     /**
      * Filter which land_account_logs to delete.
      */
@@ -23764,10 +23774,6 @@ export namespace Prisma {
      * Omit specific fields from the land_account_logs
      */
     omit?: land_account_logsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: land_account_logsInclude<ExtArgs> | null
   }
 
 
@@ -24021,7 +24027,6 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
-    landAccount?: boolean | land_accountsDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["land_account_reports"]>
 
 
@@ -24041,15 +24046,10 @@ export namespace Prisma {
   }
 
   export type land_account_reportsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "landAccountId" | "detail" | "amount" | "note" | "accountBalance" | "adminId" | "adminName" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["land_account_reports"]>
-  export type land_account_reportsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    landAccount?: boolean | land_accountsDefaultArgs<ExtArgs>
-  }
 
   export type $land_account_reportsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "land_account_reports"
-    objects: {
-      landAccount: Prisma.$land_accountsPayload<ExtArgs>
-    }
+    objects: {}
     scalars: $Extensions.GetPayloadResult<{
       id: string
       landAccountId: string
@@ -24402,7 +24402,6 @@ export namespace Prisma {
    */
   export interface Prisma__land_account_reportsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    landAccount<T extends land_accountsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, land_accountsDefaultArgs<ExtArgs>>): Prisma__land_accountsClient<$Result.GetResult<Prisma.$land_accountsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -24460,10 +24459,6 @@ export namespace Prisma {
      */
     omit?: land_account_reportsOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: land_account_reportsInclude<ExtArgs> | null
-    /**
      * Filter, which land_account_reports to fetch.
      */
     where: land_account_reportsWhereUniqueInput
@@ -24482,10 +24477,6 @@ export namespace Prisma {
      */
     omit?: land_account_reportsOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: land_account_reportsInclude<ExtArgs> | null
-    /**
      * Filter, which land_account_reports to fetch.
      */
     where: land_account_reportsWhereUniqueInput
@@ -24503,10 +24494,6 @@ export namespace Prisma {
      * Omit specific fields from the land_account_reports
      */
     omit?: land_account_reportsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: land_account_reportsInclude<ExtArgs> | null
     /**
      * Filter, which land_account_reports to fetch.
      */
@@ -24556,10 +24543,6 @@ export namespace Prisma {
      */
     omit?: land_account_reportsOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: land_account_reportsInclude<ExtArgs> | null
-    /**
      * Filter, which land_account_reports to fetch.
      */
     where?: land_account_reportsWhereInput
@@ -24608,10 +24591,6 @@ export namespace Prisma {
      */
     omit?: land_account_reportsOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: land_account_reportsInclude<ExtArgs> | null
-    /**
      * Filter, which land_account_reports to fetch.
      */
     where?: land_account_reportsWhereInput
@@ -24655,10 +24634,6 @@ export namespace Prisma {
      */
     omit?: land_account_reportsOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: land_account_reportsInclude<ExtArgs> | null
-    /**
      * The data needed to create a land_account_reports.
      */
     data: XOR<land_account_reportsCreateInput, land_account_reportsUncheckedCreateInput>
@@ -24687,10 +24662,6 @@ export namespace Prisma {
      * Omit specific fields from the land_account_reports
      */
     omit?: land_account_reportsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: land_account_reportsInclude<ExtArgs> | null
     /**
      * The data needed to update a land_account_reports.
      */
@@ -24732,10 +24703,6 @@ export namespace Prisma {
      */
     omit?: land_account_reportsOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: land_account_reportsInclude<ExtArgs> | null
-    /**
      * The filter to search for the land_account_reports to update in case it exists.
      */
     where: land_account_reportsWhereUniqueInput
@@ -24761,10 +24728,6 @@ export namespace Prisma {
      * Omit specific fields from the land_account_reports
      */
     omit?: land_account_reportsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: land_account_reportsInclude<ExtArgs> | null
     /**
      * Filter which land_account_reports to delete.
      */
@@ -24797,10 +24760,6 @@ export namespace Prisma {
      * Omit specific fields from the land_account_reports
      */
     omit?: land_account_reportsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: land_account_reportsInclude<ExtArgs> | null
   }
 
 
@@ -26790,6 +26749,922 @@ export namespace Prisma {
 
 
   /**
+   * Model real_investment
+   */
+
+  export type AggregateReal_investment = {
+    _count: Real_investmentCountAggregateOutputType | null
+    _avg: Real_investmentAvgAggregateOutputType | null
+    _sum: Real_investmentSumAggregateOutputType | null
+    _min: Real_investmentMinAggregateOutputType | null
+    _max: Real_investmentMaxAggregateOutputType | null
+  }
+
+  export type Real_investmentAvgAggregateOutputType = {
+    investment: Decimal | null
+  }
+
+  export type Real_investmentSumAggregateOutputType = {
+    investment: Decimal | null
+  }
+
+  export type Real_investmentMinAggregateOutputType = {
+    id: string | null
+    investment: Decimal | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+  }
+
+  export type Real_investmentMaxAggregateOutputType = {
+    id: string | null
+    investment: Decimal | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+  }
+
+  export type Real_investmentCountAggregateOutputType = {
+    id: number
+    investment: number
+    createdAt: number
+    updatedAt: number
+    deletedAt: number
+    _all: number
+  }
+
+
+  export type Real_investmentAvgAggregateInputType = {
+    investment?: true
+  }
+
+  export type Real_investmentSumAggregateInputType = {
+    investment?: true
+  }
+
+  export type Real_investmentMinAggregateInputType = {
+    id?: true
+    investment?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type Real_investmentMaxAggregateInputType = {
+    id?: true
+    investment?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type Real_investmentCountAggregateInputType = {
+    id?: true
+    investment?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+    _all?: true
+  }
+
+  export type Real_investmentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which real_investment to aggregate.
+     */
+    where?: real_investmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of real_investments to fetch.
+     */
+    orderBy?: real_investmentOrderByWithRelationInput | real_investmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: real_investmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` real_investments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` real_investments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned real_investments
+    **/
+    _count?: true | Real_investmentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: Real_investmentAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: Real_investmentSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: Real_investmentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: Real_investmentMaxAggregateInputType
+  }
+
+  export type GetReal_investmentAggregateType<T extends Real_investmentAggregateArgs> = {
+        [P in keyof T & keyof AggregateReal_investment]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateReal_investment[P]>
+      : GetScalarType<T[P], AggregateReal_investment[P]>
+  }
+
+
+
+
+  export type real_investmentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: real_investmentWhereInput
+    orderBy?: real_investmentOrderByWithAggregationInput | real_investmentOrderByWithAggregationInput[]
+    by: Real_investmentScalarFieldEnum[] | Real_investmentScalarFieldEnum
+    having?: real_investmentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: Real_investmentCountAggregateInputType | true
+    _avg?: Real_investmentAvgAggregateInputType
+    _sum?: Real_investmentSumAggregateInputType
+    _min?: Real_investmentMinAggregateInputType
+    _max?: Real_investmentMaxAggregateInputType
+  }
+
+  export type Real_investmentGroupByOutputType = {
+    id: string
+    investment: Decimal
+    createdAt: Date
+    updatedAt: Date
+    deletedAt: Date | null
+    _count: Real_investmentCountAggregateOutputType | null
+    _avg: Real_investmentAvgAggregateOutputType | null
+    _sum: Real_investmentSumAggregateOutputType | null
+    _min: Real_investmentMinAggregateOutputType | null
+    _max: Real_investmentMaxAggregateOutputType | null
+  }
+
+  type GetReal_investmentGroupByPayload<T extends real_investmentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<Real_investmentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof Real_investmentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], Real_investmentGroupByOutputType[P]>
+            : GetScalarType<T[P], Real_investmentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type real_investmentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    investment?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+  }, ExtArgs["result"]["real_investment"]>
+
+
+
+  export type real_investmentSelectScalar = {
+    id?: boolean
+    investment?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+  }
+
+  export type real_investmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "investment" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["real_investment"]>
+
+  export type $real_investmentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "real_investment"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      investment: Prisma.Decimal
+      createdAt: Date
+      updatedAt: Date
+      deletedAt: Date | null
+    }, ExtArgs["result"]["real_investment"]>
+    composites: {}
+  }
+
+  type real_investmentGetPayload<S extends boolean | null | undefined | real_investmentDefaultArgs> = $Result.GetResult<Prisma.$real_investmentPayload, S>
+
+  type real_investmentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<real_investmentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: Real_investmentCountAggregateInputType | true
+    }
+
+  export interface real_investmentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['real_investment'], meta: { name: 'real_investment' } }
+    /**
+     * Find zero or one Real_investment that matches the filter.
+     * @param {real_investmentFindUniqueArgs} args - Arguments to find a Real_investment
+     * @example
+     * // Get one Real_investment
+     * const real_investment = await prisma.real_investment.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends real_investmentFindUniqueArgs>(args: SelectSubset<T, real_investmentFindUniqueArgs<ExtArgs>>): Prisma__real_investmentClient<$Result.GetResult<Prisma.$real_investmentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Real_investment that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {real_investmentFindUniqueOrThrowArgs} args - Arguments to find a Real_investment
+     * @example
+     * // Get one Real_investment
+     * const real_investment = await prisma.real_investment.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends real_investmentFindUniqueOrThrowArgs>(args: SelectSubset<T, real_investmentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__real_investmentClient<$Result.GetResult<Prisma.$real_investmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Real_investment that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {real_investmentFindFirstArgs} args - Arguments to find a Real_investment
+     * @example
+     * // Get one Real_investment
+     * const real_investment = await prisma.real_investment.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends real_investmentFindFirstArgs>(args?: SelectSubset<T, real_investmentFindFirstArgs<ExtArgs>>): Prisma__real_investmentClient<$Result.GetResult<Prisma.$real_investmentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Real_investment that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {real_investmentFindFirstOrThrowArgs} args - Arguments to find a Real_investment
+     * @example
+     * // Get one Real_investment
+     * const real_investment = await prisma.real_investment.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends real_investmentFindFirstOrThrowArgs>(args?: SelectSubset<T, real_investmentFindFirstOrThrowArgs<ExtArgs>>): Prisma__real_investmentClient<$Result.GetResult<Prisma.$real_investmentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Real_investments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {real_investmentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Real_investments
+     * const real_investments = await prisma.real_investment.findMany()
+     * 
+     * // Get first 10 Real_investments
+     * const real_investments = await prisma.real_investment.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const real_investmentWithIdOnly = await prisma.real_investment.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends real_investmentFindManyArgs>(args?: SelectSubset<T, real_investmentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$real_investmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Real_investment.
+     * @param {real_investmentCreateArgs} args - Arguments to create a Real_investment.
+     * @example
+     * // Create one Real_investment
+     * const Real_investment = await prisma.real_investment.create({
+     *   data: {
+     *     // ... data to create a Real_investment
+     *   }
+     * })
+     * 
+     */
+    create<T extends real_investmentCreateArgs>(args: SelectSubset<T, real_investmentCreateArgs<ExtArgs>>): Prisma__real_investmentClient<$Result.GetResult<Prisma.$real_investmentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Real_investments.
+     * @param {real_investmentCreateManyArgs} args - Arguments to create many Real_investments.
+     * @example
+     * // Create many Real_investments
+     * const real_investment = await prisma.real_investment.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends real_investmentCreateManyArgs>(args?: SelectSubset<T, real_investmentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Real_investment.
+     * @param {real_investmentDeleteArgs} args - Arguments to delete one Real_investment.
+     * @example
+     * // Delete one Real_investment
+     * const Real_investment = await prisma.real_investment.delete({
+     *   where: {
+     *     // ... filter to delete one Real_investment
+     *   }
+     * })
+     * 
+     */
+    delete<T extends real_investmentDeleteArgs>(args: SelectSubset<T, real_investmentDeleteArgs<ExtArgs>>): Prisma__real_investmentClient<$Result.GetResult<Prisma.$real_investmentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Real_investment.
+     * @param {real_investmentUpdateArgs} args - Arguments to update one Real_investment.
+     * @example
+     * // Update one Real_investment
+     * const real_investment = await prisma.real_investment.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends real_investmentUpdateArgs>(args: SelectSubset<T, real_investmentUpdateArgs<ExtArgs>>): Prisma__real_investmentClient<$Result.GetResult<Prisma.$real_investmentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Real_investments.
+     * @param {real_investmentDeleteManyArgs} args - Arguments to filter Real_investments to delete.
+     * @example
+     * // Delete a few Real_investments
+     * const { count } = await prisma.real_investment.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends real_investmentDeleteManyArgs>(args?: SelectSubset<T, real_investmentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Real_investments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {real_investmentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Real_investments
+     * const real_investment = await prisma.real_investment.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends real_investmentUpdateManyArgs>(args: SelectSubset<T, real_investmentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Real_investment.
+     * @param {real_investmentUpsertArgs} args - Arguments to update or create a Real_investment.
+     * @example
+     * // Update or create a Real_investment
+     * const real_investment = await prisma.real_investment.upsert({
+     *   create: {
+     *     // ... data to create a Real_investment
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Real_investment we want to update
+     *   }
+     * })
+     */
+    upsert<T extends real_investmentUpsertArgs>(args: SelectSubset<T, real_investmentUpsertArgs<ExtArgs>>): Prisma__real_investmentClient<$Result.GetResult<Prisma.$real_investmentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Real_investments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {real_investmentCountArgs} args - Arguments to filter Real_investments to count.
+     * @example
+     * // Count the number of Real_investments
+     * const count = await prisma.real_investment.count({
+     *   where: {
+     *     // ... the filter for the Real_investments we want to count
+     *   }
+     * })
+    **/
+    count<T extends real_investmentCountArgs>(
+      args?: Subset<T, real_investmentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], Real_investmentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Real_investment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Real_investmentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Real_investmentAggregateArgs>(args: Subset<T, Real_investmentAggregateArgs>): Prisma.PrismaPromise<GetReal_investmentAggregateType<T>>
+
+    /**
+     * Group by Real_investment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {real_investmentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends real_investmentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: real_investmentGroupByArgs['orderBy'] }
+        : { orderBy?: real_investmentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, real_investmentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetReal_investmentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the real_investment model
+   */
+  readonly fields: real_investmentFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for real_investment.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__real_investmentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the real_investment model
+   */
+  interface real_investmentFieldRefs {
+    readonly id: FieldRef<"real_investment", 'String'>
+    readonly investment: FieldRef<"real_investment", 'Decimal'>
+    readonly createdAt: FieldRef<"real_investment", 'DateTime'>
+    readonly updatedAt: FieldRef<"real_investment", 'DateTime'>
+    readonly deletedAt: FieldRef<"real_investment", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * real_investment findUnique
+   */
+  export type real_investmentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the real_investment
+     */
+    select?: real_investmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the real_investment
+     */
+    omit?: real_investmentOmit<ExtArgs> | null
+    /**
+     * Filter, which real_investment to fetch.
+     */
+    where: real_investmentWhereUniqueInput
+  }
+
+  /**
+   * real_investment findUniqueOrThrow
+   */
+  export type real_investmentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the real_investment
+     */
+    select?: real_investmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the real_investment
+     */
+    omit?: real_investmentOmit<ExtArgs> | null
+    /**
+     * Filter, which real_investment to fetch.
+     */
+    where: real_investmentWhereUniqueInput
+  }
+
+  /**
+   * real_investment findFirst
+   */
+  export type real_investmentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the real_investment
+     */
+    select?: real_investmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the real_investment
+     */
+    omit?: real_investmentOmit<ExtArgs> | null
+    /**
+     * Filter, which real_investment to fetch.
+     */
+    where?: real_investmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of real_investments to fetch.
+     */
+    orderBy?: real_investmentOrderByWithRelationInput | real_investmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for real_investments.
+     */
+    cursor?: real_investmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` real_investments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` real_investments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of real_investments.
+     */
+    distinct?: Real_investmentScalarFieldEnum | Real_investmentScalarFieldEnum[]
+  }
+
+  /**
+   * real_investment findFirstOrThrow
+   */
+  export type real_investmentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the real_investment
+     */
+    select?: real_investmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the real_investment
+     */
+    omit?: real_investmentOmit<ExtArgs> | null
+    /**
+     * Filter, which real_investment to fetch.
+     */
+    where?: real_investmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of real_investments to fetch.
+     */
+    orderBy?: real_investmentOrderByWithRelationInput | real_investmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for real_investments.
+     */
+    cursor?: real_investmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` real_investments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` real_investments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of real_investments.
+     */
+    distinct?: Real_investmentScalarFieldEnum | Real_investmentScalarFieldEnum[]
+  }
+
+  /**
+   * real_investment findMany
+   */
+  export type real_investmentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the real_investment
+     */
+    select?: real_investmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the real_investment
+     */
+    omit?: real_investmentOmit<ExtArgs> | null
+    /**
+     * Filter, which real_investments to fetch.
+     */
+    where?: real_investmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of real_investments to fetch.
+     */
+    orderBy?: real_investmentOrderByWithRelationInput | real_investmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing real_investments.
+     */
+    cursor?: real_investmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` real_investments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` real_investments.
+     */
+    skip?: number
+    distinct?: Real_investmentScalarFieldEnum | Real_investmentScalarFieldEnum[]
+  }
+
+  /**
+   * real_investment create
+   */
+  export type real_investmentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the real_investment
+     */
+    select?: real_investmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the real_investment
+     */
+    omit?: real_investmentOmit<ExtArgs> | null
+    /**
+     * The data needed to create a real_investment.
+     */
+    data: XOR<real_investmentCreateInput, real_investmentUncheckedCreateInput>
+  }
+
+  /**
+   * real_investment createMany
+   */
+  export type real_investmentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many real_investments.
+     */
+    data: real_investmentCreateManyInput | real_investmentCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * real_investment update
+   */
+  export type real_investmentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the real_investment
+     */
+    select?: real_investmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the real_investment
+     */
+    omit?: real_investmentOmit<ExtArgs> | null
+    /**
+     * The data needed to update a real_investment.
+     */
+    data: XOR<real_investmentUpdateInput, real_investmentUncheckedUpdateInput>
+    /**
+     * Choose, which real_investment to update.
+     */
+    where: real_investmentWhereUniqueInput
+  }
+
+  /**
+   * real_investment updateMany
+   */
+  export type real_investmentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update real_investments.
+     */
+    data: XOR<real_investmentUpdateManyMutationInput, real_investmentUncheckedUpdateManyInput>
+    /**
+     * Filter which real_investments to update
+     */
+    where?: real_investmentWhereInput
+    /**
+     * Limit how many real_investments to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * real_investment upsert
+   */
+  export type real_investmentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the real_investment
+     */
+    select?: real_investmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the real_investment
+     */
+    omit?: real_investmentOmit<ExtArgs> | null
+    /**
+     * The filter to search for the real_investment to update in case it exists.
+     */
+    where: real_investmentWhereUniqueInput
+    /**
+     * In case the real_investment found by the `where` argument doesn't exist, create a new real_investment with this data.
+     */
+    create: XOR<real_investmentCreateInput, real_investmentUncheckedCreateInput>
+    /**
+     * In case the real_investment was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<real_investmentUpdateInput, real_investmentUncheckedUpdateInput>
+  }
+
+  /**
+   * real_investment delete
+   */
+  export type real_investmentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the real_investment
+     */
+    select?: real_investmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the real_investment
+     */
+    omit?: real_investmentOmit<ExtArgs> | null
+    /**
+     * Filter which real_investment to delete.
+     */
+    where: real_investmentWhereUniqueInput
+  }
+
+  /**
+   * real_investment deleteMany
+   */
+  export type real_investmentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which real_investments to delete
+     */
+    where?: real_investmentWhereInput
+    /**
+     * Limit how many real_investments to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * real_investment without action
+   */
+  export type real_investmentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the real_investment
+     */
+    select?: real_investmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the real_investment
+     */
+    omit?: real_investmentOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -26908,7 +27783,6 @@ export namespace Prisma {
     customerId: 'customerId',
     agentId: 'agentId',
     loanType: 'loanType',
-    hirePurchase: 'hirePurchase',
     status: 'status',
     currentStep: 'currentStep',
     completedSteps: 'completedSteps',
@@ -26933,7 +27807,13 @@ export namespace Prisma {
     reviewedBy: 'reviewedBy',
     reviewNotes: 'reviewNotes',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    hirePurchase: 'hirePurchase',
+    interestRate: 'interestRate',
+    operationFee: 'operationFee',
+    otherFee: 'otherFee',
+    termMonths: 'termMonths',
+    transferFee: 'transferFee'
   };
 
   export type Loan_applicationsScalarFieldEnum = (typeof Loan_applicationsScalarFieldEnum)[keyof typeof Loan_applicationsScalarFieldEnum]
@@ -26951,15 +27831,15 @@ export namespace Prisma {
     paidDate: 'paidDate',
     paidAmount: 'paidAmount',
     isLate: 'isLate',
-    paymentProofUrl: 'paymentProofUrl',
-    paymentProofUploadedAt: 'paymentProofUploadedAt',
-    refNo: 'refNo',
-    filePayload: 'filePayload',
-    note: 'note',
     lateDays: 'lateDays',
     lateFee: 'lateFee',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    filePayload: 'filePayload',
+    note: 'note',
+    paymentProofUploadedAt: 'paymentProofUploadedAt',
+    paymentProofUrl: 'paymentProofUrl',
+    refNo: 'refNo'
   };
 
   export type Loan_installmentsScalarFieldEnum = (typeof Loan_installmentsScalarFieldEnum)[keyof typeof Loan_installmentsScalarFieldEnum]
@@ -26972,7 +27852,6 @@ export namespace Prisma {
     agentId: 'agentId',
     applicationId: 'applicationId',
     loanType: 'loanType',
-    hirePurchase: 'hirePurchase',
     status: 'status',
     principalAmount: 'principalAmount',
     interestRate: 'interestRate',
@@ -26987,11 +27866,15 @@ export namespace Prisma {
     titleDeedNumber: 'titleDeedNumber',
     collateralValue: 'collateralValue',
     collateralDetails: 'collateralDetails',
-    linkMap: 'linkMap',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    hirePurchase: 'hirePurchase',
     landAccountId: 'landAccountId',
     landAccountName: 'landAccountName',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    linkMap: 'linkMap',
+    estimatedValue: 'estimatedValue',
+    valuationDate: 'valuationDate',
+    valuationResult: 'valuationResult'
   };
 
   export type LoansScalarFieldEnum = (typeof LoansScalarFieldEnum)[keyof typeof LoansScalarFieldEnum]
@@ -27236,6 +28119,17 @@ export namespace Prisma {
   export type UsersScalarFieldEnum = (typeof UsersScalarFieldEnum)[keyof typeof UsersScalarFieldEnum]
 
 
+  export const Real_investmentScalarFieldEnum: {
+    id: 'id',
+    investment: 'investment',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    deletedAt: 'deletedAt'
+  };
+
+  export type Real_investmentScalarFieldEnum = (typeof Real_investmentScalarFieldEnum)[keyof typeof Real_investmentScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -27382,9 +28276,9 @@ export namespace Prisma {
   export const loan_installmentsOrderByRelevanceFieldEnum: {
     id: 'id',
     loanId: 'loanId',
+    note: 'note',
     paymentProofUrl: 'paymentProofUrl',
-    refNo: 'refNo',
-    note: 'note'
+    refNo: 'refNo'
   };
 
   export type loan_installmentsOrderByRelevanceFieldEnum = (typeof loan_installmentsOrderByRelevanceFieldEnum)[keyof typeof loan_installmentsOrderByRelevanceFieldEnum]
@@ -27397,8 +28291,8 @@ export namespace Prisma {
     agentId: 'agentId',
     applicationId: 'applicationId',
     titleDeedNumber: 'titleDeedNumber',
-    linkMap: 'linkMap',
-    landAccountName: 'landAccountName'
+    landAccountName: 'landAccountName',
+    linkMap: 'linkMap'
   };
 
   export type loansOrderByRelevanceFieldEnum = (typeof loansOrderByRelevanceFieldEnum)[keyof typeof loansOrderByRelevanceFieldEnum]
@@ -27567,6 +28461,13 @@ export namespace Prisma {
   };
 
   export type usersOrderByRelevanceFieldEnum = (typeof usersOrderByRelevanceFieldEnum)[keyof typeof usersOrderByRelevanceFieldEnum]
+
+
+  export const real_investmentOrderByRelevanceFieldEnum: {
+    id: 'id'
+  };
+
+  export type real_investmentOrderByRelevanceFieldEnum = (typeof real_investmentOrderByRelevanceFieldEnum)[keyof typeof real_investmentOrderByRelevanceFieldEnum]
 
 
   /**
@@ -28231,7 +29132,6 @@ export namespace Prisma {
     customerId?: StringNullableFilter<"loan_applications"> | string | null
     agentId?: StringNullableFilter<"loan_applications"> | string | null
     loanType?: Enumloan_applications_loanTypeFilter<"loan_applications"> | $Enums.loan_applications_loanType
-    hirePurchase?: BoolFilter<"loan_applications"> | boolean
     status?: Enumloan_applications_statusFilter<"loan_applications"> | $Enums.loan_applications_status
     currentStep?: IntFilter<"loan_applications"> | number
     completedSteps?: JsonFilter<"loan_applications">
@@ -28257,6 +29157,12 @@ export namespace Prisma {
     reviewNotes?: StringNullableFilter<"loan_applications"> | string | null
     createdAt?: DateTimeFilter<"loan_applications"> | Date | string
     updatedAt?: DateTimeFilter<"loan_applications"> | Date | string
+    hirePurchase?: BoolFilter<"loan_applications"> | boolean
+    interestRate?: DecimalNullableFilter<"loan_applications"> | Decimal | DecimalJsLike | number | string | null
+    operationFee?: DecimalNullableFilter<"loan_applications"> | Decimal | DecimalJsLike | number | string | null
+    otherFee?: DecimalNullableFilter<"loan_applications"> | Decimal | DecimalJsLike | number | string | null
+    termMonths?: IntNullableFilter<"loan_applications"> | number | null
+    transferFee?: DecimalNullableFilter<"loan_applications"> | Decimal | DecimalJsLike | number | string | null
   }
 
   export type loan_applicationsOrderByWithRelationInput = {
@@ -28264,7 +29170,6 @@ export namespace Prisma {
     customerId?: SortOrderInput | SortOrder
     agentId?: SortOrderInput | SortOrder
     loanType?: SortOrder
-    hirePurchase?: SortOrder
     status?: SortOrder
     currentStep?: SortOrder
     completedSteps?: SortOrder
@@ -28290,6 +29195,12 @@ export namespace Prisma {
     reviewNotes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    hirePurchase?: SortOrder
+    interestRate?: SortOrderInput | SortOrder
+    operationFee?: SortOrderInput | SortOrder
+    otherFee?: SortOrderInput | SortOrder
+    termMonths?: SortOrderInput | SortOrder
+    transferFee?: SortOrderInput | SortOrder
     _relevance?: loan_applicationsOrderByRelevanceInput
   }
 
@@ -28301,7 +29212,6 @@ export namespace Prisma {
     customerId?: StringNullableFilter<"loan_applications"> | string | null
     agentId?: StringNullableFilter<"loan_applications"> | string | null
     loanType?: Enumloan_applications_loanTypeFilter<"loan_applications"> | $Enums.loan_applications_loanType
-    hirePurchase?: BoolFilter<"loan_applications"> | boolean
     status?: Enumloan_applications_statusFilter<"loan_applications"> | $Enums.loan_applications_status
     currentStep?: IntFilter<"loan_applications"> | number
     completedSteps?: JsonFilter<"loan_applications">
@@ -28327,6 +29237,12 @@ export namespace Prisma {
     reviewNotes?: StringNullableFilter<"loan_applications"> | string | null
     createdAt?: DateTimeFilter<"loan_applications"> | Date | string
     updatedAt?: DateTimeFilter<"loan_applications"> | Date | string
+    hirePurchase?: BoolFilter<"loan_applications"> | boolean
+    interestRate?: DecimalNullableFilter<"loan_applications"> | Decimal | DecimalJsLike | number | string | null
+    operationFee?: DecimalNullableFilter<"loan_applications"> | Decimal | DecimalJsLike | number | string | null
+    otherFee?: DecimalNullableFilter<"loan_applications"> | Decimal | DecimalJsLike | number | string | null
+    termMonths?: IntNullableFilter<"loan_applications"> | number | null
+    transferFee?: DecimalNullableFilter<"loan_applications"> | Decimal | DecimalJsLike | number | string | null
   }, "id">
 
   export type loan_applicationsOrderByWithAggregationInput = {
@@ -28334,7 +29250,6 @@ export namespace Prisma {
     customerId?: SortOrderInput | SortOrder
     agentId?: SortOrderInput | SortOrder
     loanType?: SortOrder
-    hirePurchase?: SortOrder
     status?: SortOrder
     currentStep?: SortOrder
     completedSteps?: SortOrder
@@ -28360,6 +29275,12 @@ export namespace Prisma {
     reviewNotes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    hirePurchase?: SortOrder
+    interestRate?: SortOrderInput | SortOrder
+    operationFee?: SortOrderInput | SortOrder
+    otherFee?: SortOrderInput | SortOrder
+    termMonths?: SortOrderInput | SortOrder
+    transferFee?: SortOrderInput | SortOrder
     _count?: loan_applicationsCountOrderByAggregateInput
     _avg?: loan_applicationsAvgOrderByAggregateInput
     _max?: loan_applicationsMaxOrderByAggregateInput
@@ -28375,7 +29296,6 @@ export namespace Prisma {
     customerId?: StringNullableWithAggregatesFilter<"loan_applications"> | string | null
     agentId?: StringNullableWithAggregatesFilter<"loan_applications"> | string | null
     loanType?: Enumloan_applications_loanTypeWithAggregatesFilter<"loan_applications"> | $Enums.loan_applications_loanType
-    hirePurchase?: BoolWithAggregatesFilter<"loan_applications"> | boolean
     status?: Enumloan_applications_statusWithAggregatesFilter<"loan_applications"> | $Enums.loan_applications_status
     currentStep?: IntWithAggregatesFilter<"loan_applications"> | number
     completedSteps?: JsonWithAggregatesFilter<"loan_applications">
@@ -28401,6 +29321,12 @@ export namespace Prisma {
     reviewNotes?: StringNullableWithAggregatesFilter<"loan_applications"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"loan_applications"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"loan_applications"> | Date | string
+    hirePurchase?: BoolWithAggregatesFilter<"loan_applications"> | boolean
+    interestRate?: DecimalNullableWithAggregatesFilter<"loan_applications"> | Decimal | DecimalJsLike | number | string | null
+    operationFee?: DecimalNullableWithAggregatesFilter<"loan_applications"> | Decimal | DecimalJsLike | number | string | null
+    otherFee?: DecimalNullableWithAggregatesFilter<"loan_applications"> | Decimal | DecimalJsLike | number | string | null
+    termMonths?: IntNullableWithAggregatesFilter<"loan_applications"> | number | null
+    transferFee?: DecimalNullableWithAggregatesFilter<"loan_applications"> | Decimal | DecimalJsLike | number | string | null
   }
 
   export type loan_installmentsWhereInput = {
@@ -28418,15 +29344,15 @@ export namespace Prisma {
     paidDate?: DateTimeNullableFilter<"loan_installments"> | Date | string | null
     paidAmount?: DecimalNullableFilter<"loan_installments"> | Decimal | DecimalJsLike | number | string | null
     isLate?: BoolFilter<"loan_installments"> | boolean
-    paymentProofUrl?: StringNullableFilter<"loan_installments"> | string | null
-    paymentProofUploadedAt?: DateTimeNullableFilter<"loan_installments"> | Date | string | null
-    refNo?: StringNullableFilter<"loan_installments"> | string | null
-    filePayload?: JsonNullableFilter<"loan_installments">
-    note?: StringNullableFilter<"loan_installments"> | string | null
     lateDays?: IntNullableFilter<"loan_installments"> | number | null
     lateFee?: DecimalNullableFilter<"loan_installments"> | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFilter<"loan_installments"> | Date | string
     updatedAt?: DateTimeFilter<"loan_installments"> | Date | string
+    filePayload?: JsonNullableFilter<"loan_installments">
+    note?: StringNullableFilter<"loan_installments"> | string | null
+    paymentProofUploadedAt?: DateTimeNullableFilter<"loan_installments"> | Date | string | null
+    paymentProofUrl?: StringNullableFilter<"loan_installments"> | string | null
+    refNo?: StringNullableFilter<"loan_installments"> | string | null
   }
 
   export type loan_installmentsOrderByWithRelationInput = {
@@ -28441,15 +29367,15 @@ export namespace Prisma {
     paidDate?: SortOrderInput | SortOrder
     paidAmount?: SortOrderInput | SortOrder
     isLate?: SortOrder
-    paymentProofUrl?: SortOrderInput | SortOrder
-    paymentProofUploadedAt?: SortOrderInput | SortOrder
-    refNo?: SortOrderInput | SortOrder
-    filePayload?: SortOrderInput | SortOrder
-    note?: SortOrderInput | SortOrder
     lateDays?: SortOrderInput | SortOrder
     lateFee?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    filePayload?: SortOrderInput | SortOrder
+    note?: SortOrderInput | SortOrder
+    paymentProofUploadedAt?: SortOrderInput | SortOrder
+    paymentProofUrl?: SortOrderInput | SortOrder
+    refNo?: SortOrderInput | SortOrder
     _relevance?: loan_installmentsOrderByRelevanceInput
   }
 
@@ -28469,15 +29395,15 @@ export namespace Prisma {
     paidDate?: DateTimeNullableFilter<"loan_installments"> | Date | string | null
     paidAmount?: DecimalNullableFilter<"loan_installments"> | Decimal | DecimalJsLike | number | string | null
     isLate?: BoolFilter<"loan_installments"> | boolean
-    paymentProofUrl?: StringNullableFilter<"loan_installments"> | string | null
-    paymentProofUploadedAt?: DateTimeNullableFilter<"loan_installments"> | Date | string | null
-    refNo?: StringNullableFilter<"loan_installments"> | string | null
-    filePayload?: JsonNullableFilter<"loan_installments">
-    note?: StringNullableFilter<"loan_installments"> | string | null
     lateDays?: IntNullableFilter<"loan_installments"> | number | null
     lateFee?: DecimalNullableFilter<"loan_installments"> | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFilter<"loan_installments"> | Date | string
     updatedAt?: DateTimeFilter<"loan_installments"> | Date | string
+    filePayload?: JsonNullableFilter<"loan_installments">
+    note?: StringNullableFilter<"loan_installments"> | string | null
+    paymentProofUploadedAt?: DateTimeNullableFilter<"loan_installments"> | Date | string | null
+    paymentProofUrl?: StringNullableFilter<"loan_installments"> | string | null
+    refNo?: StringNullableFilter<"loan_installments"> | string | null
   }, "id" | "loanId_installmentNumber">
 
   export type loan_installmentsOrderByWithAggregationInput = {
@@ -28492,15 +29418,15 @@ export namespace Prisma {
     paidDate?: SortOrderInput | SortOrder
     paidAmount?: SortOrderInput | SortOrder
     isLate?: SortOrder
-    paymentProofUrl?: SortOrderInput | SortOrder
-    paymentProofUploadedAt?: SortOrderInput | SortOrder
-    refNo?: SortOrderInput | SortOrder
-    filePayload?: SortOrderInput | SortOrder
-    note?: SortOrderInput | SortOrder
     lateDays?: SortOrderInput | SortOrder
     lateFee?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    filePayload?: SortOrderInput | SortOrder
+    note?: SortOrderInput | SortOrder
+    paymentProofUploadedAt?: SortOrderInput | SortOrder
+    paymentProofUrl?: SortOrderInput | SortOrder
+    refNo?: SortOrderInput | SortOrder
     _count?: loan_installmentsCountOrderByAggregateInput
     _avg?: loan_installmentsAvgOrderByAggregateInput
     _max?: loan_installmentsMaxOrderByAggregateInput
@@ -28523,15 +29449,15 @@ export namespace Prisma {
     paidDate?: DateTimeNullableWithAggregatesFilter<"loan_installments"> | Date | string | null
     paidAmount?: DecimalNullableWithAggregatesFilter<"loan_installments"> | Decimal | DecimalJsLike | number | string | null
     isLate?: BoolWithAggregatesFilter<"loan_installments"> | boolean
-    paymentProofUrl?: StringNullableWithAggregatesFilter<"loan_installments"> | string | null
-    paymentProofUploadedAt?: DateTimeNullableWithAggregatesFilter<"loan_installments"> | Date | string | null
-    refNo?: StringNullableWithAggregatesFilter<"loan_installments"> | string | null
-    filePayload?: JsonNullableWithAggregatesFilter<"loan_installments">
-    note?: StringNullableWithAggregatesFilter<"loan_installments"> | string | null
     lateDays?: IntNullableWithAggregatesFilter<"loan_installments"> | number | null
     lateFee?: DecimalNullableWithAggregatesFilter<"loan_installments"> | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeWithAggregatesFilter<"loan_installments"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"loan_installments"> | Date | string
+    filePayload?: JsonNullableWithAggregatesFilter<"loan_installments">
+    note?: StringNullableWithAggregatesFilter<"loan_installments"> | string | null
+    paymentProofUploadedAt?: DateTimeNullableWithAggregatesFilter<"loan_installments"> | Date | string | null
+    paymentProofUrl?: StringNullableWithAggregatesFilter<"loan_installments"> | string | null
+    refNo?: StringNullableWithAggregatesFilter<"loan_installments"> | string | null
   }
 
   export type loansWhereInput = {
@@ -28544,7 +29470,6 @@ export namespace Prisma {
     agentId?: StringNullableFilter<"loans"> | string | null
     applicationId?: StringFilter<"loans"> | string
     loanType?: Enumloans_loanTypeFilter<"loans"> | $Enums.loans_loanType
-    hirePurchase?: BoolFilter<"loans"> | boolean
     status?: Enumloans_statusFilter<"loans"> | $Enums.loans_status
     principalAmount?: DecimalFilter<"loans"> | Decimal | DecimalJsLike | number | string
     interestRate?: DecimalFilter<"loans"> | Decimal | DecimalJsLike | number | string
@@ -28559,11 +29484,15 @@ export namespace Prisma {
     titleDeedNumber?: StringNullableFilter<"loans"> | string | null
     collateralValue?: DecimalNullableFilter<"loans"> | Decimal | DecimalJsLike | number | string | null
     collateralDetails?: JsonNullableFilter<"loans">
-    linkMap?: StringNullableFilter<"loans"> | string | null
-    landAccountId?: IntNullableFilter<"loans"> | number | null
-    landAccountName?: StringNullableFilter<"loans"> | string | null
     createdAt?: DateTimeFilter<"loans"> | Date | string
     updatedAt?: DateTimeFilter<"loans"> | Date | string
+    hirePurchase?: BoolFilter<"loans"> | boolean
+    landAccountId?: IntNullableFilter<"loans"> | number | null
+    landAccountName?: StringNullableFilter<"loans"> | string | null
+    linkMap?: StringNullableFilter<"loans"> | string | null
+    estimatedValue?: DecimalNullableFilter<"loans"> | Decimal | DecimalJsLike | number | string | null
+    valuationDate?: DateTimeNullableFilter<"loans"> | Date | string | null
+    valuationResult?: JsonNullableFilter<"loans">
   }
 
   export type loansOrderByWithRelationInput = {
@@ -28573,7 +29502,6 @@ export namespace Prisma {
     agentId?: SortOrderInput | SortOrder
     applicationId?: SortOrder
     loanType?: SortOrder
-    hirePurchase?: SortOrder
     status?: SortOrder
     principalAmount?: SortOrder
     interestRate?: SortOrder
@@ -28588,11 +29516,15 @@ export namespace Prisma {
     titleDeedNumber?: SortOrderInput | SortOrder
     collateralValue?: SortOrderInput | SortOrder
     collateralDetails?: SortOrderInput | SortOrder
-    linkMap?: SortOrderInput | SortOrder
-    landAccountId?: SortOrderInput | SortOrder
-    landAccountName?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    hirePurchase?: SortOrder
+    landAccountId?: SortOrderInput | SortOrder
+    landAccountName?: SortOrderInput | SortOrder
+    linkMap?: SortOrderInput | SortOrder
+    estimatedValue?: SortOrderInput | SortOrder
+    valuationDate?: SortOrderInput | SortOrder
+    valuationResult?: SortOrderInput | SortOrder
     _relevance?: loansOrderByRelevanceInput
   }
 
@@ -28606,7 +29538,6 @@ export namespace Prisma {
     customerId?: StringNullableFilter<"loans"> | string | null
     agentId?: StringNullableFilter<"loans"> | string | null
     loanType?: Enumloans_loanTypeFilter<"loans"> | $Enums.loans_loanType
-    hirePurchase?: BoolFilter<"loans"> | boolean
     status?: Enumloans_statusFilter<"loans"> | $Enums.loans_status
     principalAmount?: DecimalFilter<"loans"> | Decimal | DecimalJsLike | number | string
     interestRate?: DecimalFilter<"loans"> | Decimal | DecimalJsLike | number | string
@@ -28621,11 +29552,15 @@ export namespace Prisma {
     titleDeedNumber?: StringNullableFilter<"loans"> | string | null
     collateralValue?: DecimalNullableFilter<"loans"> | Decimal | DecimalJsLike | number | string | null
     collateralDetails?: JsonNullableFilter<"loans">
-    linkMap?: StringNullableFilter<"loans"> | string | null
-    landAccountId?: IntNullableFilter<"loans"> | number | null
-    landAccountName?: StringNullableFilter<"loans"> | string | null
     createdAt?: DateTimeFilter<"loans"> | Date | string
     updatedAt?: DateTimeFilter<"loans"> | Date | string
+    hirePurchase?: BoolFilter<"loans"> | boolean
+    landAccountId?: IntNullableFilter<"loans"> | number | null
+    landAccountName?: StringNullableFilter<"loans"> | string | null
+    linkMap?: StringNullableFilter<"loans"> | string | null
+    estimatedValue?: DecimalNullableFilter<"loans"> | Decimal | DecimalJsLike | number | string | null
+    valuationDate?: DateTimeNullableFilter<"loans"> | Date | string | null
+    valuationResult?: JsonNullableFilter<"loans">
   }, "id" | "loanNumber" | "applicationId">
 
   export type loansOrderByWithAggregationInput = {
@@ -28635,7 +29570,6 @@ export namespace Prisma {
     agentId?: SortOrderInput | SortOrder
     applicationId?: SortOrder
     loanType?: SortOrder
-    hirePurchase?: SortOrder
     status?: SortOrder
     principalAmount?: SortOrder
     interestRate?: SortOrder
@@ -28650,11 +29584,15 @@ export namespace Prisma {
     titleDeedNumber?: SortOrderInput | SortOrder
     collateralValue?: SortOrderInput | SortOrder
     collateralDetails?: SortOrderInput | SortOrder
-    linkMap?: SortOrderInput | SortOrder
-    landAccountId?: SortOrderInput | SortOrder
-    landAccountName?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    hirePurchase?: SortOrder
+    landAccountId?: SortOrderInput | SortOrder
+    landAccountName?: SortOrderInput | SortOrder
+    linkMap?: SortOrderInput | SortOrder
+    estimatedValue?: SortOrderInput | SortOrder
+    valuationDate?: SortOrderInput | SortOrder
+    valuationResult?: SortOrderInput | SortOrder
     _count?: loansCountOrderByAggregateInput
     _avg?: loansAvgOrderByAggregateInput
     _max?: loansMaxOrderByAggregateInput
@@ -28672,7 +29610,6 @@ export namespace Prisma {
     agentId?: StringNullableWithAggregatesFilter<"loans"> | string | null
     applicationId?: StringWithAggregatesFilter<"loans"> | string
     loanType?: Enumloans_loanTypeWithAggregatesFilter<"loans"> | $Enums.loans_loanType
-    hirePurchase?: BoolWithAggregatesFilter<"loans"> | boolean
     status?: Enumloans_statusWithAggregatesFilter<"loans"> | $Enums.loans_status
     principalAmount?: DecimalWithAggregatesFilter<"loans"> | Decimal | DecimalJsLike | number | string
     interestRate?: DecimalWithAggregatesFilter<"loans"> | Decimal | DecimalJsLike | number | string
@@ -28687,11 +29624,15 @@ export namespace Prisma {
     titleDeedNumber?: StringNullableWithAggregatesFilter<"loans"> | string | null
     collateralValue?: DecimalNullableWithAggregatesFilter<"loans"> | Decimal | DecimalJsLike | number | string | null
     collateralDetails?: JsonNullableWithAggregatesFilter<"loans">
-    linkMap?: StringNullableWithAggregatesFilter<"loans"> | string | null
-    landAccountId?: IntNullableWithAggregatesFilter<"loans"> | number | null
-    landAccountName?: StringNullableWithAggregatesFilter<"loans"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"loans"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"loans"> | Date | string
+    hirePurchase?: BoolWithAggregatesFilter<"loans"> | boolean
+    landAccountId?: IntNullableWithAggregatesFilter<"loans"> | number | null
+    landAccountName?: StringNullableWithAggregatesFilter<"loans"> | string | null
+    linkMap?: StringNullableWithAggregatesFilter<"loans"> | string | null
+    estimatedValue?: DecimalNullableWithAggregatesFilter<"loans"> | Decimal | DecimalJsLike | number | string | null
+    valuationDate?: DateTimeNullableWithAggregatesFilter<"loans"> | Date | string | null
+    valuationResult?: JsonNullableWithAggregatesFilter<"loans">
   }
 
   export type notificationsWhereInput = {
@@ -29471,8 +30412,6 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"land_accounts"> | Date | string
     updatedAt?: DateTimeFilter<"land_accounts"> | Date | string
     deletedAt?: DateTimeNullableFilter<"land_accounts"> | Date | string | null
-    logs?: Land_account_logsListRelationFilter
-    reports?: Land_account_reportsListRelationFilter
   }
 
   export type land_accountsOrderByWithRelationInput = {
@@ -29482,8 +30421,6 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
-    logs?: land_account_logsOrderByRelationAggregateInput
-    reports?: land_account_reportsOrderByRelationAggregateInput
     _relevance?: land_accountsOrderByRelevanceInput
   }
 
@@ -29497,8 +30434,6 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"land_accounts"> | Date | string
     updatedAt?: DateTimeFilter<"land_accounts"> | Date | string
     deletedAt?: DateTimeNullableFilter<"land_accounts"> | Date | string | null
-    logs?: Land_account_logsListRelationFilter
-    reports?: Land_account_reportsListRelationFilter
   }, "id">
 
   export type land_accountsOrderByWithAggregationInput = {
@@ -29541,7 +30476,6 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"land_account_logs"> | Date | string
     updatedAt?: DateTimeFilter<"land_account_logs"> | Date | string
     deletedAt?: DateTimeNullableFilter<"land_account_logs"> | Date | string | null
-    landAccount?: XOR<Land_accountsScalarRelationFilter, land_accountsWhereInput>
   }
 
   export type land_account_logsOrderByWithRelationInput = {
@@ -29555,7 +30489,6 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
-    landAccount?: land_accountsOrderByWithRelationInput
     _relevance?: land_account_logsOrderByRelevanceInput
   }
 
@@ -29573,7 +30506,6 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"land_account_logs"> | Date | string
     updatedAt?: DateTimeFilter<"land_account_logs"> | Date | string
     deletedAt?: DateTimeNullableFilter<"land_account_logs"> | Date | string | null
-    landAccount?: XOR<Land_accountsScalarRelationFilter, land_accountsWhereInput>
   }, "id">
 
   export type land_account_logsOrderByWithAggregationInput = {
@@ -29625,7 +30557,6 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"land_account_reports"> | Date | string
     updatedAt?: DateTimeFilter<"land_account_reports"> | Date | string
     deletedAt?: DateTimeNullableFilter<"land_account_reports"> | Date | string | null
-    landAccount?: XOR<Land_accountsScalarRelationFilter, land_accountsWhereInput>
   }
 
   export type land_account_reportsOrderByWithRelationInput = {
@@ -29640,7 +30571,6 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
-    landAccount?: land_accountsOrderByWithRelationInput
     _relevance?: land_account_reportsOrderByRelevanceInput
   }
 
@@ -29659,7 +30589,6 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"land_account_reports"> | Date | string
     updatedAt?: DateTimeFilter<"land_account_reports"> | Date | string
     deletedAt?: DateTimeNullableFilter<"land_account_reports"> | Date | string | null
-    landAccount?: XOR<Land_accountsScalarRelationFilter, land_accountsWhereInput>
   }, "id">
 
   export type land_account_reportsOrderByWithAggregationInput = {
@@ -29889,6 +30818,61 @@ export namespace Prisma {
     lastLoginAt?: DateTimeNullableWithAggregatesFilter<"users"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"users"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"users"> | Date | string
+  }
+
+  export type real_investmentWhereInput = {
+    AND?: real_investmentWhereInput | real_investmentWhereInput[]
+    OR?: real_investmentWhereInput[]
+    NOT?: real_investmentWhereInput | real_investmentWhereInput[]
+    id?: StringFilter<"real_investment"> | string
+    investment?: DecimalFilter<"real_investment"> | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFilter<"real_investment"> | Date | string
+    updatedAt?: DateTimeFilter<"real_investment"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"real_investment"> | Date | string | null
+  }
+
+  export type real_investmentOrderByWithRelationInput = {
+    id?: SortOrder
+    investment?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    _relevance?: real_investmentOrderByRelevanceInput
+  }
+
+  export type real_investmentWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: real_investmentWhereInput | real_investmentWhereInput[]
+    OR?: real_investmentWhereInput[]
+    NOT?: real_investmentWhereInput | real_investmentWhereInput[]
+    investment?: DecimalFilter<"real_investment"> | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFilter<"real_investment"> | Date | string
+    updatedAt?: DateTimeFilter<"real_investment"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"real_investment"> | Date | string | null
+  }, "id">
+
+  export type real_investmentOrderByWithAggregationInput = {
+    id?: SortOrder
+    investment?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    _count?: real_investmentCountOrderByAggregateInput
+    _avg?: real_investmentAvgOrderByAggregateInput
+    _max?: real_investmentMaxOrderByAggregateInput
+    _min?: real_investmentMinOrderByAggregateInput
+    _sum?: real_investmentSumOrderByAggregateInput
+  }
+
+  export type real_investmentScalarWhereWithAggregatesInput = {
+    AND?: real_investmentScalarWhereWithAggregatesInput | real_investmentScalarWhereWithAggregatesInput[]
+    OR?: real_investmentScalarWhereWithAggregatesInput[]
+    NOT?: real_investmentScalarWhereWithAggregatesInput | real_investmentScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"real_investment"> | string
+    investment?: DecimalWithAggregatesFilter<"real_investment"> | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeWithAggregatesFilter<"real_investment"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"real_investment"> | Date | string
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"real_investment"> | Date | string | null
   }
 
   export type admin_permissionsCreateInput = {
@@ -30449,7 +31433,6 @@ export namespace Prisma {
     customerId?: string | null
     agentId?: string | null
     loanType?: $Enums.loan_applications_loanType
-    hirePurchase?: boolean
     status?: $Enums.loan_applications_status
     currentStep?: number
     completedSteps: JsonNullValueInput | InputJsonValue
@@ -30475,6 +31458,12 @@ export namespace Prisma {
     reviewNotes?: string | null
     createdAt?: Date | string
     updatedAt: Date | string
+    hirePurchase?: boolean
+    interestRate?: Decimal | DecimalJsLike | number | string | null
+    operationFee?: Decimal | DecimalJsLike | number | string | null
+    otherFee?: Decimal | DecimalJsLike | number | string | null
+    termMonths?: number | null
+    transferFee?: Decimal | DecimalJsLike | number | string | null
   }
 
   export type loan_applicationsUncheckedCreateInput = {
@@ -30482,7 +31471,6 @@ export namespace Prisma {
     customerId?: string | null
     agentId?: string | null
     loanType?: $Enums.loan_applications_loanType
-    hirePurchase?: boolean
     status?: $Enums.loan_applications_status
     currentStep?: number
     completedSteps: JsonNullValueInput | InputJsonValue
@@ -30508,6 +31496,12 @@ export namespace Prisma {
     reviewNotes?: string | null
     createdAt?: Date | string
     updatedAt: Date | string
+    hirePurchase?: boolean
+    interestRate?: Decimal | DecimalJsLike | number | string | null
+    operationFee?: Decimal | DecimalJsLike | number | string | null
+    otherFee?: Decimal | DecimalJsLike | number | string | null
+    termMonths?: number | null
+    transferFee?: Decimal | DecimalJsLike | number | string | null
   }
 
   export type loan_applicationsUpdateInput = {
@@ -30515,7 +31509,6 @@ export namespace Prisma {
     customerId?: NullableStringFieldUpdateOperationsInput | string | null
     agentId?: NullableStringFieldUpdateOperationsInput | string | null
     loanType?: Enumloan_applications_loanTypeFieldUpdateOperationsInput | $Enums.loan_applications_loanType
-    hirePurchase?: BoolFieldUpdateOperationsInput | boolean
     status?: Enumloan_applications_statusFieldUpdateOperationsInput | $Enums.loan_applications_status
     currentStep?: IntFieldUpdateOperationsInput | number
     completedSteps?: JsonNullValueInput | InputJsonValue
@@ -30541,6 +31534,12 @@ export namespace Prisma {
     reviewNotes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    hirePurchase?: BoolFieldUpdateOperationsInput | boolean
+    interestRate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    operationFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    otherFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    termMonths?: NullableIntFieldUpdateOperationsInput | number | null
+    transferFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
   }
 
   export type loan_applicationsUncheckedUpdateInput = {
@@ -30548,7 +31547,6 @@ export namespace Prisma {
     customerId?: NullableStringFieldUpdateOperationsInput | string | null
     agentId?: NullableStringFieldUpdateOperationsInput | string | null
     loanType?: Enumloan_applications_loanTypeFieldUpdateOperationsInput | $Enums.loan_applications_loanType
-    hirePurchase?: BoolFieldUpdateOperationsInput | boolean
     status?: Enumloan_applications_statusFieldUpdateOperationsInput | $Enums.loan_applications_status
     currentStep?: IntFieldUpdateOperationsInput | number
     completedSteps?: JsonNullValueInput | InputJsonValue
@@ -30574,6 +31572,12 @@ export namespace Prisma {
     reviewNotes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    hirePurchase?: BoolFieldUpdateOperationsInput | boolean
+    interestRate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    operationFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    otherFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    termMonths?: NullableIntFieldUpdateOperationsInput | number | null
+    transferFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
   }
 
   export type loan_applicationsCreateManyInput = {
@@ -30581,7 +31585,6 @@ export namespace Prisma {
     customerId?: string | null
     agentId?: string | null
     loanType?: $Enums.loan_applications_loanType
-    hirePurchase?: boolean
     status?: $Enums.loan_applications_status
     currentStep?: number
     completedSteps: JsonNullValueInput | InputJsonValue
@@ -30607,6 +31610,12 @@ export namespace Prisma {
     reviewNotes?: string | null
     createdAt?: Date | string
     updatedAt: Date | string
+    hirePurchase?: boolean
+    interestRate?: Decimal | DecimalJsLike | number | string | null
+    operationFee?: Decimal | DecimalJsLike | number | string | null
+    otherFee?: Decimal | DecimalJsLike | number | string | null
+    termMonths?: number | null
+    transferFee?: Decimal | DecimalJsLike | number | string | null
   }
 
   export type loan_applicationsUpdateManyMutationInput = {
@@ -30614,7 +31623,6 @@ export namespace Prisma {
     customerId?: NullableStringFieldUpdateOperationsInput | string | null
     agentId?: NullableStringFieldUpdateOperationsInput | string | null
     loanType?: Enumloan_applications_loanTypeFieldUpdateOperationsInput | $Enums.loan_applications_loanType
-    hirePurchase?: BoolFieldUpdateOperationsInput | boolean
     status?: Enumloan_applications_statusFieldUpdateOperationsInput | $Enums.loan_applications_status
     currentStep?: IntFieldUpdateOperationsInput | number
     completedSteps?: JsonNullValueInput | InputJsonValue
@@ -30640,6 +31648,12 @@ export namespace Prisma {
     reviewNotes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    hirePurchase?: BoolFieldUpdateOperationsInput | boolean
+    interestRate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    operationFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    otherFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    termMonths?: NullableIntFieldUpdateOperationsInput | number | null
+    transferFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
   }
 
   export type loan_applicationsUncheckedUpdateManyInput = {
@@ -30647,7 +31661,6 @@ export namespace Prisma {
     customerId?: NullableStringFieldUpdateOperationsInput | string | null
     agentId?: NullableStringFieldUpdateOperationsInput | string | null
     loanType?: Enumloan_applications_loanTypeFieldUpdateOperationsInput | $Enums.loan_applications_loanType
-    hirePurchase?: BoolFieldUpdateOperationsInput | boolean
     status?: Enumloan_applications_statusFieldUpdateOperationsInput | $Enums.loan_applications_status
     currentStep?: IntFieldUpdateOperationsInput | number
     completedSteps?: JsonNullValueInput | InputJsonValue
@@ -30673,6 +31686,12 @@ export namespace Prisma {
     reviewNotes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    hirePurchase?: BoolFieldUpdateOperationsInput | boolean
+    interestRate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    operationFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    otherFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    termMonths?: NullableIntFieldUpdateOperationsInput | number | null
+    transferFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
   }
 
   export type loan_installmentsCreateInput = {
@@ -30687,15 +31706,15 @@ export namespace Prisma {
     paidDate?: Date | string | null
     paidAmount?: Decimal | DecimalJsLike | number | string | null
     isLate?: boolean
-    paymentProofUrl?: string | null
-    paymentProofUploadedAt?: Date | string | null
-    refNo?: string | null
-    filePayload?: NullableJsonNullValueInput | InputJsonValue
-    note?: string | null
     lateDays?: number | null
     lateFee?: Decimal | DecimalJsLike | number | string | null
     createdAt?: Date | string
     updatedAt: Date | string
+    filePayload?: NullableJsonNullValueInput | InputJsonValue
+    note?: string | null
+    paymentProofUploadedAt?: Date | string | null
+    paymentProofUrl?: string | null
+    refNo?: string | null
   }
 
   export type loan_installmentsUncheckedCreateInput = {
@@ -30710,15 +31729,15 @@ export namespace Prisma {
     paidDate?: Date | string | null
     paidAmount?: Decimal | DecimalJsLike | number | string | null
     isLate?: boolean
-    paymentProofUrl?: string | null
-    paymentProofUploadedAt?: Date | string | null
-    refNo?: string | null
-    filePayload?: NullableJsonNullValueInput | InputJsonValue
-    note?: string | null
     lateDays?: number | null
     lateFee?: Decimal | DecimalJsLike | number | string | null
     createdAt?: Date | string
     updatedAt: Date | string
+    filePayload?: NullableJsonNullValueInput | InputJsonValue
+    note?: string | null
+    paymentProofUploadedAt?: Date | string | null
+    paymentProofUrl?: string | null
+    refNo?: string | null
   }
 
   export type loan_installmentsUpdateInput = {
@@ -30733,15 +31752,15 @@ export namespace Prisma {
     paidDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paidAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     isLate?: BoolFieldUpdateOperationsInput | boolean
-    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    refNo?: NullableStringFieldUpdateOperationsInput | string | null
-    filePayload?: NullableJsonNullValueInput | InputJsonValue
-    note?: NullableStringFieldUpdateOperationsInput | string | null
     lateDays?: NullableIntFieldUpdateOperationsInput | number | null
     lateFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    filePayload?: NullableJsonNullValueInput | InputJsonValue
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    refNo?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type loan_installmentsUncheckedUpdateInput = {
@@ -30756,15 +31775,15 @@ export namespace Prisma {
     paidDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paidAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     isLate?: BoolFieldUpdateOperationsInput | boolean
-    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    refNo?: NullableStringFieldUpdateOperationsInput | string | null
-    filePayload?: NullableJsonNullValueInput | InputJsonValue
-    note?: NullableStringFieldUpdateOperationsInput | string | null
     lateDays?: NullableIntFieldUpdateOperationsInput | number | null
     lateFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    filePayload?: NullableJsonNullValueInput | InputJsonValue
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    refNo?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type loan_installmentsCreateManyInput = {
@@ -30779,15 +31798,15 @@ export namespace Prisma {
     paidDate?: Date | string | null
     paidAmount?: Decimal | DecimalJsLike | number | string | null
     isLate?: boolean
-    paymentProofUrl?: string | null
-    paymentProofUploadedAt?: Date | string | null
-    refNo?: string | null
-    filePayload?: NullableJsonNullValueInput | InputJsonValue
-    note?: string | null
     lateDays?: number | null
     lateFee?: Decimal | DecimalJsLike | number | string | null
     createdAt?: Date | string
     updatedAt: Date | string
+    filePayload?: NullableJsonNullValueInput | InputJsonValue
+    note?: string | null
+    paymentProofUploadedAt?: Date | string | null
+    paymentProofUrl?: string | null
+    refNo?: string | null
   }
 
   export type loan_installmentsUpdateManyMutationInput = {
@@ -30802,15 +31821,15 @@ export namespace Prisma {
     paidDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paidAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     isLate?: BoolFieldUpdateOperationsInput | boolean
-    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    refNo?: NullableStringFieldUpdateOperationsInput | string | null
-    filePayload?: NullableJsonNullValueInput | InputJsonValue
-    note?: NullableStringFieldUpdateOperationsInput | string | null
     lateDays?: NullableIntFieldUpdateOperationsInput | number | null
     lateFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    filePayload?: NullableJsonNullValueInput | InputJsonValue
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    refNo?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type loan_installmentsUncheckedUpdateManyInput = {
@@ -30825,15 +31844,15 @@ export namespace Prisma {
     paidDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paidAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     isLate?: BoolFieldUpdateOperationsInput | boolean
-    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    refNo?: NullableStringFieldUpdateOperationsInput | string | null
-    filePayload?: NullableJsonNullValueInput | InputJsonValue
-    note?: NullableStringFieldUpdateOperationsInput | string | null
     lateDays?: NullableIntFieldUpdateOperationsInput | number | null
     lateFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    filePayload?: NullableJsonNullValueInput | InputJsonValue
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentProofUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    refNo?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type loansCreateInput = {
@@ -30843,7 +31862,6 @@ export namespace Prisma {
     agentId?: string | null
     applicationId: string
     loanType: $Enums.loans_loanType
-    hirePurchase?: boolean
     status?: $Enums.loans_status
     principalAmount: Decimal | DecimalJsLike | number | string
     interestRate: Decimal | DecimalJsLike | number | string
@@ -30858,11 +31876,15 @@ export namespace Prisma {
     titleDeedNumber?: string | null
     collateralValue?: Decimal | DecimalJsLike | number | string | null
     collateralDetails?: NullableJsonNullValueInput | InputJsonValue
-    linkMap?: string | null
-    landAccountId?: number | null
-    landAccountName?: string | null
     createdAt?: Date | string
     updatedAt: Date | string
+    hirePurchase?: boolean
+    landAccountId?: number | null
+    landAccountName?: string | null
+    linkMap?: string | null
+    estimatedValue?: Decimal | DecimalJsLike | number | string | null
+    valuationDate?: Date | string | null
+    valuationResult?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type loansUncheckedCreateInput = {
@@ -30872,7 +31894,6 @@ export namespace Prisma {
     agentId?: string | null
     applicationId: string
     loanType: $Enums.loans_loanType
-    hirePurchase?: boolean
     status?: $Enums.loans_status
     principalAmount: Decimal | DecimalJsLike | number | string
     interestRate: Decimal | DecimalJsLike | number | string
@@ -30887,11 +31908,15 @@ export namespace Prisma {
     titleDeedNumber?: string | null
     collateralValue?: Decimal | DecimalJsLike | number | string | null
     collateralDetails?: NullableJsonNullValueInput | InputJsonValue
-    linkMap?: string | null
-    landAccountId?: number | null
-    landAccountName?: string | null
     createdAt?: Date | string
     updatedAt: Date | string
+    hirePurchase?: boolean
+    landAccountId?: number | null
+    landAccountName?: string | null
+    linkMap?: string | null
+    estimatedValue?: Decimal | DecimalJsLike | number | string | null
+    valuationDate?: Date | string | null
+    valuationResult?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type loansUpdateInput = {
@@ -30901,7 +31926,6 @@ export namespace Prisma {
     agentId?: NullableStringFieldUpdateOperationsInput | string | null
     applicationId?: StringFieldUpdateOperationsInput | string
     loanType?: Enumloans_loanTypeFieldUpdateOperationsInput | $Enums.loans_loanType
-    hirePurchase?: BoolFieldUpdateOperationsInput | boolean
     status?: Enumloans_statusFieldUpdateOperationsInput | $Enums.loans_status
     principalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -30916,11 +31940,15 @@ export namespace Prisma {
     titleDeedNumber?: NullableStringFieldUpdateOperationsInput | string | null
     collateralValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     collateralDetails?: NullableJsonNullValueInput | InputJsonValue
-    linkMap?: NullableStringFieldUpdateOperationsInput | string | null
-    landAccountId?: NullableIntFieldUpdateOperationsInput | number | null
-    landAccountName?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    hirePurchase?: BoolFieldUpdateOperationsInput | boolean
+    landAccountId?: NullableIntFieldUpdateOperationsInput | number | null
+    landAccountName?: NullableStringFieldUpdateOperationsInput | string | null
+    linkMap?: NullableStringFieldUpdateOperationsInput | string | null
+    estimatedValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    valuationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    valuationResult?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type loansUncheckedUpdateInput = {
@@ -30930,7 +31958,6 @@ export namespace Prisma {
     agentId?: NullableStringFieldUpdateOperationsInput | string | null
     applicationId?: StringFieldUpdateOperationsInput | string
     loanType?: Enumloans_loanTypeFieldUpdateOperationsInput | $Enums.loans_loanType
-    hirePurchase?: BoolFieldUpdateOperationsInput | boolean
     status?: Enumloans_statusFieldUpdateOperationsInput | $Enums.loans_status
     principalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -30945,11 +31972,15 @@ export namespace Prisma {
     titleDeedNumber?: NullableStringFieldUpdateOperationsInput | string | null
     collateralValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     collateralDetails?: NullableJsonNullValueInput | InputJsonValue
-    linkMap?: NullableStringFieldUpdateOperationsInput | string | null
-    landAccountId?: NullableIntFieldUpdateOperationsInput | number | null
-    landAccountName?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    hirePurchase?: BoolFieldUpdateOperationsInput | boolean
+    landAccountId?: NullableIntFieldUpdateOperationsInput | number | null
+    landAccountName?: NullableStringFieldUpdateOperationsInput | string | null
+    linkMap?: NullableStringFieldUpdateOperationsInput | string | null
+    estimatedValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    valuationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    valuationResult?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type loansCreateManyInput = {
@@ -30959,7 +31990,6 @@ export namespace Prisma {
     agentId?: string | null
     applicationId: string
     loanType: $Enums.loans_loanType
-    hirePurchase?: boolean
     status?: $Enums.loans_status
     principalAmount: Decimal | DecimalJsLike | number | string
     interestRate: Decimal | DecimalJsLike | number | string
@@ -30974,11 +32004,15 @@ export namespace Prisma {
     titleDeedNumber?: string | null
     collateralValue?: Decimal | DecimalJsLike | number | string | null
     collateralDetails?: NullableJsonNullValueInput | InputJsonValue
-    linkMap?: string | null
-    landAccountId?: number | null
-    landAccountName?: string | null
     createdAt?: Date | string
     updatedAt: Date | string
+    hirePurchase?: boolean
+    landAccountId?: number | null
+    landAccountName?: string | null
+    linkMap?: string | null
+    estimatedValue?: Decimal | DecimalJsLike | number | string | null
+    valuationDate?: Date | string | null
+    valuationResult?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type loansUpdateManyMutationInput = {
@@ -30988,7 +32022,6 @@ export namespace Prisma {
     agentId?: NullableStringFieldUpdateOperationsInput | string | null
     applicationId?: StringFieldUpdateOperationsInput | string
     loanType?: Enumloans_loanTypeFieldUpdateOperationsInput | $Enums.loans_loanType
-    hirePurchase?: BoolFieldUpdateOperationsInput | boolean
     status?: Enumloans_statusFieldUpdateOperationsInput | $Enums.loans_status
     principalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -31003,11 +32036,15 @@ export namespace Prisma {
     titleDeedNumber?: NullableStringFieldUpdateOperationsInput | string | null
     collateralValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     collateralDetails?: NullableJsonNullValueInput | InputJsonValue
-    linkMap?: NullableStringFieldUpdateOperationsInput | string | null
-    landAccountId?: NullableIntFieldUpdateOperationsInput | number | null
-    landAccountName?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    hirePurchase?: BoolFieldUpdateOperationsInput | boolean
+    landAccountId?: NullableIntFieldUpdateOperationsInput | number | null
+    landAccountName?: NullableStringFieldUpdateOperationsInput | string | null
+    linkMap?: NullableStringFieldUpdateOperationsInput | string | null
+    estimatedValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    valuationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    valuationResult?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type loansUncheckedUpdateManyInput = {
@@ -31017,7 +32054,6 @@ export namespace Prisma {
     agentId?: NullableStringFieldUpdateOperationsInput | string | null
     applicationId?: StringFieldUpdateOperationsInput | string
     loanType?: Enumloans_loanTypeFieldUpdateOperationsInput | $Enums.loans_loanType
-    hirePurchase?: BoolFieldUpdateOperationsInput | boolean
     status?: Enumloans_statusFieldUpdateOperationsInput | $Enums.loans_status
     principalAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     interestRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -31032,11 +32068,15 @@ export namespace Prisma {
     titleDeedNumber?: NullableStringFieldUpdateOperationsInput | string | null
     collateralValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     collateralDetails?: NullableJsonNullValueInput | InputJsonValue
-    linkMap?: NullableStringFieldUpdateOperationsInput | string | null
-    landAccountId?: NullableIntFieldUpdateOperationsInput | number | null
-    landAccountName?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    hirePurchase?: BoolFieldUpdateOperationsInput | boolean
+    landAccountId?: NullableIntFieldUpdateOperationsInput | number | null
+    landAccountName?: NullableStringFieldUpdateOperationsInput | string | null
+    linkMap?: NullableStringFieldUpdateOperationsInput | string | null
+    estimatedValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    valuationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    valuationResult?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type notificationsCreateInput = {
@@ -31942,8 +32982,6 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt: Date | string
     deletedAt?: Date | string | null
-    logs?: land_account_logsCreateNestedManyWithoutLandAccountInput
-    reports?: land_account_reportsCreateNestedManyWithoutLandAccountInput
   }
 
   export type land_accountsUncheckedCreateInput = {
@@ -31953,8 +32991,6 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt: Date | string
     deletedAt?: Date | string | null
-    logs?: land_account_logsUncheckedCreateNestedManyWithoutLandAccountInput
-    reports?: land_account_reportsUncheckedCreateNestedManyWithoutLandAccountInput
   }
 
   export type land_accountsUpdateInput = {
@@ -31964,8 +33000,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    logs?: land_account_logsUpdateManyWithoutLandAccountNestedInput
-    reports?: land_account_reportsUpdateManyWithoutLandAccountNestedInput
   }
 
   export type land_accountsUncheckedUpdateInput = {
@@ -31975,8 +33009,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    logs?: land_account_logsUncheckedUpdateManyWithoutLandAccountNestedInput
-    reports?: land_account_reportsUncheckedUpdateManyWithoutLandAccountNestedInput
   }
 
   export type land_accountsCreateManyInput = {
@@ -32008,6 +33040,7 @@ export namespace Prisma {
 
   export type land_account_logsCreateInput = {
     id: string
+    landAccountId: string
     detail: string
     amount?: Decimal | DecimalJsLike | number | string
     note?: string | null
@@ -32016,7 +33049,6 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt: Date | string
     deletedAt?: Date | string | null
-    landAccount: land_accountsCreateNestedOneWithoutLogsInput
   }
 
   export type land_account_logsUncheckedCreateInput = {
@@ -32034,6 +33066,7 @@ export namespace Prisma {
 
   export type land_account_logsUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    landAccountId?: StringFieldUpdateOperationsInput | string
     detail?: StringFieldUpdateOperationsInput | string
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     note?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32042,7 +33075,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    landAccount?: land_accountsUpdateOneRequiredWithoutLogsNestedInput
   }
 
   export type land_account_logsUncheckedUpdateInput = {
@@ -32073,6 +33105,7 @@ export namespace Prisma {
 
   export type land_account_logsUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    landAccountId?: StringFieldUpdateOperationsInput | string
     detail?: StringFieldUpdateOperationsInput | string
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     note?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32098,6 +33131,7 @@ export namespace Prisma {
 
   export type land_account_reportsCreateInput = {
     id: string
+    landAccountId: string
     detail: string
     amount?: Decimal | DecimalJsLike | number | string
     note?: string | null
@@ -32107,7 +33141,6 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt: Date | string
     deletedAt?: Date | string | null
-    landAccount: land_accountsCreateNestedOneWithoutReportsInput
   }
 
   export type land_account_reportsUncheckedCreateInput = {
@@ -32126,6 +33159,7 @@ export namespace Prisma {
 
   export type land_account_reportsUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    landAccountId?: StringFieldUpdateOperationsInput | string
     detail?: StringFieldUpdateOperationsInput | string
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     note?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32135,7 +33169,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    landAccount?: land_accountsUpdateOneRequiredWithoutReportsNestedInput
   }
 
   export type land_account_reportsUncheckedUpdateInput = {
@@ -32168,6 +33201,7 @@ export namespace Prisma {
 
   export type land_account_reportsUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    landAccountId?: StringFieldUpdateOperationsInput | string
     detail?: StringFieldUpdateOperationsInput | string
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     note?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32422,6 +33456,62 @@ export namespace Prisma {
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type real_investmentCreateInput = {
+    id: string
+    investment: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type real_investmentUncheckedCreateInput = {
+    id: string
+    investment: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type real_investmentUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    investment?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type real_investmentUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    investment?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type real_investmentCreateManyInput = {
+    id: string
+    investment: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type real_investmentUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    investment?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type real_investmentUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    investment?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -33069,6 +34159,17 @@ export namespace Prisma {
     not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
   }
 
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
   export type loan_applicationsOrderByRelevanceInput = {
     fields: loan_applicationsOrderByRelevanceFieldEnum | loan_applicationsOrderByRelevanceFieldEnum[]
     sort: SortOrder
@@ -33080,7 +34181,6 @@ export namespace Prisma {
     customerId?: SortOrder
     agentId?: SortOrder
     loanType?: SortOrder
-    hirePurchase?: SortOrder
     status?: SortOrder
     currentStep?: SortOrder
     completedSteps?: SortOrder
@@ -33106,6 +34206,12 @@ export namespace Prisma {
     reviewNotes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    hirePurchase?: SortOrder
+    interestRate?: SortOrder
+    operationFee?: SortOrder
+    otherFee?: SortOrder
+    termMonths?: SortOrder
+    transferFee?: SortOrder
   }
 
   export type loan_applicationsAvgOrderByAggregateInput = {
@@ -33114,6 +34220,11 @@ export namespace Prisma {
     approvedAmount?: SortOrder
     maxApprovedAmount?: SortOrder
     propertyValue?: SortOrder
+    interestRate?: SortOrder
+    operationFee?: SortOrder
+    otherFee?: SortOrder
+    termMonths?: SortOrder
+    transferFee?: SortOrder
   }
 
   export type loan_applicationsMaxOrderByAggregateInput = {
@@ -33121,7 +34232,6 @@ export namespace Prisma {
     customerId?: SortOrder
     agentId?: SortOrder
     loanType?: SortOrder
-    hirePurchase?: SortOrder
     status?: SortOrder
     currentStep?: SortOrder
     isNewUser?: SortOrder
@@ -33144,6 +34254,12 @@ export namespace Prisma {
     reviewNotes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    hirePurchase?: SortOrder
+    interestRate?: SortOrder
+    operationFee?: SortOrder
+    otherFee?: SortOrder
+    termMonths?: SortOrder
+    transferFee?: SortOrder
   }
 
   export type loan_applicationsMinOrderByAggregateInput = {
@@ -33151,7 +34267,6 @@ export namespace Prisma {
     customerId?: SortOrder
     agentId?: SortOrder
     loanType?: SortOrder
-    hirePurchase?: SortOrder
     status?: SortOrder
     currentStep?: SortOrder
     isNewUser?: SortOrder
@@ -33174,6 +34289,12 @@ export namespace Prisma {
     reviewNotes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    hirePurchase?: SortOrder
+    interestRate?: SortOrder
+    operationFee?: SortOrder
+    otherFee?: SortOrder
+    termMonths?: SortOrder
+    transferFee?: SortOrder
   }
 
   export type loan_applicationsSumOrderByAggregateInput = {
@@ -33182,6 +34303,11 @@ export namespace Prisma {
     approvedAmount?: SortOrder
     maxApprovedAmount?: SortOrder
     propertyValue?: SortOrder
+    interestRate?: SortOrder
+    operationFee?: SortOrder
+    otherFee?: SortOrder
+    termMonths?: SortOrder
+    transferFee?: SortOrder
   }
 
   export type Enumloan_applications_loanTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -33236,7 +34362,7 @@ export namespace Prisma {
     _max?: NestedDecimalNullableFilter<$PrismaModel>
   }
 
-  export type IntNullableFilter<$PrismaModel = never> = {
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | null
     notIn?: number[] | null
@@ -33244,7 +34370,12 @@ export namespace Prisma {
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type loan_installmentsOrderByRelevanceInput = {
@@ -33270,15 +34401,15 @@ export namespace Prisma {
     paidDate?: SortOrder
     paidAmount?: SortOrder
     isLate?: SortOrder
-    paymentProofUrl?: SortOrder
-    paymentProofUploadedAt?: SortOrder
-    refNo?: SortOrder
-    filePayload?: SortOrder
-    note?: SortOrder
     lateDays?: SortOrder
     lateFee?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    filePayload?: SortOrder
+    note?: SortOrder
+    paymentProofUploadedAt?: SortOrder
+    paymentProofUrl?: SortOrder
+    refNo?: SortOrder
   }
 
   export type loan_installmentsAvgOrderByAggregateInput = {
@@ -33303,14 +34434,14 @@ export namespace Prisma {
     paidDate?: SortOrder
     paidAmount?: SortOrder
     isLate?: SortOrder
-    paymentProofUrl?: SortOrder
-    paymentProofUploadedAt?: SortOrder
-    refNo?: SortOrder
-    note?: SortOrder
     lateDays?: SortOrder
     lateFee?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    note?: SortOrder
+    paymentProofUploadedAt?: SortOrder
+    paymentProofUrl?: SortOrder
+    refNo?: SortOrder
   }
 
   export type loan_installmentsMinOrderByAggregateInput = {
@@ -33325,14 +34456,14 @@ export namespace Prisma {
     paidDate?: SortOrder
     paidAmount?: SortOrder
     isLate?: SortOrder
-    paymentProofUrl?: SortOrder
-    paymentProofUploadedAt?: SortOrder
-    refNo?: SortOrder
-    note?: SortOrder
     lateDays?: SortOrder
     lateFee?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    note?: SortOrder
+    paymentProofUploadedAt?: SortOrder
+    paymentProofUrl?: SortOrder
+    refNo?: SortOrder
   }
 
   export type loan_installmentsSumOrderByAggregateInput = {
@@ -33343,22 +34474,6 @@ export namespace Prisma {
     paidAmount?: SortOrder
     lateDays?: SortOrder
     lateFee?: SortOrder
-  }
-
-  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type Enumloans_loanTypeFilter<$PrismaModel = never> = {
@@ -33388,7 +34503,6 @@ export namespace Prisma {
     agentId?: SortOrder
     applicationId?: SortOrder
     loanType?: SortOrder
-    hirePurchase?: SortOrder
     status?: SortOrder
     principalAmount?: SortOrder
     interestRate?: SortOrder
@@ -33403,11 +34517,15 @@ export namespace Prisma {
     titleDeedNumber?: SortOrder
     collateralValue?: SortOrder
     collateralDetails?: SortOrder
-    linkMap?: SortOrder
-    landAccountId?: SortOrder
-    landAccountName?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    hirePurchase?: SortOrder
+    landAccountId?: SortOrder
+    landAccountName?: SortOrder
+    linkMap?: SortOrder
+    estimatedValue?: SortOrder
+    valuationDate?: SortOrder
+    valuationResult?: SortOrder
   }
 
   export type loansAvgOrderByAggregateInput = {
@@ -33420,6 +34538,7 @@ export namespace Prisma {
     remainingBalance?: SortOrder
     collateralValue?: SortOrder
     landAccountId?: SortOrder
+    estimatedValue?: SortOrder
   }
 
   export type loansMaxOrderByAggregateInput = {
@@ -33429,7 +34548,6 @@ export namespace Prisma {
     agentId?: SortOrder
     applicationId?: SortOrder
     loanType?: SortOrder
-    hirePurchase?: SortOrder
     status?: SortOrder
     principalAmount?: SortOrder
     interestRate?: SortOrder
@@ -33443,11 +34561,14 @@ export namespace Prisma {
     expiryDate?: SortOrder
     titleDeedNumber?: SortOrder
     collateralValue?: SortOrder
-    linkMap?: SortOrder
-    landAccountId?: SortOrder
-    landAccountName?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    hirePurchase?: SortOrder
+    landAccountId?: SortOrder
+    landAccountName?: SortOrder
+    linkMap?: SortOrder
+    estimatedValue?: SortOrder
+    valuationDate?: SortOrder
   }
 
   export type loansMinOrderByAggregateInput = {
@@ -33457,7 +34578,6 @@ export namespace Prisma {
     agentId?: SortOrder
     applicationId?: SortOrder
     loanType?: SortOrder
-    hirePurchase?: SortOrder
     status?: SortOrder
     principalAmount?: SortOrder
     interestRate?: SortOrder
@@ -33471,11 +34591,14 @@ export namespace Prisma {
     expiryDate?: SortOrder
     titleDeedNumber?: SortOrder
     collateralValue?: SortOrder
-    linkMap?: SortOrder
-    landAccountId?: SortOrder
-    landAccountName?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    hirePurchase?: SortOrder
+    landAccountId?: SortOrder
+    landAccountName?: SortOrder
+    linkMap?: SortOrder
+    estimatedValue?: SortOrder
+    valuationDate?: SortOrder
   }
 
   export type loansSumOrderByAggregateInput = {
@@ -33488,6 +34611,7 @@ export namespace Prisma {
     remainingBalance?: SortOrder
     collateralValue?: SortOrder
     landAccountId?: SortOrder
+    estimatedValue?: SortOrder
   }
 
   export type Enumloans_loanTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -34102,26 +35226,6 @@ export namespace Prisma {
     _max?: NestedEnumdocument_title_lists_docTypeFilter<$PrismaModel>
   }
 
-  export type Land_account_logsListRelationFilter = {
-    every?: land_account_logsWhereInput
-    some?: land_account_logsWhereInput
-    none?: land_account_logsWhereInput
-  }
-
-  export type Land_account_reportsListRelationFilter = {
-    every?: land_account_reportsWhereInput
-    some?: land_account_reportsWhereInput
-    none?: land_account_reportsWhereInput
-  }
-
-  export type land_account_logsOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type land_account_reportsOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
   export type land_accountsOrderByRelevanceInput = {
     fields: land_accountsOrderByRelevanceFieldEnum | land_accountsOrderByRelevanceFieldEnum[]
     sort: SortOrder
@@ -34161,11 +35265,6 @@ export namespace Prisma {
 
   export type land_accountsSumOrderByAggregateInput = {
     accountBalance?: SortOrder
-  }
-
-  export type Land_accountsScalarRelationFilter = {
-    is?: land_accountsWhereInput
-    isNot?: land_accountsWhereInput
   }
 
   export type land_account_logsOrderByRelevanceInput = {
@@ -34415,6 +35514,44 @@ export namespace Prisma {
     _max?: NestedEnumusers_userTypeFilter<$PrismaModel>
   }
 
+  export type real_investmentOrderByRelevanceInput = {
+    fields: real_investmentOrderByRelevanceFieldEnum | real_investmentOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type real_investmentCountOrderByAggregateInput = {
+    id?: SortOrder
+    investment?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type real_investmentAvgOrderByAggregateInput = {
+    investment?: SortOrder
+  }
+
+  export type real_investmentMaxOrderByAggregateInput = {
+    id?: SortOrder
+    investment?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type real_investmentMinOrderByAggregateInput = {
+    id?: SortOrder
+    investment?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type real_investmentSumOrderByAggregateInput = {
+    investment?: SortOrder
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -34517,118 +35654,6 @@ export namespace Prisma {
 
   export type Enumdocument_title_lists_docTypeFieldUpdateOperationsInput = {
     set?: $Enums.document_title_lists_docType
-  }
-
-  export type land_account_logsCreateNestedManyWithoutLandAccountInput = {
-    create?: XOR<land_account_logsCreateWithoutLandAccountInput, land_account_logsUncheckedCreateWithoutLandAccountInput> | land_account_logsCreateWithoutLandAccountInput[] | land_account_logsUncheckedCreateWithoutLandAccountInput[]
-    connectOrCreate?: land_account_logsCreateOrConnectWithoutLandAccountInput | land_account_logsCreateOrConnectWithoutLandAccountInput[]
-    createMany?: land_account_logsCreateManyLandAccountInputEnvelope
-    connect?: land_account_logsWhereUniqueInput | land_account_logsWhereUniqueInput[]
-  }
-
-  export type land_account_reportsCreateNestedManyWithoutLandAccountInput = {
-    create?: XOR<land_account_reportsCreateWithoutLandAccountInput, land_account_reportsUncheckedCreateWithoutLandAccountInput> | land_account_reportsCreateWithoutLandAccountInput[] | land_account_reportsUncheckedCreateWithoutLandAccountInput[]
-    connectOrCreate?: land_account_reportsCreateOrConnectWithoutLandAccountInput | land_account_reportsCreateOrConnectWithoutLandAccountInput[]
-    createMany?: land_account_reportsCreateManyLandAccountInputEnvelope
-    connect?: land_account_reportsWhereUniqueInput | land_account_reportsWhereUniqueInput[]
-  }
-
-  export type land_account_logsUncheckedCreateNestedManyWithoutLandAccountInput = {
-    create?: XOR<land_account_logsCreateWithoutLandAccountInput, land_account_logsUncheckedCreateWithoutLandAccountInput> | land_account_logsCreateWithoutLandAccountInput[] | land_account_logsUncheckedCreateWithoutLandAccountInput[]
-    connectOrCreate?: land_account_logsCreateOrConnectWithoutLandAccountInput | land_account_logsCreateOrConnectWithoutLandAccountInput[]
-    createMany?: land_account_logsCreateManyLandAccountInputEnvelope
-    connect?: land_account_logsWhereUniqueInput | land_account_logsWhereUniqueInput[]
-  }
-
-  export type land_account_reportsUncheckedCreateNestedManyWithoutLandAccountInput = {
-    create?: XOR<land_account_reportsCreateWithoutLandAccountInput, land_account_reportsUncheckedCreateWithoutLandAccountInput> | land_account_reportsCreateWithoutLandAccountInput[] | land_account_reportsUncheckedCreateWithoutLandAccountInput[]
-    connectOrCreate?: land_account_reportsCreateOrConnectWithoutLandAccountInput | land_account_reportsCreateOrConnectWithoutLandAccountInput[]
-    createMany?: land_account_reportsCreateManyLandAccountInputEnvelope
-    connect?: land_account_reportsWhereUniqueInput | land_account_reportsWhereUniqueInput[]
-  }
-
-  export type land_account_logsUpdateManyWithoutLandAccountNestedInput = {
-    create?: XOR<land_account_logsCreateWithoutLandAccountInput, land_account_logsUncheckedCreateWithoutLandAccountInput> | land_account_logsCreateWithoutLandAccountInput[] | land_account_logsUncheckedCreateWithoutLandAccountInput[]
-    connectOrCreate?: land_account_logsCreateOrConnectWithoutLandAccountInput | land_account_logsCreateOrConnectWithoutLandAccountInput[]
-    upsert?: land_account_logsUpsertWithWhereUniqueWithoutLandAccountInput | land_account_logsUpsertWithWhereUniqueWithoutLandAccountInput[]
-    createMany?: land_account_logsCreateManyLandAccountInputEnvelope
-    set?: land_account_logsWhereUniqueInput | land_account_logsWhereUniqueInput[]
-    disconnect?: land_account_logsWhereUniqueInput | land_account_logsWhereUniqueInput[]
-    delete?: land_account_logsWhereUniqueInput | land_account_logsWhereUniqueInput[]
-    connect?: land_account_logsWhereUniqueInput | land_account_logsWhereUniqueInput[]
-    update?: land_account_logsUpdateWithWhereUniqueWithoutLandAccountInput | land_account_logsUpdateWithWhereUniqueWithoutLandAccountInput[]
-    updateMany?: land_account_logsUpdateManyWithWhereWithoutLandAccountInput | land_account_logsUpdateManyWithWhereWithoutLandAccountInput[]
-    deleteMany?: land_account_logsScalarWhereInput | land_account_logsScalarWhereInput[]
-  }
-
-  export type land_account_reportsUpdateManyWithoutLandAccountNestedInput = {
-    create?: XOR<land_account_reportsCreateWithoutLandAccountInput, land_account_reportsUncheckedCreateWithoutLandAccountInput> | land_account_reportsCreateWithoutLandAccountInput[] | land_account_reportsUncheckedCreateWithoutLandAccountInput[]
-    connectOrCreate?: land_account_reportsCreateOrConnectWithoutLandAccountInput | land_account_reportsCreateOrConnectWithoutLandAccountInput[]
-    upsert?: land_account_reportsUpsertWithWhereUniqueWithoutLandAccountInput | land_account_reportsUpsertWithWhereUniqueWithoutLandAccountInput[]
-    createMany?: land_account_reportsCreateManyLandAccountInputEnvelope
-    set?: land_account_reportsWhereUniqueInput | land_account_reportsWhereUniqueInput[]
-    disconnect?: land_account_reportsWhereUniqueInput | land_account_reportsWhereUniqueInput[]
-    delete?: land_account_reportsWhereUniqueInput | land_account_reportsWhereUniqueInput[]
-    connect?: land_account_reportsWhereUniqueInput | land_account_reportsWhereUniqueInput[]
-    update?: land_account_reportsUpdateWithWhereUniqueWithoutLandAccountInput | land_account_reportsUpdateWithWhereUniqueWithoutLandAccountInput[]
-    updateMany?: land_account_reportsUpdateManyWithWhereWithoutLandAccountInput | land_account_reportsUpdateManyWithWhereWithoutLandAccountInput[]
-    deleteMany?: land_account_reportsScalarWhereInput | land_account_reportsScalarWhereInput[]
-  }
-
-  export type land_account_logsUncheckedUpdateManyWithoutLandAccountNestedInput = {
-    create?: XOR<land_account_logsCreateWithoutLandAccountInput, land_account_logsUncheckedCreateWithoutLandAccountInput> | land_account_logsCreateWithoutLandAccountInput[] | land_account_logsUncheckedCreateWithoutLandAccountInput[]
-    connectOrCreate?: land_account_logsCreateOrConnectWithoutLandAccountInput | land_account_logsCreateOrConnectWithoutLandAccountInput[]
-    upsert?: land_account_logsUpsertWithWhereUniqueWithoutLandAccountInput | land_account_logsUpsertWithWhereUniqueWithoutLandAccountInput[]
-    createMany?: land_account_logsCreateManyLandAccountInputEnvelope
-    set?: land_account_logsWhereUniqueInput | land_account_logsWhereUniqueInput[]
-    disconnect?: land_account_logsWhereUniqueInput | land_account_logsWhereUniqueInput[]
-    delete?: land_account_logsWhereUniqueInput | land_account_logsWhereUniqueInput[]
-    connect?: land_account_logsWhereUniqueInput | land_account_logsWhereUniqueInput[]
-    update?: land_account_logsUpdateWithWhereUniqueWithoutLandAccountInput | land_account_logsUpdateWithWhereUniqueWithoutLandAccountInput[]
-    updateMany?: land_account_logsUpdateManyWithWhereWithoutLandAccountInput | land_account_logsUpdateManyWithWhereWithoutLandAccountInput[]
-    deleteMany?: land_account_logsScalarWhereInput | land_account_logsScalarWhereInput[]
-  }
-
-  export type land_account_reportsUncheckedUpdateManyWithoutLandAccountNestedInput = {
-    create?: XOR<land_account_reportsCreateWithoutLandAccountInput, land_account_reportsUncheckedCreateWithoutLandAccountInput> | land_account_reportsCreateWithoutLandAccountInput[] | land_account_reportsUncheckedCreateWithoutLandAccountInput[]
-    connectOrCreate?: land_account_reportsCreateOrConnectWithoutLandAccountInput | land_account_reportsCreateOrConnectWithoutLandAccountInput[]
-    upsert?: land_account_reportsUpsertWithWhereUniqueWithoutLandAccountInput | land_account_reportsUpsertWithWhereUniqueWithoutLandAccountInput[]
-    createMany?: land_account_reportsCreateManyLandAccountInputEnvelope
-    set?: land_account_reportsWhereUniqueInput | land_account_reportsWhereUniqueInput[]
-    disconnect?: land_account_reportsWhereUniqueInput | land_account_reportsWhereUniqueInput[]
-    delete?: land_account_reportsWhereUniqueInput | land_account_reportsWhereUniqueInput[]
-    connect?: land_account_reportsWhereUniqueInput | land_account_reportsWhereUniqueInput[]
-    update?: land_account_reportsUpdateWithWhereUniqueWithoutLandAccountInput | land_account_reportsUpdateWithWhereUniqueWithoutLandAccountInput[]
-    updateMany?: land_account_reportsUpdateManyWithWhereWithoutLandAccountInput | land_account_reportsUpdateManyWithWhereWithoutLandAccountInput[]
-    deleteMany?: land_account_reportsScalarWhereInput | land_account_reportsScalarWhereInput[]
-  }
-
-  export type land_accountsCreateNestedOneWithoutLogsInput = {
-    create?: XOR<land_accountsCreateWithoutLogsInput, land_accountsUncheckedCreateWithoutLogsInput>
-    connectOrCreate?: land_accountsCreateOrConnectWithoutLogsInput
-    connect?: land_accountsWhereUniqueInput
-  }
-
-  export type land_accountsUpdateOneRequiredWithoutLogsNestedInput = {
-    create?: XOR<land_accountsCreateWithoutLogsInput, land_accountsUncheckedCreateWithoutLogsInput>
-    connectOrCreate?: land_accountsCreateOrConnectWithoutLogsInput
-    upsert?: land_accountsUpsertWithoutLogsInput
-    connect?: land_accountsWhereUniqueInput
-    update?: XOR<XOR<land_accountsUpdateToOneWithWhereWithoutLogsInput, land_accountsUpdateWithoutLogsInput>, land_accountsUncheckedUpdateWithoutLogsInput>
-  }
-
-  export type land_accountsCreateNestedOneWithoutReportsInput = {
-    create?: XOR<land_accountsCreateWithoutReportsInput, land_accountsUncheckedCreateWithoutReportsInput>
-    connectOrCreate?: land_accountsCreateOrConnectWithoutReportsInput
-    connect?: land_accountsWhereUniqueInput
-  }
-
-  export type land_accountsUpdateOneRequiredWithoutReportsNestedInput = {
-    create?: XOR<land_accountsCreateWithoutReportsInput, land_accountsUncheckedCreateWithoutReportsInput>
-    connectOrCreate?: land_accountsCreateOrConnectWithoutReportsInput
-    upsert?: land_accountsUpsertWithoutReportsInput
-    connect?: land_accountsWhereUniqueInput
-    update?: XOR<XOR<land_accountsUpdateToOneWithWhereWithoutReportsInput, land_accountsUpdateWithoutReportsInput>, land_accountsUncheckedUpdateWithoutReportsInput>
   }
 
   export type Enumusers_userTypeFieldUpdateOperationsInput = {
@@ -35176,353 +36201,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumusers_userTypeFilter<$PrismaModel>
     _max?: NestedEnumusers_userTypeFilter<$PrismaModel>
-  }
-
-  export type land_account_logsCreateWithoutLandAccountInput = {
-    id: string
-    detail: string
-    amount?: Decimal | DecimalJsLike | number | string
-    note?: string | null
-    adminId?: string | null
-    adminName?: string | null
-    createdAt?: Date | string
-    updatedAt: Date | string
-    deletedAt?: Date | string | null
-  }
-
-  export type land_account_logsUncheckedCreateWithoutLandAccountInput = {
-    id: string
-    detail: string
-    amount?: Decimal | DecimalJsLike | number | string
-    note?: string | null
-    adminId?: string | null
-    adminName?: string | null
-    createdAt?: Date | string
-    updatedAt: Date | string
-    deletedAt?: Date | string | null
-  }
-
-  export type land_account_logsCreateOrConnectWithoutLandAccountInput = {
-    where: land_account_logsWhereUniqueInput
-    create: XOR<land_account_logsCreateWithoutLandAccountInput, land_account_logsUncheckedCreateWithoutLandAccountInput>
-  }
-
-  export type land_account_logsCreateManyLandAccountInputEnvelope = {
-    data: land_account_logsCreateManyLandAccountInput | land_account_logsCreateManyLandAccountInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type land_account_reportsCreateWithoutLandAccountInput = {
-    id: string
-    detail: string
-    amount?: Decimal | DecimalJsLike | number | string
-    note?: string | null
-    accountBalance?: Decimal | DecimalJsLike | number | string | null
-    adminId?: string | null
-    adminName?: string | null
-    createdAt?: Date | string
-    updatedAt: Date | string
-    deletedAt?: Date | string | null
-  }
-
-  export type land_account_reportsUncheckedCreateWithoutLandAccountInput = {
-    id: string
-    detail: string
-    amount?: Decimal | DecimalJsLike | number | string
-    note?: string | null
-    accountBalance?: Decimal | DecimalJsLike | number | string | null
-    adminId?: string | null
-    adminName?: string | null
-    createdAt?: Date | string
-    updatedAt: Date | string
-    deletedAt?: Date | string | null
-  }
-
-  export type land_account_reportsCreateOrConnectWithoutLandAccountInput = {
-    where: land_account_reportsWhereUniqueInput
-    create: XOR<land_account_reportsCreateWithoutLandAccountInput, land_account_reportsUncheckedCreateWithoutLandAccountInput>
-  }
-
-  export type land_account_reportsCreateManyLandAccountInputEnvelope = {
-    data: land_account_reportsCreateManyLandAccountInput | land_account_reportsCreateManyLandAccountInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type land_account_logsUpsertWithWhereUniqueWithoutLandAccountInput = {
-    where: land_account_logsWhereUniqueInput
-    update: XOR<land_account_logsUpdateWithoutLandAccountInput, land_account_logsUncheckedUpdateWithoutLandAccountInput>
-    create: XOR<land_account_logsCreateWithoutLandAccountInput, land_account_logsUncheckedCreateWithoutLandAccountInput>
-  }
-
-  export type land_account_logsUpdateWithWhereUniqueWithoutLandAccountInput = {
-    where: land_account_logsWhereUniqueInput
-    data: XOR<land_account_logsUpdateWithoutLandAccountInput, land_account_logsUncheckedUpdateWithoutLandAccountInput>
-  }
-
-  export type land_account_logsUpdateManyWithWhereWithoutLandAccountInput = {
-    where: land_account_logsScalarWhereInput
-    data: XOR<land_account_logsUpdateManyMutationInput, land_account_logsUncheckedUpdateManyWithoutLandAccountInput>
-  }
-
-  export type land_account_logsScalarWhereInput = {
-    AND?: land_account_logsScalarWhereInput | land_account_logsScalarWhereInput[]
-    OR?: land_account_logsScalarWhereInput[]
-    NOT?: land_account_logsScalarWhereInput | land_account_logsScalarWhereInput[]
-    id?: StringFilter<"land_account_logs"> | string
-    landAccountId?: StringFilter<"land_account_logs"> | string
-    detail?: StringFilter<"land_account_logs"> | string
-    amount?: DecimalFilter<"land_account_logs"> | Decimal | DecimalJsLike | number | string
-    note?: StringNullableFilter<"land_account_logs"> | string | null
-    adminId?: StringNullableFilter<"land_account_logs"> | string | null
-    adminName?: StringNullableFilter<"land_account_logs"> | string | null
-    createdAt?: DateTimeFilter<"land_account_logs"> | Date | string
-    updatedAt?: DateTimeFilter<"land_account_logs"> | Date | string
-    deletedAt?: DateTimeNullableFilter<"land_account_logs"> | Date | string | null
-  }
-
-  export type land_account_reportsUpsertWithWhereUniqueWithoutLandAccountInput = {
-    where: land_account_reportsWhereUniqueInput
-    update: XOR<land_account_reportsUpdateWithoutLandAccountInput, land_account_reportsUncheckedUpdateWithoutLandAccountInput>
-    create: XOR<land_account_reportsCreateWithoutLandAccountInput, land_account_reportsUncheckedCreateWithoutLandAccountInput>
-  }
-
-  export type land_account_reportsUpdateWithWhereUniqueWithoutLandAccountInput = {
-    where: land_account_reportsWhereUniqueInput
-    data: XOR<land_account_reportsUpdateWithoutLandAccountInput, land_account_reportsUncheckedUpdateWithoutLandAccountInput>
-  }
-
-  export type land_account_reportsUpdateManyWithWhereWithoutLandAccountInput = {
-    where: land_account_reportsScalarWhereInput
-    data: XOR<land_account_reportsUpdateManyMutationInput, land_account_reportsUncheckedUpdateManyWithoutLandAccountInput>
-  }
-
-  export type land_account_reportsScalarWhereInput = {
-    AND?: land_account_reportsScalarWhereInput | land_account_reportsScalarWhereInput[]
-    OR?: land_account_reportsScalarWhereInput[]
-    NOT?: land_account_reportsScalarWhereInput | land_account_reportsScalarWhereInput[]
-    id?: StringFilter<"land_account_reports"> | string
-    landAccountId?: StringFilter<"land_account_reports"> | string
-    detail?: StringFilter<"land_account_reports"> | string
-    amount?: DecimalFilter<"land_account_reports"> | Decimal | DecimalJsLike | number | string
-    note?: StringNullableFilter<"land_account_reports"> | string | null
-    accountBalance?: DecimalNullableFilter<"land_account_reports"> | Decimal | DecimalJsLike | number | string | null
-    adminId?: StringNullableFilter<"land_account_reports"> | string | null
-    adminName?: StringNullableFilter<"land_account_reports"> | string | null
-    createdAt?: DateTimeFilter<"land_account_reports"> | Date | string
-    updatedAt?: DateTimeFilter<"land_account_reports"> | Date | string
-    deletedAt?: DateTimeNullableFilter<"land_account_reports"> | Date | string | null
-  }
-
-  export type land_accountsCreateWithoutLogsInput = {
-    id: string
-    accountName: string
-    accountBalance?: Decimal | DecimalJsLike | number | string
-    createdAt?: Date | string
-    updatedAt: Date | string
-    deletedAt?: Date | string | null
-    reports?: land_account_reportsCreateNestedManyWithoutLandAccountInput
-  }
-
-  export type land_accountsUncheckedCreateWithoutLogsInput = {
-    id: string
-    accountName: string
-    accountBalance?: Decimal | DecimalJsLike | number | string
-    createdAt?: Date | string
-    updatedAt: Date | string
-    deletedAt?: Date | string | null
-    reports?: land_account_reportsUncheckedCreateNestedManyWithoutLandAccountInput
-  }
-
-  export type land_accountsCreateOrConnectWithoutLogsInput = {
-    where: land_accountsWhereUniqueInput
-    create: XOR<land_accountsCreateWithoutLogsInput, land_accountsUncheckedCreateWithoutLogsInput>
-  }
-
-  export type land_accountsUpsertWithoutLogsInput = {
-    update: XOR<land_accountsUpdateWithoutLogsInput, land_accountsUncheckedUpdateWithoutLogsInput>
-    create: XOR<land_accountsCreateWithoutLogsInput, land_accountsUncheckedCreateWithoutLogsInput>
-    where?: land_accountsWhereInput
-  }
-
-  export type land_accountsUpdateToOneWithWhereWithoutLogsInput = {
-    where?: land_accountsWhereInput
-    data: XOR<land_accountsUpdateWithoutLogsInput, land_accountsUncheckedUpdateWithoutLogsInput>
-  }
-
-  export type land_accountsUpdateWithoutLogsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    accountName?: StringFieldUpdateOperationsInput | string
-    accountBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reports?: land_account_reportsUpdateManyWithoutLandAccountNestedInput
-  }
-
-  export type land_accountsUncheckedUpdateWithoutLogsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    accountName?: StringFieldUpdateOperationsInput | string
-    accountBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reports?: land_account_reportsUncheckedUpdateManyWithoutLandAccountNestedInput
-  }
-
-  export type land_accountsCreateWithoutReportsInput = {
-    id: string
-    accountName: string
-    accountBalance?: Decimal | DecimalJsLike | number | string
-    createdAt?: Date | string
-    updatedAt: Date | string
-    deletedAt?: Date | string | null
-    logs?: land_account_logsCreateNestedManyWithoutLandAccountInput
-  }
-
-  export type land_accountsUncheckedCreateWithoutReportsInput = {
-    id: string
-    accountName: string
-    accountBalance?: Decimal | DecimalJsLike | number | string
-    createdAt?: Date | string
-    updatedAt: Date | string
-    deletedAt?: Date | string | null
-    logs?: land_account_logsUncheckedCreateNestedManyWithoutLandAccountInput
-  }
-
-  export type land_accountsCreateOrConnectWithoutReportsInput = {
-    where: land_accountsWhereUniqueInput
-    create: XOR<land_accountsCreateWithoutReportsInput, land_accountsUncheckedCreateWithoutReportsInput>
-  }
-
-  export type land_accountsUpsertWithoutReportsInput = {
-    update: XOR<land_accountsUpdateWithoutReportsInput, land_accountsUncheckedUpdateWithoutReportsInput>
-    create: XOR<land_accountsCreateWithoutReportsInput, land_accountsUncheckedCreateWithoutReportsInput>
-    where?: land_accountsWhereInput
-  }
-
-  export type land_accountsUpdateToOneWithWhereWithoutReportsInput = {
-    where?: land_accountsWhereInput
-    data: XOR<land_accountsUpdateWithoutReportsInput, land_accountsUncheckedUpdateWithoutReportsInput>
-  }
-
-  export type land_accountsUpdateWithoutReportsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    accountName?: StringFieldUpdateOperationsInput | string
-    accountBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    logs?: land_account_logsUpdateManyWithoutLandAccountNestedInput
-  }
-
-  export type land_accountsUncheckedUpdateWithoutReportsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    accountName?: StringFieldUpdateOperationsInput | string
-    accountBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    logs?: land_account_logsUncheckedUpdateManyWithoutLandAccountNestedInput
-  }
-
-  export type land_account_logsCreateManyLandAccountInput = {
-    id: string
-    detail: string
-    amount?: Decimal | DecimalJsLike | number | string
-    note?: string | null
-    adminId?: string | null
-    adminName?: string | null
-    createdAt?: Date | string
-    updatedAt: Date | string
-    deletedAt?: Date | string | null
-  }
-
-  export type land_account_reportsCreateManyLandAccountInput = {
-    id: string
-    detail: string
-    amount?: Decimal | DecimalJsLike | number | string
-    note?: string | null
-    accountBalance?: Decimal | DecimalJsLike | number | string | null
-    adminId?: string | null
-    adminName?: string | null
-    createdAt?: Date | string
-    updatedAt: Date | string
-    deletedAt?: Date | string | null
-  }
-
-  export type land_account_logsUpdateWithoutLandAccountInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    detail?: StringFieldUpdateOperationsInput | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    note?: NullableStringFieldUpdateOperationsInput | string | null
-    adminId?: NullableStringFieldUpdateOperationsInput | string | null
-    adminName?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type land_account_logsUncheckedUpdateWithoutLandAccountInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    detail?: StringFieldUpdateOperationsInput | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    note?: NullableStringFieldUpdateOperationsInput | string | null
-    adminId?: NullableStringFieldUpdateOperationsInput | string | null
-    adminName?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type land_account_logsUncheckedUpdateManyWithoutLandAccountInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    detail?: StringFieldUpdateOperationsInput | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    note?: NullableStringFieldUpdateOperationsInput | string | null
-    adminId?: NullableStringFieldUpdateOperationsInput | string | null
-    adminName?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type land_account_reportsUpdateWithoutLandAccountInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    detail?: StringFieldUpdateOperationsInput | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    note?: NullableStringFieldUpdateOperationsInput | string | null
-    accountBalance?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    adminId?: NullableStringFieldUpdateOperationsInput | string | null
-    adminName?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type land_account_reportsUncheckedUpdateWithoutLandAccountInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    detail?: StringFieldUpdateOperationsInput | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    note?: NullableStringFieldUpdateOperationsInput | string | null
-    accountBalance?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    adminId?: NullableStringFieldUpdateOperationsInput | string | null
-    adminName?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type land_account_reportsUncheckedUpdateManyWithoutLandAccountInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    detail?: StringFieldUpdateOperationsInput | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    note?: NullableStringFieldUpdateOperationsInput | string | null
-    accountBalance?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    adminId?: NullableStringFieldUpdateOperationsInput | string | null
-    adminName?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
 

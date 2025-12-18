@@ -205,7 +205,6 @@ exports.Prisma.Loan_applicationsScalarFieldEnum = {
   customerId: 'customerId',
   agentId: 'agentId',
   loanType: 'loanType',
-  hirePurchase: 'hirePurchase',
   status: 'status',
   currentStep: 'currentStep',
   completedSteps: 'completedSteps',
@@ -230,7 +229,13 @@ exports.Prisma.Loan_applicationsScalarFieldEnum = {
   reviewedBy: 'reviewedBy',
   reviewNotes: 'reviewNotes',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  hirePurchase: 'hirePurchase',
+  interestRate: 'interestRate',
+  operationFee: 'operationFee',
+  otherFee: 'otherFee',
+  termMonths: 'termMonths',
+  transferFee: 'transferFee'
 };
 
 exports.Prisma.Loan_installmentsScalarFieldEnum = {
@@ -245,15 +250,15 @@ exports.Prisma.Loan_installmentsScalarFieldEnum = {
   paidDate: 'paidDate',
   paidAmount: 'paidAmount',
   isLate: 'isLate',
-  paymentProofUrl: 'paymentProofUrl',
-  paymentProofUploadedAt: 'paymentProofUploadedAt',
-  refNo: 'refNo',
-  filePayload: 'filePayload',
-  note: 'note',
   lateDays: 'lateDays',
   lateFee: 'lateFee',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  filePayload: 'filePayload',
+  note: 'note',
+  paymentProofUploadedAt: 'paymentProofUploadedAt',
+  paymentProofUrl: 'paymentProofUrl',
+  refNo: 'refNo'
 };
 
 exports.Prisma.LoansScalarFieldEnum = {
@@ -263,7 +268,6 @@ exports.Prisma.LoansScalarFieldEnum = {
   agentId: 'agentId',
   applicationId: 'applicationId',
   loanType: 'loanType',
-  hirePurchase: 'hirePurchase',
   status: 'status',
   principalAmount: 'principalAmount',
   interestRate: 'interestRate',
@@ -278,11 +282,15 @@ exports.Prisma.LoansScalarFieldEnum = {
   titleDeedNumber: 'titleDeedNumber',
   collateralValue: 'collateralValue',
   collateralDetails: 'collateralDetails',
-  linkMap: 'linkMap',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  hirePurchase: 'hirePurchase',
   landAccountId: 'landAccountId',
   landAccountName: 'landAccountName',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  linkMap: 'linkMap',
+  estimatedValue: 'estimatedValue',
+  valuationDate: 'valuationDate',
+  valuationResult: 'valuationResult'
 };
 
 exports.Prisma.NotificationsScalarFieldEnum = {
@@ -482,6 +490,14 @@ exports.Prisma.UsersScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.Real_investmentScalarFieldEnum = {
+  id: 'id',
+  investment: 'investment',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -586,9 +602,9 @@ exports.Prisma.loan_applicationsOrderByRelevanceFieldEnum = {
 exports.Prisma.loan_installmentsOrderByRelevanceFieldEnum = {
   id: 'id',
   loanId: 'loanId',
+  note: 'note',
   paymentProofUrl: 'paymentProofUrl',
-  refNo: 'refNo',
-  note: 'note'
+  refNo: 'refNo'
 };
 
 exports.Prisma.loansOrderByRelevanceFieldEnum = {
@@ -598,8 +614,8 @@ exports.Prisma.loansOrderByRelevanceFieldEnum = {
   agentId: 'agentId',
   applicationId: 'applicationId',
   titleDeedNumber: 'titleDeedNumber',
-  linkMap: 'linkMap',
-  landAccountName: 'landAccountName'
+  landAccountName: 'landAccountName',
+  linkMap: 'linkMap'
 };
 
 exports.Prisma.notificationsOrderByRelevanceFieldEnum = {
@@ -724,6 +740,10 @@ exports.Prisma.usersOrderByRelevanceFieldEnum = {
   pin: 'pin',
   otpSecret: 'otpSecret'
 };
+
+exports.Prisma.real_investmentOrderByRelevanceFieldEnum = {
+  id: 'id'
+};
 exports.admin_permissions_permission = exports.$Enums.admin_permissions_permission = {
   VIEW_APPLICATIONS: 'VIEW_APPLICATIONS',
   APPROVE_APPLICATIONS: 'APPROVE_APPLICATIONS',
@@ -835,7 +855,9 @@ exports.documents_docType = exports.$Enums.documents_docType = {
 
 exports.document_title_lists_docType = exports.$Enums.document_title_lists_docType = {
   RECEIPT: 'RECEIPT',
-  PAYMENT_VOUCHER: 'PAYMENT_VOUCHER'
+  PAYMENT_VOUCHER: 'PAYMENT_VOUCHER',
+  DISCOUNT_NOTE: 'DISCOUNT_NOTE',
+  EXPENSE: 'EXPENSE'
 };
 
 exports.users_userType = exports.$Enums.users_userType = {
@@ -867,7 +889,8 @@ exports.Prisma.ModelName = {
   land_account_logs: 'land_account_logs',
   land_account_reports: 'land_account_reports',
   user_profiles: 'user_profiles',
-  users: 'users'
+  users: 'users',
+  real_investment: 'real_investment'
 };
 
 /**

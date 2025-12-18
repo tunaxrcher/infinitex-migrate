@@ -593,6 +593,8 @@ async function migrateLoans() {
           }
 
           // Create loan application
+          const termMonths = (loan.loan_payment_year_counter || 1) * 12;
+          
           await newDb.loan_applications.create({
             data: {
               id: applicationId,
@@ -612,6 +614,12 @@ async function migrateLoans() {
               submittedAt: loan.created_at || new Date(),
               reviewedAt: loan.created_at || new Date(),
               supportingImages: [],
+              // ค่าใช้จ่ายต่าง ๆ
+              operationFee: helpers.toDecimal(loan.loan_payment_process),   // ค่าดำเนินการ
+              transferFee: helpers.toDecimal(loan.loan_tranfer),            // ค่าโอน
+              otherFee: helpers.toDecimal(loan.loan_payment_other),         // ค่าใช้จ่ายอื่น ๆ
+              interestRate: helpers.toDecimal(loan.loan_payment_interest),  // อัตราดอกเบี้ย
+              termMonths,                                                   // จำนวนเดือน
               createdAt: loan.created_at || new Date(),
               updatedAt: loan.updated_at || new Date(),
             }
@@ -619,7 +627,6 @@ async function migrateLoans() {
 
           // Create loan for all statuses (including CANCELLED)
           const loanId = idMapper.create('loans', loan.id);
-          const termMonths = (loan.loan_payment_year_counter || 1) * 12;
 
           await newDb.loans.create({
               data: {

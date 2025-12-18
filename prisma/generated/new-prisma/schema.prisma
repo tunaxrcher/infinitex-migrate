@@ -12,7 +12,7 @@ model admin_permissions {
   id         String                       @id
   adminId    String
   permission admin_permissions_permission
-  grantedAt  DateTime                     @default(now())
+  grantedAt  DateTime                     @default(now()) @db.DateTime(0)
   grantedBy  String?                      @db.VarChar(255)
 
   @@unique([adminId, permission])
@@ -26,8 +26,8 @@ model admin_sessions {
   deviceInfo String?  @db.VarChar(500)
   ipAddress  String?  @db.VarChar(45)
   userAgent  String?  @db.Text
-  expiresAt  DateTime
-  createdAt  DateTime @default(now())
+  expiresAt  DateTime @db.DateTime(0)
+  createdAt  DateTime @default(now()) @db.DateTime(0)
 
   @@index([adminId])
   @@index([token])
@@ -41,16 +41,16 @@ model admins {
   lastName    String      @db.VarChar(255)
   role        admins_role @default(LOAN_OFFICER)
   isActive    Boolean     @default(true)
-  lastLoginAt DateTime?
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime
+  lastLoginAt DateTime?   @db.DateTime(0)
+  createdAt   DateTime    @default(now()) @db.DateTime(0)
+  updatedAt   DateTime    @db.DateTime(0)
 }
 
 model agent_customers {
   id         String   @id
   agentId    String
   customerId String
-  assignedAt DateTime @default(now())
+  assignedAt DateTime @default(now()) @db.DateTime(0)
   isActive   Boolean  @default(true)
 
   @@unique([agentId, customerId])
@@ -67,7 +67,7 @@ model audit_logs {
   newData   Json?
   ipAddress String?  @db.VarChar(45)
   userAgent String?  @db.Text
-  createdAt DateTime @default(now())
+  createdAt DateTime @default(now()) @db.DateTime(0)
   adminId   String?  @db.VarChar(255)
 
   @@index([adminId])
@@ -84,10 +84,10 @@ model banners {
   isActive        Boolean   @default(true)
   sortOrder       Int       @default(0)
   targetUserTypes Json
-  startDate       DateTime?
-  endDate         DateTime?
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime
+  startDate       DateTime? @db.DateTime(0)
+  endDate         DateTime? @db.DateTime(0)
+  createdAt       DateTime  @default(now()) @db.DateTime(0)
+  updatedAt       DateTime  @db.DateTime(0)
 
   @@index([isActive])
   @@index([sortOrder])
@@ -101,7 +101,7 @@ model coin_transactions {
   description String                 @db.VarChar(500)
   loanId      String?
   rewardId    String?
-  createdAt   DateTime               @default(now())
+  createdAt   DateTime               @default(now()) @db.DateTime(0)
 
   @@index([type])
   @@index([userId])
@@ -112,7 +112,6 @@ model loan_applications {
   customerId        String?
   agentId           String?
   loanType          loan_applications_loanType @default(HOUSE_LAND_MORTGAGE)
-  hirePurchase      Boolean                    @default(false)
   status            loan_applications_status   @default(DRAFT)
   currentStep       Int                        @default(1)
   completedSteps    Json
@@ -132,12 +131,18 @@ model loan_applications {
   propertyLocation  String?                    @db.Text
   landNumber        String?                    @db.VarChar(100)
   ownerName         String?                    @db.VarChar(255)
-  submittedAt       DateTime?
-  reviewedAt        DateTime?
+  submittedAt       DateTime?                  @db.DateTime(0)
+  reviewedAt        DateTime?                  @db.DateTime(0)
   reviewedBy        String?
   reviewNotes       String?                    @db.Text
-  createdAt         DateTime                   @default(now())
-  updatedAt         DateTime
+  createdAt         DateTime                   @default(now()) @db.DateTime(0)
+  updatedAt         DateTime                   @db.DateTime(0)
+  hirePurchase      Boolean                    @default(false)
+  interestRate      Decimal?                   @db.Decimal(5, 2)
+  operationFee      Decimal?                   @default(0.00) @db.Decimal(15, 2)
+  otherFee          Decimal?                   @default(0.00) @db.Decimal(15, 2)
+  termMonths        Int?                       @default(48)
+  transferFee       Decimal?                   @default(0.00) @db.Decimal(15, 2)
 
   @@index([agentId])
   @@index([customerId])
@@ -146,29 +151,26 @@ model loan_applications {
 }
 
 model loan_installments {
-  id                String    @id
-  loanId            String
-  installmentNumber Int
-  dueDate           DateTime
-  principalAmount   Decimal   @db.Decimal(15, 2)
-  interestAmount    Decimal   @db.Decimal(15, 2)
-  totalAmount       Decimal   @db.Decimal(15, 2)
-  isPaid            Boolean   @default(false)
-  paidDate          DateTime?
-  paidAmount        Decimal?  @db.Decimal(15, 2)
-  isLate            Boolean   @default(false)
-
-  // Payment proof & additional information
-  paymentProofUrl        String?   @db.VarChar(500)
-  paymentProofUploadedAt DateTime? @db.DateTime(0)
-  refNo                  String?   @db.VarChar(100)
+  id                     String    @id
+  loanId                 String
+  installmentNumber      Int
+  dueDate                DateTime  @db.DateTime(0)
+  principalAmount        Decimal   @db.Decimal(15, 2)
+  interestAmount         Decimal   @db.Decimal(15, 2)
+  totalAmount            Decimal   @db.Decimal(15, 2)
+  isPaid                 Boolean   @default(false)
+  paidDate               DateTime? @db.DateTime(0)
+  paidAmount             Decimal?  @db.Decimal(15, 2)
+  isLate                 Boolean   @default(false)
+  lateDays               Int?
+  lateFee                Decimal?  @db.Decimal(15, 2)
+  createdAt              DateTime  @default(now()) @db.DateTime(0)
+  updatedAt              DateTime  @db.DateTime(0)
   filePayload            Json?
   note                   String?   @db.Text
-
-  lateDays  Int?
-  lateFee   Decimal? @db.Decimal(15, 2)
-  createdAt DateTime @default(now())
-  updatedAt DateTime
+  paymentProofUploadedAt DateTime? @db.DateTime(0)
+  paymentProofUrl        String?   @db.VarChar(500)
+  refNo                  String?   @db.VarChar(100)
 
   @@unique([loanId, installmentNumber])
   @@index([dueDate])
@@ -182,7 +184,6 @@ model loans {
   agentId            String?
   applicationId      String         @unique
   loanType           loans_loanType
-  hirePurchase       Boolean        @default(false)
   status             loans_status   @default(ACTIVE)
   principalAmount    Decimal        @db.Decimal(15, 2)
   interestRate       Decimal        @db.Decimal(5, 2)
@@ -191,17 +192,21 @@ model loans {
   currentInstallment Int            @default(0)
   totalInstallments  Int
   remainingBalance   Decimal        @db.Decimal(15, 2)
-  nextPaymentDate    DateTime
-  contractDate       DateTime
-  expiryDate         DateTime
+  nextPaymentDate    DateTime       @db.DateTime(0)
+  contractDate       DateTime       @db.DateTime(0)
+  expiryDate         DateTime       @db.DateTime(0)
   titleDeedNumber    String?        @db.VarChar(100)
   collateralValue    Decimal?       @db.Decimal(15, 2)
   collateralDetails  Json?
-  linkMap            String?        @db.Text
+  createdAt          DateTime       @default(now()) @db.DateTime(0)
+  updatedAt          DateTime       @db.DateTime(0)
+  hirePurchase       Boolean        @default(false)
   landAccountId      Int?
   landAccountName    String?        @db.VarChar(200)
-  createdAt          DateTime       @default(now())
-  updatedAt          DateTime
+  linkMap            String?        @db.Text
+  estimatedValue     Decimal?       @db.Decimal(15, 2)
+  valuationDate      DateTime?      @db.DateTime(0)
+  valuationResult    Json?
 
   @@index([agentId])
   @@index([customerId])
@@ -217,9 +222,9 @@ model notifications {
   message   String             @db.Text
   actionUrl String?            @db.VarChar(500)
   isRead    Boolean            @default(false)
-  readAt    DateTime?
-  createdAt DateTime           @default(now())
-  updatedAt DateTime
+  readAt    DateTime?          @db.DateTime(0)
+  createdAt DateTime           @default(now()) @db.DateTime(0)
+  updatedAt DateTime           @db.DateTime(0)
 
   @@index([isRead])
   @@index([userId])
@@ -240,13 +245,13 @@ model payments {
   bankName        String?                @db.VarChar(100)
   accountNumber   String?                @db.VarChar(50)
   accountName     String?                @db.VarChar(255)
-  dueDate         DateTime
-  paidDate        DateTime?
+  dueDate         DateTime               @db.DateTime(0)
+  paidDate        DateTime?              @db.DateTime(0)
   principalAmount Decimal                @default(0.00) @db.Decimal(15, 2)
   interestAmount  Decimal                @default(0.00) @db.Decimal(15, 2)
   feeAmount       Decimal                @default(0.00) @db.Decimal(15, 2)
-  createdAt       DateTime               @default(now())
-  updatedAt       DateTime
+  createdAt       DateTime               @default(now()) @db.DateTime(0)
+  updatedAt       DateTime               @db.DateTime(0)
 
   @@index([installmentId])
   @@index([loanId])
@@ -266,10 +271,10 @@ model privileges {
   targetUserTypes Json
   coinCost        Int?
   requiresLoan    Boolean   @default(false)
-  validFrom       DateTime?
-  validUntil      DateTime?
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime
+  validFrom       DateTime? @db.DateTime(0)
+  validUntil      DateTime? @db.DateTime(0)
+  createdAt       DateTime  @default(now()) @db.DateTime(0)
+  updatedAt       DateTime  @db.DateTime(0)
 
   @@index([isActive])
   @@index([sortOrder])
@@ -283,8 +288,8 @@ model reward_redemptions {
   status          reward_redemptions_status @default(PENDING)
   deliveryAddress String?                   @db.Text
   trackingNumber  String?                   @db.VarChar(100)
-  redeemedAt      DateTime                  @default(now())
-  deliveredAt     DateTime?
+  redeemedAt      DateTime                  @default(now()) @db.DateTime(0)
+  deliveredAt     DateTime?                 @db.DateTime(0)
 
   @@index([rewardId])
   @@index([status])
@@ -299,8 +304,8 @@ model rewards {
   imageUrl    String?  @db.VarChar(500)
   isActive    Boolean  @default(true)
   stockCount  Int?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime
+  createdAt   DateTime @default(now()) @db.DateTime(0)
+  updatedAt   DateTime @db.DateTime(0)
 
   @@index([isActive])
 }
@@ -312,8 +317,8 @@ model sessions {
   deviceInfo String?  @db.VarChar(500)
   ipAddress  String?  @db.VarChar(45)
   userAgent  String?  @db.Text
-  expiresAt  DateTime
-  createdAt  DateTime @default(now())
+  expiresAt  DateTime @db.DateTime(0)
+  createdAt  DateTime @default(now()) @db.DateTime(0)
 
   @@index([token])
   @@index([userId])
@@ -324,7 +329,7 @@ model system_config {
   key         String   @unique @db.VarChar(255)
   value       String   @db.Text
   description String?  @db.Text
-  updatedAt   DateTime
+  updatedAt   DateTime @db.DateTime(0)
 
   @@index([key])
 }
@@ -333,21 +338,21 @@ model documents {
   id           String            @id
   docType      documents_docType
   docNumber    String            @db.VarChar(100)
-  docDate      DateTime
+  docDate      DateTime          @db.DateTime(0)
   title        String            @db.Text
   price        Decimal           @db.Decimal(20, 2)
   cashFlowName String            @db.VarChar(200)
   employeeId   Int               @default(0)
   username     String?           @db.VarChar(50)
   docFile      String?           @db.Text
-  docFileDate  DateTime?
+  docFileDate  DateTime?         @db.DateTime(0)
   docFileTime  String?           @db.VarChar(10)
   docFilePrice Decimal?          @db.Decimal(20, 2)
   filePath     String?           @db.Text
   note         String?           @db.Text
-  createdAt    DateTime          @default(now())
-  updatedAt    DateTime
-  deletedAt    DateTime?
+  createdAt    DateTime          @default(now()) @db.DateTime(0)
+  updatedAt    DateTime          @db.DateTime(0)
+  deletedAt    DateTime?         @db.DateTime(0)
 
   @@index([docType])
   @@index([docNumber])
@@ -359,38 +364,35 @@ model document_title_lists {
   docType   document_title_lists_docType
   title     String                       @db.Text
   note      String?                      @db.Text
-  createdAt DateTime                     @default(now())
-  updatedAt DateTime
-  deletedAt DateTime?
+  createdAt DateTime                     @default(now()) @db.DateTime(0)
+  updatedAt DateTime                     @db.DateTime(0)
+  deletedAt DateTime?                    @db.DateTime(0)
 
   @@index([docType])
 }
 
 model land_accounts {
-  id             String                 @id
-  accountName    String                 @db.VarChar(200)
-  accountBalance Decimal                @default(0.00) @db.Decimal(15, 2)
-  createdAt      DateTime               @default(now())
-  updatedAt      DateTime
-  deletedAt      DateTime?
-  logs           land_account_logs[]
-  reports        land_account_reports[]
+  id             String    @id
+  accountName    String    @db.VarChar(200)
+  accountBalance Decimal   @default(0.00) @db.Decimal(15, 2)
+  createdAt      DateTime  @default(now()) @db.DateTime(0)
+  updatedAt      DateTime  @db.DateTime(0)
+  deletedAt      DateTime? @db.DateTime(0)
 
   @@index([accountName])
 }
 
 model land_account_logs {
-  id            String        @id
+  id            String    @id
   landAccountId String
-  landAccount   land_accounts @relation(fields: [landAccountId], references: [id])
-  detail        String        @db.VarChar(200)
-  amount        Decimal       @default(0.00) @db.Decimal(15, 2)
-  note          String?       @db.VarChar(200)
+  detail        String    @db.VarChar(200)
+  amount        Decimal   @default(0.00) @db.Decimal(15, 2)
+  note          String?   @db.VarChar(200)
   adminId       String?
-  adminName     String?       @db.VarChar(200)
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime
-  deletedAt     DateTime?
+  adminName     String?   @db.VarChar(200)
+  createdAt     DateTime  @default(now()) @db.DateTime(0)
+  updatedAt     DateTime  @db.DateTime(0)
+  deletedAt     DateTime? @db.DateTime(0)
 
   @@index([landAccountId])
   @@index([adminId])
@@ -398,18 +400,17 @@ model land_account_logs {
 }
 
 model land_account_reports {
-  id             String        @id
+  id             String    @id
   landAccountId  String
-  landAccount    land_accounts @relation(fields: [landAccountId], references: [id])
-  detail         String        @db.VarChar(200)
-  amount         Decimal       @default(0.00) @db.Decimal(15, 2)
-  note           String?       @db.VarChar(200)
-  accountBalance Decimal?      @default(0.00) @db.Decimal(15, 2)
+  detail         String    @db.VarChar(200)
+  amount         Decimal   @default(0.00) @db.Decimal(15, 2)
+  note           String?   @db.VarChar(200)
+  accountBalance Decimal?  @default(0.00) @db.Decimal(15, 2)
   adminId        String?
-  adminName      String?       @db.VarChar(200)
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime
-  deletedAt      DateTime?
+  adminName      String?   @db.VarChar(200)
+  createdAt      DateTime  @default(now()) @db.DateTime(0)
+  updatedAt      DateTime  @db.DateTime(0)
+  deletedAt      DateTime? @db.DateTime(0)
 
   @@index([landAccountId])
   @@index([adminId])
@@ -422,7 +423,7 @@ model user_profiles {
   firstName           String?   @db.VarChar(255)
   lastName            String?   @db.VarChar(255)
   idCardNumber        String?   @db.VarChar(13)
-  dateOfBirth         DateTime?
+  dateOfBirth         DateTime? @db.DateTime(0)
   address             String?   @db.Text
   email               String?   @db.VarChar(255)
   lineId              String?   @db.VarChar(255)
@@ -431,8 +432,8 @@ model user_profiles {
   preferredLanguage   String    @default("th") @db.VarChar(10)
   notificationEnabled Boolean   @default(true)
   coinBalance         Int       @default(0)
-  createdAt           DateTime  @default(now())
-  updatedAt           DateTime
+  createdAt           DateTime  @default(now()) @db.DateTime(0)
+  updatedAt           DateTime  @db.DateTime(0)
 }
 
 model users {
@@ -441,12 +442,20 @@ model users {
   pin           String?        @db.VarChar(255)
   otpSecret     String?        @db.VarChar(255)
   otpEnabled    Boolean        @default(false)
-  lastOtpSentAt DateTime?
+  lastOtpSentAt DateTime?      @db.DateTime(0)
   userType      users_userType @default(CUSTOMER)
   isActive      Boolean        @default(true)
-  lastLoginAt   DateTime?
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime
+  lastLoginAt   DateTime?      @db.DateTime(0)
+  createdAt     DateTime       @default(now()) @db.DateTime(0)
+  updatedAt     DateTime       @db.DateTime(0)
+}
+
+model real_investment {
+  id         String    @id
+  investment Decimal   @db.Decimal(20, 2)
+  createdAt  DateTime  @default(now()) @db.DateTime(0)
+  updatedAt  DateTime  @db.DateTime(0)
+  deletedAt  DateTime? @db.DateTime(0)
 }
 
 enum admin_permissions_permission {
@@ -566,4 +575,6 @@ enum documents_docType {
 enum document_title_lists_docType {
   RECEIPT
   PAYMENT_VOUCHER
+  DISCOUNT_NOTE
+  EXPENSE
 }
