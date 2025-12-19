@@ -420,8 +420,6 @@ model land_account_reports {
 model user_profiles {
   id                  String    @id
   userId              String    @unique
-  firstName           String?   @db.VarChar(255)
-  lastName            String?   @db.VarChar(255)
   idCardNumber        String?   @db.VarChar(13)
   dateOfBirth         DateTime? @db.DateTime(0)
   address             String?   @db.Text
@@ -434,6 +432,7 @@ model user_profiles {
   coinBalance         Int       @default(0)
   createdAt           DateTime  @default(now()) @db.DateTime(0)
   updatedAt           DateTime  @db.DateTime(0)
+  fullName            String?   @db.VarChar(500)
 }
 
 model users {

@@ -460,8 +460,6 @@ exports.Prisma.Land_account_reportsScalarFieldEnum = {
 exports.Prisma.User_profilesScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
-  firstName: 'firstName',
-  lastName: 'lastName',
   idCardNumber: 'idCardNumber',
   dateOfBirth: 'dateOfBirth',
   address: 'address',
@@ -473,7 +471,8 @@ exports.Prisma.User_profilesScalarFieldEnum = {
   notificationEnabled: 'notificationEnabled',
   coinBalance: 'coinBalance',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  fullName: 'fullName'
 };
 
 exports.Prisma.UsersScalarFieldEnum = {
@@ -723,15 +722,14 @@ exports.Prisma.land_account_reportsOrderByRelevanceFieldEnum = {
 exports.Prisma.user_profilesOrderByRelevanceFieldEnum = {
   id: 'id',
   userId: 'userId',
-  firstName: 'firstName',
-  lastName: 'lastName',
   idCardNumber: 'idCardNumber',
   address: 'address',
   email: 'email',
   lineId: 'lineId',
   idCardFrontImage: 'idCardFrontImage',
   idCardBackImage: 'idCardBackImage',
-  preferredLanguage: 'preferredLanguage'
+  preferredLanguage: 'preferredLanguage',
+  fullName: 'fullName'
 };
 
 exports.Prisma.usersOrderByRelevanceFieldEnum = {

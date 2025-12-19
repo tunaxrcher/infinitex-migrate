@@ -211,8 +211,7 @@ async function createAgentUser() {
         data: {
           id: idMapper.create('agent_profile', 1),
           userId: agentId,
-          firstName: 'Agent',
-          lastName: 'Infinitex',
+          fullName: 'Agent Infinitex',
           preferredLanguage: 'th',
           coinBalance: 0,
           createdAt: new Date(),
@@ -431,7 +430,6 @@ async function migrateCustomers() {
 
         if (!DRY_RUN) {
           const userId = idMapper.create('loan_customer', customer.id);
-          const { firstName, lastName } = helpers.splitFullName(customer.customer_fullname);
 
           // Create user with PIN = 1234
           const pinHash = await bcrypt.hash('1234', 10);
@@ -461,8 +459,7 @@ async function migrateCustomers() {
             data: {
               id: idMapper.create('user_profiles', customer.id),
               userId,
-              firstName,
-              lastName,
+              fullName: customer.customer_fullname || undefined,
               idCardNumber: helpers.validateIdCard(customer.customer_card_id),
               dateOfBirth: helpers.toISODate(customer.customer_birthday),
               address: customer.customer_address,

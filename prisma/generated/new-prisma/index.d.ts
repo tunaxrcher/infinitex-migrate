@@ -24786,8 +24786,6 @@ export namespace Prisma {
   export type User_profilesMinAggregateOutputType = {
     id: string | null
     userId: string | null
-    firstName: string | null
-    lastName: string | null
     idCardNumber: string | null
     dateOfBirth: Date | null
     address: string | null
@@ -24800,13 +24798,12 @@ export namespace Prisma {
     coinBalance: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    fullName: string | null
   }
 
   export type User_profilesMaxAggregateOutputType = {
     id: string | null
     userId: string | null
-    firstName: string | null
-    lastName: string | null
     idCardNumber: string | null
     dateOfBirth: Date | null
     address: string | null
@@ -24819,13 +24816,12 @@ export namespace Prisma {
     coinBalance: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    fullName: string | null
   }
 
   export type User_profilesCountAggregateOutputType = {
     id: number
     userId: number
-    firstName: number
-    lastName: number
     idCardNumber: number
     dateOfBirth: number
     address: number
@@ -24838,6 +24834,7 @@ export namespace Prisma {
     coinBalance: number
     createdAt: number
     updatedAt: number
+    fullName: number
     _all: number
   }
 
@@ -24853,8 +24850,6 @@ export namespace Prisma {
   export type User_profilesMinAggregateInputType = {
     id?: true
     userId?: true
-    firstName?: true
-    lastName?: true
     idCardNumber?: true
     dateOfBirth?: true
     address?: true
@@ -24867,13 +24862,12 @@ export namespace Prisma {
     coinBalance?: true
     createdAt?: true
     updatedAt?: true
+    fullName?: true
   }
 
   export type User_profilesMaxAggregateInputType = {
     id?: true
     userId?: true
-    firstName?: true
-    lastName?: true
     idCardNumber?: true
     dateOfBirth?: true
     address?: true
@@ -24886,13 +24880,12 @@ export namespace Prisma {
     coinBalance?: true
     createdAt?: true
     updatedAt?: true
+    fullName?: true
   }
 
   export type User_profilesCountAggregateInputType = {
     id?: true
     userId?: true
-    firstName?: true
-    lastName?: true
     idCardNumber?: true
     dateOfBirth?: true
     address?: true
@@ -24905,6 +24898,7 @@ export namespace Prisma {
     coinBalance?: true
     createdAt?: true
     updatedAt?: true
+    fullName?: true
     _all?: true
   }
 
@@ -24997,8 +24991,6 @@ export namespace Prisma {
   export type User_profilesGroupByOutputType = {
     id: string
     userId: string
-    firstName: string | null
-    lastName: string | null
     idCardNumber: string | null
     dateOfBirth: Date | null
     address: string | null
@@ -25011,6 +25003,7 @@ export namespace Prisma {
     coinBalance: number
     createdAt: Date
     updatedAt: Date
+    fullName: string | null
     _count: User_profilesCountAggregateOutputType | null
     _avg: User_profilesAvgAggregateOutputType | null
     _sum: User_profilesSumAggregateOutputType | null
@@ -25035,8 +25028,6 @@ export namespace Prisma {
   export type user_profilesSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     userId?: boolean
-    firstName?: boolean
-    lastName?: boolean
     idCardNumber?: boolean
     dateOfBirth?: boolean
     address?: boolean
@@ -25049,6 +25040,7 @@ export namespace Prisma {
     coinBalance?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    fullName?: boolean
   }, ExtArgs["result"]["user_profiles"]>
 
 
@@ -25056,8 +25048,6 @@ export namespace Prisma {
   export type user_profilesSelectScalar = {
     id?: boolean
     userId?: boolean
-    firstName?: boolean
-    lastName?: boolean
     idCardNumber?: boolean
     dateOfBirth?: boolean
     address?: boolean
@@ -25070,9 +25060,10 @@ export namespace Prisma {
     coinBalance?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    fullName?: boolean
   }
 
-  export type user_profilesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "firstName" | "lastName" | "idCardNumber" | "dateOfBirth" | "address" | "email" | "lineId" | "idCardFrontImage" | "idCardBackImage" | "preferredLanguage" | "notificationEnabled" | "coinBalance" | "createdAt" | "updatedAt", ExtArgs["result"]["user_profiles"]>
+  export type user_profilesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "idCardNumber" | "dateOfBirth" | "address" | "email" | "lineId" | "idCardFrontImage" | "idCardBackImage" | "preferredLanguage" | "notificationEnabled" | "coinBalance" | "createdAt" | "updatedAt" | "fullName", ExtArgs["result"]["user_profiles"]>
 
   export type $user_profilesPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "user_profiles"
@@ -25080,8 +25071,6 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       userId: string
-      firstName: string | null
-      lastName: string | null
       idCardNumber: string | null
       dateOfBirth: Date | null
       address: string | null
@@ -25094,6 +25083,7 @@ export namespace Prisma {
       coinBalance: number
       createdAt: Date
       updatedAt: Date
+      fullName: string | null
     }, ExtArgs["result"]["user_profiles"]>
     composites: {}
   }
@@ -25465,8 +25455,6 @@ export namespace Prisma {
   interface user_profilesFieldRefs {
     readonly id: FieldRef<"user_profiles", 'String'>
     readonly userId: FieldRef<"user_profiles", 'String'>
-    readonly firstName: FieldRef<"user_profiles", 'String'>
-    readonly lastName: FieldRef<"user_profiles", 'String'>
     readonly idCardNumber: FieldRef<"user_profiles", 'String'>
     readonly dateOfBirth: FieldRef<"user_profiles", 'DateTime'>
     readonly address: FieldRef<"user_profiles", 'String'>
@@ -25479,6 +25467,7 @@ export namespace Prisma {
     readonly coinBalance: FieldRef<"user_profiles", 'Int'>
     readonly createdAt: FieldRef<"user_profiles", 'DateTime'>
     readonly updatedAt: FieldRef<"user_profiles", 'DateTime'>
+    readonly fullName: FieldRef<"user_profiles", 'String'>
   }
     
 
@@ -28083,8 +28072,6 @@ export namespace Prisma {
   export const User_profilesScalarFieldEnum: {
     id: 'id',
     userId: 'userId',
-    firstName: 'firstName',
-    lastName: 'lastName',
     idCardNumber: 'idCardNumber',
     dateOfBirth: 'dateOfBirth',
     address: 'address',
@@ -28096,7 +28083,8 @@ export namespace Prisma {
     notificationEnabled: 'notificationEnabled',
     coinBalance: 'coinBalance',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    fullName: 'fullName'
   };
 
   export type User_profilesScalarFieldEnum = (typeof User_profilesScalarFieldEnum)[keyof typeof User_profilesScalarFieldEnum]
@@ -28439,15 +28427,14 @@ export namespace Prisma {
   export const user_profilesOrderByRelevanceFieldEnum: {
     id: 'id',
     userId: 'userId',
-    firstName: 'firstName',
-    lastName: 'lastName',
     idCardNumber: 'idCardNumber',
     address: 'address',
     email: 'email',
     lineId: 'lineId',
     idCardFrontImage: 'idCardFrontImage',
     idCardBackImage: 'idCardBackImage',
-    preferredLanguage: 'preferredLanguage'
+    preferredLanguage: 'preferredLanguage',
+    fullName: 'fullName'
   };
 
   export type user_profilesOrderByRelevanceFieldEnum = (typeof user_profilesOrderByRelevanceFieldEnum)[keyof typeof user_profilesOrderByRelevanceFieldEnum]
@@ -30633,8 +30620,6 @@ export namespace Prisma {
     NOT?: user_profilesWhereInput | user_profilesWhereInput[]
     id?: StringFilter<"user_profiles"> | string
     userId?: StringFilter<"user_profiles"> | string
-    firstName?: StringNullableFilter<"user_profiles"> | string | null
-    lastName?: StringNullableFilter<"user_profiles"> | string | null
     idCardNumber?: StringNullableFilter<"user_profiles"> | string | null
     dateOfBirth?: DateTimeNullableFilter<"user_profiles"> | Date | string | null
     address?: StringNullableFilter<"user_profiles"> | string | null
@@ -30647,13 +30632,12 @@ export namespace Prisma {
     coinBalance?: IntFilter<"user_profiles"> | number
     createdAt?: DateTimeFilter<"user_profiles"> | Date | string
     updatedAt?: DateTimeFilter<"user_profiles"> | Date | string
+    fullName?: StringNullableFilter<"user_profiles"> | string | null
   }
 
   export type user_profilesOrderByWithRelationInput = {
     id?: SortOrder
     userId?: SortOrder
-    firstName?: SortOrderInput | SortOrder
-    lastName?: SortOrderInput | SortOrder
     idCardNumber?: SortOrderInput | SortOrder
     dateOfBirth?: SortOrderInput | SortOrder
     address?: SortOrderInput | SortOrder
@@ -30666,6 +30650,7 @@ export namespace Prisma {
     coinBalance?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    fullName?: SortOrderInput | SortOrder
     _relevance?: user_profilesOrderByRelevanceInput
   }
 
@@ -30675,8 +30660,6 @@ export namespace Prisma {
     AND?: user_profilesWhereInput | user_profilesWhereInput[]
     OR?: user_profilesWhereInput[]
     NOT?: user_profilesWhereInput | user_profilesWhereInput[]
-    firstName?: StringNullableFilter<"user_profiles"> | string | null
-    lastName?: StringNullableFilter<"user_profiles"> | string | null
     idCardNumber?: StringNullableFilter<"user_profiles"> | string | null
     dateOfBirth?: DateTimeNullableFilter<"user_profiles"> | Date | string | null
     address?: StringNullableFilter<"user_profiles"> | string | null
@@ -30689,13 +30672,12 @@ export namespace Prisma {
     coinBalance?: IntFilter<"user_profiles"> | number
     createdAt?: DateTimeFilter<"user_profiles"> | Date | string
     updatedAt?: DateTimeFilter<"user_profiles"> | Date | string
+    fullName?: StringNullableFilter<"user_profiles"> | string | null
   }, "id" | "userId">
 
   export type user_profilesOrderByWithAggregationInput = {
     id?: SortOrder
     userId?: SortOrder
-    firstName?: SortOrderInput | SortOrder
-    lastName?: SortOrderInput | SortOrder
     idCardNumber?: SortOrderInput | SortOrder
     dateOfBirth?: SortOrderInput | SortOrder
     address?: SortOrderInput | SortOrder
@@ -30708,6 +30690,7 @@ export namespace Prisma {
     coinBalance?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    fullName?: SortOrderInput | SortOrder
     _count?: user_profilesCountOrderByAggregateInput
     _avg?: user_profilesAvgOrderByAggregateInput
     _max?: user_profilesMaxOrderByAggregateInput
@@ -30721,8 +30704,6 @@ export namespace Prisma {
     NOT?: user_profilesScalarWhereWithAggregatesInput | user_profilesScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"user_profiles"> | string
     userId?: StringWithAggregatesFilter<"user_profiles"> | string
-    firstName?: StringNullableWithAggregatesFilter<"user_profiles"> | string | null
-    lastName?: StringNullableWithAggregatesFilter<"user_profiles"> | string | null
     idCardNumber?: StringNullableWithAggregatesFilter<"user_profiles"> | string | null
     dateOfBirth?: DateTimeNullableWithAggregatesFilter<"user_profiles"> | Date | string | null
     address?: StringNullableWithAggregatesFilter<"user_profiles"> | string | null
@@ -30735,6 +30716,7 @@ export namespace Prisma {
     coinBalance?: IntWithAggregatesFilter<"user_profiles"> | number
     createdAt?: DateTimeWithAggregatesFilter<"user_profiles"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"user_profiles"> | Date | string
+    fullName?: StringNullableWithAggregatesFilter<"user_profiles"> | string | null
   }
 
   export type usersWhereInput = {
@@ -33230,8 +33212,6 @@ export namespace Prisma {
   export type user_profilesCreateInput = {
     id: string
     userId: string
-    firstName?: string | null
-    lastName?: string | null
     idCardNumber?: string | null
     dateOfBirth?: Date | string | null
     address?: string | null
@@ -33244,13 +33224,12 @@ export namespace Prisma {
     coinBalance?: number
     createdAt?: Date | string
     updatedAt: Date | string
+    fullName?: string | null
   }
 
   export type user_profilesUncheckedCreateInput = {
     id: string
     userId: string
-    firstName?: string | null
-    lastName?: string | null
     idCardNumber?: string | null
     dateOfBirth?: Date | string | null
     address?: string | null
@@ -33263,13 +33242,12 @@ export namespace Prisma {
     coinBalance?: number
     createdAt?: Date | string
     updatedAt: Date | string
+    fullName?: string | null
   }
 
   export type user_profilesUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    firstName?: NullableStringFieldUpdateOperationsInput | string | null
-    lastName?: NullableStringFieldUpdateOperationsInput | string | null
     idCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
     dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33282,13 +33260,12 @@ export namespace Prisma {
     coinBalance?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    fullName?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type user_profilesUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    firstName?: NullableStringFieldUpdateOperationsInput | string | null
-    lastName?: NullableStringFieldUpdateOperationsInput | string | null
     idCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
     dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33301,13 +33278,12 @@ export namespace Prisma {
     coinBalance?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    fullName?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type user_profilesCreateManyInput = {
     id: string
     userId: string
-    firstName?: string | null
-    lastName?: string | null
     idCardNumber?: string | null
     dateOfBirth?: Date | string | null
     address?: string | null
@@ -33320,13 +33296,12 @@ export namespace Prisma {
     coinBalance?: number
     createdAt?: Date | string
     updatedAt: Date | string
+    fullName?: string | null
   }
 
   export type user_profilesUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    firstName?: NullableStringFieldUpdateOperationsInput | string | null
-    lastName?: NullableStringFieldUpdateOperationsInput | string | null
     idCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
     dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33339,13 +33314,12 @@ export namespace Prisma {
     coinBalance?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    fullName?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type user_profilesUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    firstName?: NullableStringFieldUpdateOperationsInput | string | null
-    lastName?: NullableStringFieldUpdateOperationsInput | string | null
     idCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
     dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33358,6 +33332,7 @@ export namespace Prisma {
     coinBalance?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    fullName?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type usersCreateInput = {
@@ -35387,8 +35362,6 @@ export namespace Prisma {
   export type user_profilesCountOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
-    firstName?: SortOrder
-    lastName?: SortOrder
     idCardNumber?: SortOrder
     dateOfBirth?: SortOrder
     address?: SortOrder
@@ -35401,6 +35374,7 @@ export namespace Prisma {
     coinBalance?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    fullName?: SortOrder
   }
 
   export type user_profilesAvgOrderByAggregateInput = {
@@ -35410,8 +35384,6 @@ export namespace Prisma {
   export type user_profilesMaxOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
-    firstName?: SortOrder
-    lastName?: SortOrder
     idCardNumber?: SortOrder
     dateOfBirth?: SortOrder
     address?: SortOrder
@@ -35424,13 +35396,12 @@ export namespace Prisma {
     coinBalance?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    fullName?: SortOrder
   }
 
   export type user_profilesMinOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
-    firstName?: SortOrder
-    lastName?: SortOrder
     idCardNumber?: SortOrder
     dateOfBirth?: SortOrder
     address?: SortOrder
@@ -35443,6 +35414,7 @@ export namespace Prisma {
     coinBalance?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    fullName?: SortOrder
   }
 
   export type user_profilesSumOrderByAggregateInput = {
