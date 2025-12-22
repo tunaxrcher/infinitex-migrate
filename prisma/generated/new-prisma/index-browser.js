@@ -290,7 +290,9 @@ exports.Prisma.LoansScalarFieldEnum = {
   linkMap: 'linkMap',
   estimatedValue: 'estimatedValue',
   valuationDate: 'valuationDate',
-  valuationResult: 'valuationResult'
+  valuationResult: 'valuationResult',
+  latitude: 'latitude',
+  longitude: 'longitude'
 };
 
 exports.Prisma.NotificationsScalarFieldEnum = {
@@ -614,7 +616,9 @@ exports.Prisma.loansOrderByRelevanceFieldEnum = {
   applicationId: 'applicationId',
   titleDeedNumber: 'titleDeedNumber',
   landAccountName: 'landAccountName',
-  linkMap: 'linkMap'
+  linkMap: 'linkMap',
+  latitude: 'latitude',
+  longitude: 'longitude'
 };
 
 exports.Prisma.notificationsOrderByRelevanceFieldEnum = {

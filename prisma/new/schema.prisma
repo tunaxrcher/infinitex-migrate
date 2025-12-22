@@ -207,6 +207,8 @@ model loans {
   estimatedValue     Decimal?       @db.Decimal(15, 2)
   valuationDate      DateTime?      @db.DateTime(0)
   valuationResult    Json?
+  latitude           String?        @db.VarChar(50)
+  longitude          String?        @db.VarChar(50)
 
   @@index([agentId])
   @@index([customerId])

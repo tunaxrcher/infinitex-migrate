@@ -260,3 +260,61 @@ export function parsePaymentDetail(detail: string): {
   return { loanCode, installmentNumber, isClosing };
 }
 
+/**
+ * แปลง link_map string เป็น latitude และ longitude
+ * รองรับ 2 รูปแบบ:
+ * 1. DMS format: "15°17'29.3"N 104°53'02.5"E"
+ * 2. Decimal format: "15.1748270, 104.8597480"
+ */
+export function parseCoordinates(linkMap: string | null | undefined): {
+  latitude: number | null;
+  longitude: number | null;
+} {
+  if (!linkMap || linkMap.trim() === '') {
+    return { latitude: null, longitude: null };
+  }
+
+  const str = linkMap.trim();
+
+  // Pattern 1: Decimal format (e.g., "15.1748270, 104.8597480")
+  const decimalMatch = str.match(/^(-?\d+\.?\d*)\s*,\s*(-?\d+\.?\d*)$/);
+  if (decimalMatch) {
+    const lat = parseFloat(decimalMatch[1]);
+    const lng = parseFloat(decimalMatch[2]);
+    if (!isNaN(lat) && !isNaN(lng)) {
+      return { latitude: lat, longitude: lng };
+    }
+  }
+
+  // Pattern 2: DMS format (e.g., "15°17'29.3"N 104°53'02.5"E")
+  // Regex to match DMS: degrees°minutes'seconds"direction
+  const dmsPattern = /(\d+)°(\d+)'([\d.]+)"([NS])\s+(\d+)°(\d+)'([\d.]+)"([EW])/i;
+  const dmsMatch = str.match(dmsPattern);
+  if (dmsMatch) {
+    // Parse latitude (N/S)
+    const latDeg = parseFloat(dmsMatch[1]);
+    const latMin = parseFloat(dmsMatch[2]);
+    const latSec = parseFloat(dmsMatch[3]);
+    const latDir = dmsMatch[4].toUpperCase();
+    
+    // Parse longitude (E/W)
+    const lngDeg = parseFloat(dmsMatch[5]);
+    const lngMin = parseFloat(dmsMatch[6]);
+    const lngSec = parseFloat(dmsMatch[7]);
+    const lngDir = dmsMatch[8].toUpperCase();
+
+    // Convert DMS to decimal
+    let latitude = latDeg + (latMin / 60) + (latSec / 3600);
+    let longitude = lngDeg + (lngMin / 60) + (lngSec / 3600);
+
+    // Apply direction (S and W are negative)
+    if (latDir === 'S') latitude = -latitude;
+    if (lngDir === 'W') longitude = -longitude;
+
+    return { latitude, longitude };
+  }
+
+  // Could not parse
+  return { latitude: null, longitude: null };
+}
+

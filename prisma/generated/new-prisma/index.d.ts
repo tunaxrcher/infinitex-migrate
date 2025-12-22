@@ -11989,6 +11989,8 @@ export namespace Prisma {
     linkMap: string | null
     estimatedValue: Decimal | null
     valuationDate: Date | null
+    latitude: string | null
+    longitude: string | null
   }
 
   export type LoansMaxAggregateOutputType = {
@@ -12019,6 +12021,8 @@ export namespace Prisma {
     linkMap: string | null
     estimatedValue: Decimal | null
     valuationDate: Date | null
+    latitude: string | null
+    longitude: string | null
   }
 
   export type LoansCountAggregateOutputType = {
@@ -12051,6 +12055,8 @@ export namespace Prisma {
     estimatedValue: number
     valuationDate: number
     valuationResult: number
+    latitude: number
+    longitude: number
     _all: number
   }
 
@@ -12109,6 +12115,8 @@ export namespace Prisma {
     linkMap?: true
     estimatedValue?: true
     valuationDate?: true
+    latitude?: true
+    longitude?: true
   }
 
   export type LoansMaxAggregateInputType = {
@@ -12139,6 +12147,8 @@ export namespace Prisma {
     linkMap?: true
     estimatedValue?: true
     valuationDate?: true
+    latitude?: true
+    longitude?: true
   }
 
   export type LoansCountAggregateInputType = {
@@ -12171,6 +12181,8 @@ export namespace Prisma {
     estimatedValue?: true
     valuationDate?: true
     valuationResult?: true
+    latitude?: true
+    longitude?: true
     _all?: true
   }
 
@@ -12290,6 +12302,8 @@ export namespace Prisma {
     estimatedValue: Decimal | null
     valuationDate: Date | null
     valuationResult: JsonValue | null
+    latitude: string | null
+    longitude: string | null
     _count: LoansCountAggregateOutputType | null
     _avg: LoansAvgAggregateOutputType | null
     _sum: LoansSumAggregateOutputType | null
@@ -12341,6 +12355,8 @@ export namespace Prisma {
     estimatedValue?: boolean
     valuationDate?: boolean
     valuationResult?: boolean
+    latitude?: boolean
+    longitude?: boolean
   }, ExtArgs["result"]["loans"]>
 
 
@@ -12375,9 +12391,11 @@ export namespace Prisma {
     estimatedValue?: boolean
     valuationDate?: boolean
     valuationResult?: boolean
+    latitude?: boolean
+    longitude?: boolean
   }
 
-  export type loansOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "loanNumber" | "customerId" | "agentId" | "applicationId" | "loanType" | "status" | "principalAmount" | "interestRate" | "termMonths" | "monthlyPayment" | "currentInstallment" | "totalInstallments" | "remainingBalance" | "nextPaymentDate" | "contractDate" | "expiryDate" | "titleDeedNumber" | "collateralValue" | "collateralDetails" | "createdAt" | "updatedAt" | "hirePurchase" | "landAccountId" | "landAccountName" | "linkMap" | "estimatedValue" | "valuationDate" | "valuationResult", ExtArgs["result"]["loans"]>
+  export type loansOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "loanNumber" | "customerId" | "agentId" | "applicationId" | "loanType" | "status" | "principalAmount" | "interestRate" | "termMonths" | "monthlyPayment" | "currentInstallment" | "totalInstallments" | "remainingBalance" | "nextPaymentDate" | "contractDate" | "expiryDate" | "titleDeedNumber" | "collateralValue" | "collateralDetails" | "createdAt" | "updatedAt" | "hirePurchase" | "landAccountId" | "landAccountName" | "linkMap" | "estimatedValue" | "valuationDate" | "valuationResult" | "latitude" | "longitude", ExtArgs["result"]["loans"]>
 
   export type $loansPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "loans"
@@ -12412,6 +12430,8 @@ export namespace Prisma {
       estimatedValue: Prisma.Decimal | null
       valuationDate: Date | null
       valuationResult: Prisma.JsonValue | null
+      latitude: string | null
+      longitude: string | null
     }, ExtArgs["result"]["loans"]>
     composites: {}
   }
@@ -12810,6 +12830,8 @@ export namespace Prisma {
     readonly estimatedValue: FieldRef<"loans", 'Decimal'>
     readonly valuationDate: FieldRef<"loans", 'DateTime'>
     readonly valuationResult: FieldRef<"loans", 'Json'>
+    readonly latitude: FieldRef<"loans", 'String'>
+    readonly longitude: FieldRef<"loans", 'String'>
   }
     
 
@@ -27863,7 +27885,9 @@ export namespace Prisma {
     linkMap: 'linkMap',
     estimatedValue: 'estimatedValue',
     valuationDate: 'valuationDate',
-    valuationResult: 'valuationResult'
+    valuationResult: 'valuationResult',
+    latitude: 'latitude',
+    longitude: 'longitude'
   };
 
   export type LoansScalarFieldEnum = (typeof LoansScalarFieldEnum)[keyof typeof LoansScalarFieldEnum]
@@ -28280,7 +28304,9 @@ export namespace Prisma {
     applicationId: 'applicationId',
     titleDeedNumber: 'titleDeedNumber',
     landAccountName: 'landAccountName',
-    linkMap: 'linkMap'
+    linkMap: 'linkMap',
+    latitude: 'latitude',
+    longitude: 'longitude'
   };
 
   export type loansOrderByRelevanceFieldEnum = (typeof loansOrderByRelevanceFieldEnum)[keyof typeof loansOrderByRelevanceFieldEnum]
@@ -29480,6 +29506,8 @@ export namespace Prisma {
     estimatedValue?: DecimalNullableFilter<"loans"> | Decimal | DecimalJsLike | number | string | null
     valuationDate?: DateTimeNullableFilter<"loans"> | Date | string | null
     valuationResult?: JsonNullableFilter<"loans">
+    latitude?: StringNullableFilter<"loans"> | string | null
+    longitude?: StringNullableFilter<"loans"> | string | null
   }
 
   export type loansOrderByWithRelationInput = {
@@ -29512,6 +29540,8 @@ export namespace Prisma {
     estimatedValue?: SortOrderInput | SortOrder
     valuationDate?: SortOrderInput | SortOrder
     valuationResult?: SortOrderInput | SortOrder
+    latitude?: SortOrderInput | SortOrder
+    longitude?: SortOrderInput | SortOrder
     _relevance?: loansOrderByRelevanceInput
   }
 
@@ -29548,6 +29578,8 @@ export namespace Prisma {
     estimatedValue?: DecimalNullableFilter<"loans"> | Decimal | DecimalJsLike | number | string | null
     valuationDate?: DateTimeNullableFilter<"loans"> | Date | string | null
     valuationResult?: JsonNullableFilter<"loans">
+    latitude?: StringNullableFilter<"loans"> | string | null
+    longitude?: StringNullableFilter<"loans"> | string | null
   }, "id" | "loanNumber" | "applicationId">
 
   export type loansOrderByWithAggregationInput = {
@@ -29580,6 +29612,8 @@ export namespace Prisma {
     estimatedValue?: SortOrderInput | SortOrder
     valuationDate?: SortOrderInput | SortOrder
     valuationResult?: SortOrderInput | SortOrder
+    latitude?: SortOrderInput | SortOrder
+    longitude?: SortOrderInput | SortOrder
     _count?: loansCountOrderByAggregateInput
     _avg?: loansAvgOrderByAggregateInput
     _max?: loansMaxOrderByAggregateInput
@@ -29620,6 +29654,8 @@ export namespace Prisma {
     estimatedValue?: DecimalNullableWithAggregatesFilter<"loans"> | Decimal | DecimalJsLike | number | string | null
     valuationDate?: DateTimeNullableWithAggregatesFilter<"loans"> | Date | string | null
     valuationResult?: JsonNullableWithAggregatesFilter<"loans">
+    latitude?: StringNullableWithAggregatesFilter<"loans"> | string | null
+    longitude?: StringNullableWithAggregatesFilter<"loans"> | string | null
   }
 
   export type notificationsWhereInput = {
@@ -31867,6 +31903,8 @@ export namespace Prisma {
     estimatedValue?: Decimal | DecimalJsLike | number | string | null
     valuationDate?: Date | string | null
     valuationResult?: NullableJsonNullValueInput | InputJsonValue
+    latitude?: string | null
+    longitude?: string | null
   }
 
   export type loansUncheckedCreateInput = {
@@ -31899,6 +31937,8 @@ export namespace Prisma {
     estimatedValue?: Decimal | DecimalJsLike | number | string | null
     valuationDate?: Date | string | null
     valuationResult?: NullableJsonNullValueInput | InputJsonValue
+    latitude?: string | null
+    longitude?: string | null
   }
 
   export type loansUpdateInput = {
@@ -31931,6 +31971,8 @@ export namespace Prisma {
     estimatedValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     valuationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     valuationResult?: NullableJsonNullValueInput | InputJsonValue
+    latitude?: NullableStringFieldUpdateOperationsInput | string | null
+    longitude?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type loansUncheckedUpdateInput = {
@@ -31963,6 +32005,8 @@ export namespace Prisma {
     estimatedValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     valuationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     valuationResult?: NullableJsonNullValueInput | InputJsonValue
+    latitude?: NullableStringFieldUpdateOperationsInput | string | null
+    longitude?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type loansCreateManyInput = {
@@ -31995,6 +32039,8 @@ export namespace Prisma {
     estimatedValue?: Decimal | DecimalJsLike | number | string | null
     valuationDate?: Date | string | null
     valuationResult?: NullableJsonNullValueInput | InputJsonValue
+    latitude?: string | null
+    longitude?: string | null
   }
 
   export type loansUpdateManyMutationInput = {
@@ -32027,6 +32073,8 @@ export namespace Prisma {
     estimatedValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     valuationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     valuationResult?: NullableJsonNullValueInput | InputJsonValue
+    latitude?: NullableStringFieldUpdateOperationsInput | string | null
+    longitude?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type loansUncheckedUpdateManyInput = {
@@ -32059,6 +32107,8 @@ export namespace Prisma {
     estimatedValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     valuationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     valuationResult?: NullableJsonNullValueInput | InputJsonValue
+    latitude?: NullableStringFieldUpdateOperationsInput | string | null
+    longitude?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type notificationsCreateInput = {
@@ -34501,6 +34551,8 @@ export namespace Prisma {
     estimatedValue?: SortOrder
     valuationDate?: SortOrder
     valuationResult?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
   }
 
   export type loansAvgOrderByAggregateInput = {
@@ -34544,6 +34596,8 @@ export namespace Prisma {
     linkMap?: SortOrder
     estimatedValue?: SortOrder
     valuationDate?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
   }
 
   export type loansMinOrderByAggregateInput = {
@@ -34574,6 +34628,8 @@ export namespace Prisma {
     linkMap?: SortOrder
     estimatedValue?: SortOrder
     valuationDate?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
   }
 
   export type loansSumOrderByAggregateInput = {
