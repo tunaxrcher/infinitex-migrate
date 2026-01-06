@@ -143,6 +143,9 @@ model loan_applications {
   otherFee          Decimal?                   @default(0.00) @db.Decimal(15, 2)
   termMonths        Int?                       @default(48)
   transferFee       Decimal?                   @default(0.00) @db.Decimal(15, 2)
+  estimatedValue    Decimal?                   @db.Decimal(15, 2)
+  valuationDate     DateTime?                  @db.DateTime(0)
+  valuationResult   Json?
 
   @@index([agentId])
   @@index([customerId])
@@ -204,9 +207,6 @@ model loans {
   landAccountId      Int?
   landAccountName    String?        @db.VarChar(200)
   linkMap            String?        @db.Text
-  estimatedValue     Decimal?       @db.Decimal(15, 2)
-  valuationDate      DateTime?      @db.DateTime(0)
-  valuationResult    Json?
   latitude           String?        @db.VarChar(50)
   longitude          String?        @db.VarChar(50)
 

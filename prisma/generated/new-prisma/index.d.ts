@@ -9575,6 +9575,7 @@ export namespace Prisma {
     otherFee: Decimal | null
     termMonths: number | null
     transferFee: Decimal | null
+    estimatedValue: Decimal | null
   }
 
   export type Loan_applicationsSumAggregateOutputType = {
@@ -9588,6 +9589,7 @@ export namespace Prisma {
     otherFee: Decimal | null
     termMonths: number | null
     transferFee: Decimal | null
+    estimatedValue: Decimal | null
   }
 
   export type Loan_applicationsMinAggregateOutputType = {
@@ -9623,6 +9625,8 @@ export namespace Prisma {
     otherFee: Decimal | null
     termMonths: number | null
     transferFee: Decimal | null
+    estimatedValue: Decimal | null
+    valuationDate: Date | null
   }
 
   export type Loan_applicationsMaxAggregateOutputType = {
@@ -9658,6 +9662,8 @@ export namespace Prisma {
     otherFee: Decimal | null
     termMonths: number | null
     transferFee: Decimal | null
+    estimatedValue: Decimal | null
+    valuationDate: Date | null
   }
 
   export type Loan_applicationsCountAggregateOutputType = {
@@ -9696,6 +9702,9 @@ export namespace Prisma {
     otherFee: number
     termMonths: number
     transferFee: number
+    estimatedValue: number
+    valuationDate: number
+    valuationResult: number
     _all: number
   }
 
@@ -9711,6 +9720,7 @@ export namespace Prisma {
     otherFee?: true
     termMonths?: true
     transferFee?: true
+    estimatedValue?: true
   }
 
   export type Loan_applicationsSumAggregateInputType = {
@@ -9724,6 +9734,7 @@ export namespace Prisma {
     otherFee?: true
     termMonths?: true
     transferFee?: true
+    estimatedValue?: true
   }
 
   export type Loan_applicationsMinAggregateInputType = {
@@ -9759,6 +9770,8 @@ export namespace Prisma {
     otherFee?: true
     termMonths?: true
     transferFee?: true
+    estimatedValue?: true
+    valuationDate?: true
   }
 
   export type Loan_applicationsMaxAggregateInputType = {
@@ -9794,6 +9807,8 @@ export namespace Prisma {
     otherFee?: true
     termMonths?: true
     transferFee?: true
+    estimatedValue?: true
+    valuationDate?: true
   }
 
   export type Loan_applicationsCountAggregateInputType = {
@@ -9832,6 +9847,9 @@ export namespace Prisma {
     otherFee?: true
     termMonths?: true
     transferFee?: true
+    estimatedValue?: true
+    valuationDate?: true
+    valuationResult?: true
     _all?: true
   }
 
@@ -9957,6 +9975,9 @@ export namespace Prisma {
     otherFee: Decimal | null
     termMonths: number | null
     transferFee: Decimal | null
+    estimatedValue: Decimal | null
+    valuationDate: Date | null
+    valuationResult: JsonValue | null
     _count: Loan_applicationsCountAggregateOutputType | null
     _avg: Loan_applicationsAvgAggregateOutputType | null
     _sum: Loan_applicationsSumAggregateOutputType | null
@@ -10014,6 +10035,9 @@ export namespace Prisma {
     otherFee?: boolean
     termMonths?: boolean
     transferFee?: boolean
+    estimatedValue?: boolean
+    valuationDate?: boolean
+    valuationResult?: boolean
   }, ExtArgs["result"]["loan_applications"]>
 
 
@@ -10054,9 +10078,12 @@ export namespace Prisma {
     otherFee?: boolean
     termMonths?: boolean
     transferFee?: boolean
+    estimatedValue?: boolean
+    valuationDate?: boolean
+    valuationResult?: boolean
   }
 
-  export type loan_applicationsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "customerId" | "agentId" | "loanType" | "status" | "currentStep" | "completedSteps" | "isNewUser" | "submittedByAgent" | "titleDeedImage" | "titleDeedData" | "supportingImages" | "idCardFrontImage" | "idCardBackImage" | "requestedAmount" | "approvedAmount" | "maxApprovedAmount" | "propertyType" | "propertyValue" | "propertyArea" | "propertyLocation" | "landNumber" | "ownerName" | "submittedAt" | "reviewedAt" | "reviewedBy" | "reviewNotes" | "createdAt" | "updatedAt" | "hirePurchase" | "interestRate" | "operationFee" | "otherFee" | "termMonths" | "transferFee", ExtArgs["result"]["loan_applications"]>
+  export type loan_applicationsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "customerId" | "agentId" | "loanType" | "status" | "currentStep" | "completedSteps" | "isNewUser" | "submittedByAgent" | "titleDeedImage" | "titleDeedData" | "supportingImages" | "idCardFrontImage" | "idCardBackImage" | "requestedAmount" | "approvedAmount" | "maxApprovedAmount" | "propertyType" | "propertyValue" | "propertyArea" | "propertyLocation" | "landNumber" | "ownerName" | "submittedAt" | "reviewedAt" | "reviewedBy" | "reviewNotes" | "createdAt" | "updatedAt" | "hirePurchase" | "interestRate" | "operationFee" | "otherFee" | "termMonths" | "transferFee" | "estimatedValue" | "valuationDate" | "valuationResult", ExtArgs["result"]["loan_applications"]>
 
   export type $loan_applicationsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "loan_applications"
@@ -10097,6 +10124,9 @@ export namespace Prisma {
       otherFee: Prisma.Decimal | null
       termMonths: number | null
       transferFee: Prisma.Decimal | null
+      estimatedValue: Prisma.Decimal | null
+      valuationDate: Date | null
+      valuationResult: Prisma.JsonValue | null
     }, ExtArgs["result"]["loan_applications"]>
     composites: {}
   }
@@ -10501,6 +10531,9 @@ export namespace Prisma {
     readonly otherFee: FieldRef<"loan_applications", 'Decimal'>
     readonly termMonths: FieldRef<"loan_applications", 'Int'>
     readonly transferFee: FieldRef<"loan_applications", 'Decimal'>
+    readonly estimatedValue: FieldRef<"loan_applications", 'Decimal'>
+    readonly valuationDate: FieldRef<"loan_applications", 'DateTime'>
+    readonly valuationResult: FieldRef<"loan_applications", 'Json'>
   }
     
 
@@ -11945,7 +11978,6 @@ export namespace Prisma {
     remainingBalance: Decimal | null
     collateralValue: Decimal | null
     landAccountId: number | null
-    estimatedValue: Decimal | null
   }
 
   export type LoansSumAggregateOutputType = {
@@ -11958,7 +11990,6 @@ export namespace Prisma {
     remainingBalance: Decimal | null
     collateralValue: Decimal | null
     landAccountId: number | null
-    estimatedValue: Decimal | null
   }
 
   export type LoansMinAggregateOutputType = {
@@ -11987,8 +12018,6 @@ export namespace Prisma {
     landAccountId: number | null
     landAccountName: string | null
     linkMap: string | null
-    estimatedValue: Decimal | null
-    valuationDate: Date | null
     latitude: string | null
     longitude: string | null
   }
@@ -12019,8 +12048,6 @@ export namespace Prisma {
     landAccountId: number | null
     landAccountName: string | null
     linkMap: string | null
-    estimatedValue: Decimal | null
-    valuationDate: Date | null
     latitude: string | null
     longitude: string | null
   }
@@ -12052,9 +12079,6 @@ export namespace Prisma {
     landAccountId: number
     landAccountName: number
     linkMap: number
-    estimatedValue: number
-    valuationDate: number
-    valuationResult: number
     latitude: number
     longitude: number
     _all: number
@@ -12071,7 +12095,6 @@ export namespace Prisma {
     remainingBalance?: true
     collateralValue?: true
     landAccountId?: true
-    estimatedValue?: true
   }
 
   export type LoansSumAggregateInputType = {
@@ -12084,7 +12107,6 @@ export namespace Prisma {
     remainingBalance?: true
     collateralValue?: true
     landAccountId?: true
-    estimatedValue?: true
   }
 
   export type LoansMinAggregateInputType = {
@@ -12113,8 +12135,6 @@ export namespace Prisma {
     landAccountId?: true
     landAccountName?: true
     linkMap?: true
-    estimatedValue?: true
-    valuationDate?: true
     latitude?: true
     longitude?: true
   }
@@ -12145,8 +12165,6 @@ export namespace Prisma {
     landAccountId?: true
     landAccountName?: true
     linkMap?: true
-    estimatedValue?: true
-    valuationDate?: true
     latitude?: true
     longitude?: true
   }
@@ -12178,9 +12196,6 @@ export namespace Prisma {
     landAccountId?: true
     landAccountName?: true
     linkMap?: true
-    estimatedValue?: true
-    valuationDate?: true
-    valuationResult?: true
     latitude?: true
     longitude?: true
     _all?: true
@@ -12299,9 +12314,6 @@ export namespace Prisma {
     landAccountId: number | null
     landAccountName: string | null
     linkMap: string | null
-    estimatedValue: Decimal | null
-    valuationDate: Date | null
-    valuationResult: JsonValue | null
     latitude: string | null
     longitude: string | null
     _count: LoansCountAggregateOutputType | null
@@ -12352,9 +12364,6 @@ export namespace Prisma {
     landAccountId?: boolean
     landAccountName?: boolean
     linkMap?: boolean
-    estimatedValue?: boolean
-    valuationDate?: boolean
-    valuationResult?: boolean
     latitude?: boolean
     longitude?: boolean
   }, ExtArgs["result"]["loans"]>
@@ -12388,14 +12397,11 @@ export namespace Prisma {
     landAccountId?: boolean
     landAccountName?: boolean
     linkMap?: boolean
-    estimatedValue?: boolean
-    valuationDate?: boolean
-    valuationResult?: boolean
     latitude?: boolean
     longitude?: boolean
   }
 
-  export type loansOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "loanNumber" | "customerId" | "agentId" | "applicationId" | "loanType" | "status" | "principalAmount" | "interestRate" | "termMonths" | "monthlyPayment" | "currentInstallment" | "totalInstallments" | "remainingBalance" | "nextPaymentDate" | "contractDate" | "expiryDate" | "titleDeedNumber" | "collateralValue" | "collateralDetails" | "createdAt" | "updatedAt" | "hirePurchase" | "landAccountId" | "landAccountName" | "linkMap" | "estimatedValue" | "valuationDate" | "valuationResult" | "latitude" | "longitude", ExtArgs["result"]["loans"]>
+  export type loansOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "loanNumber" | "customerId" | "agentId" | "applicationId" | "loanType" | "status" | "principalAmount" | "interestRate" | "termMonths" | "monthlyPayment" | "currentInstallment" | "totalInstallments" | "remainingBalance" | "nextPaymentDate" | "contractDate" | "expiryDate" | "titleDeedNumber" | "collateralValue" | "collateralDetails" | "createdAt" | "updatedAt" | "hirePurchase" | "landAccountId" | "landAccountName" | "linkMap" | "latitude" | "longitude", ExtArgs["result"]["loans"]>
 
   export type $loansPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "loans"
@@ -12427,9 +12433,6 @@ export namespace Prisma {
       landAccountId: number | null
       landAccountName: string | null
       linkMap: string | null
-      estimatedValue: Prisma.Decimal | null
-      valuationDate: Date | null
-      valuationResult: Prisma.JsonValue | null
       latitude: string | null
       longitude: string | null
     }, ExtArgs["result"]["loans"]>
@@ -12827,9 +12830,6 @@ export namespace Prisma {
     readonly landAccountId: FieldRef<"loans", 'Int'>
     readonly landAccountName: FieldRef<"loans", 'String'>
     readonly linkMap: FieldRef<"loans", 'String'>
-    readonly estimatedValue: FieldRef<"loans", 'Decimal'>
-    readonly valuationDate: FieldRef<"loans", 'DateTime'>
-    readonly valuationResult: FieldRef<"loans", 'Json'>
     readonly latitude: FieldRef<"loans", 'String'>
     readonly longitude: FieldRef<"loans", 'String'>
   }
@@ -27824,7 +27824,10 @@ export namespace Prisma {
     operationFee: 'operationFee',
     otherFee: 'otherFee',
     termMonths: 'termMonths',
-    transferFee: 'transferFee'
+    transferFee: 'transferFee',
+    estimatedValue: 'estimatedValue',
+    valuationDate: 'valuationDate',
+    valuationResult: 'valuationResult'
   };
 
   export type Loan_applicationsScalarFieldEnum = (typeof Loan_applicationsScalarFieldEnum)[keyof typeof Loan_applicationsScalarFieldEnum]
@@ -27883,9 +27886,6 @@ export namespace Prisma {
     landAccountId: 'landAccountId',
     landAccountName: 'landAccountName',
     linkMap: 'linkMap',
-    estimatedValue: 'estimatedValue',
-    valuationDate: 'valuationDate',
-    valuationResult: 'valuationResult',
     latitude: 'latitude',
     longitude: 'longitude'
   };
@@ -29176,6 +29176,9 @@ export namespace Prisma {
     otherFee?: DecimalNullableFilter<"loan_applications"> | Decimal | DecimalJsLike | number | string | null
     termMonths?: IntNullableFilter<"loan_applications"> | number | null
     transferFee?: DecimalNullableFilter<"loan_applications"> | Decimal | DecimalJsLike | number | string | null
+    estimatedValue?: DecimalNullableFilter<"loan_applications"> | Decimal | DecimalJsLike | number | string | null
+    valuationDate?: DateTimeNullableFilter<"loan_applications"> | Date | string | null
+    valuationResult?: JsonNullableFilter<"loan_applications">
   }
 
   export type loan_applicationsOrderByWithRelationInput = {
@@ -29214,6 +29217,9 @@ export namespace Prisma {
     otherFee?: SortOrderInput | SortOrder
     termMonths?: SortOrderInput | SortOrder
     transferFee?: SortOrderInput | SortOrder
+    estimatedValue?: SortOrderInput | SortOrder
+    valuationDate?: SortOrderInput | SortOrder
+    valuationResult?: SortOrderInput | SortOrder
     _relevance?: loan_applicationsOrderByRelevanceInput
   }
 
@@ -29256,6 +29262,9 @@ export namespace Prisma {
     otherFee?: DecimalNullableFilter<"loan_applications"> | Decimal | DecimalJsLike | number | string | null
     termMonths?: IntNullableFilter<"loan_applications"> | number | null
     transferFee?: DecimalNullableFilter<"loan_applications"> | Decimal | DecimalJsLike | number | string | null
+    estimatedValue?: DecimalNullableFilter<"loan_applications"> | Decimal | DecimalJsLike | number | string | null
+    valuationDate?: DateTimeNullableFilter<"loan_applications"> | Date | string | null
+    valuationResult?: JsonNullableFilter<"loan_applications">
   }, "id">
 
   export type loan_applicationsOrderByWithAggregationInput = {
@@ -29294,6 +29303,9 @@ export namespace Prisma {
     otherFee?: SortOrderInput | SortOrder
     termMonths?: SortOrderInput | SortOrder
     transferFee?: SortOrderInput | SortOrder
+    estimatedValue?: SortOrderInput | SortOrder
+    valuationDate?: SortOrderInput | SortOrder
+    valuationResult?: SortOrderInput | SortOrder
     _count?: loan_applicationsCountOrderByAggregateInput
     _avg?: loan_applicationsAvgOrderByAggregateInput
     _max?: loan_applicationsMaxOrderByAggregateInput
@@ -29340,6 +29352,9 @@ export namespace Prisma {
     otherFee?: DecimalNullableWithAggregatesFilter<"loan_applications"> | Decimal | DecimalJsLike | number | string | null
     termMonths?: IntNullableWithAggregatesFilter<"loan_applications"> | number | null
     transferFee?: DecimalNullableWithAggregatesFilter<"loan_applications"> | Decimal | DecimalJsLike | number | string | null
+    estimatedValue?: DecimalNullableWithAggregatesFilter<"loan_applications"> | Decimal | DecimalJsLike | number | string | null
+    valuationDate?: DateTimeNullableWithAggregatesFilter<"loan_applications"> | Date | string | null
+    valuationResult?: JsonNullableWithAggregatesFilter<"loan_applications">
   }
 
   export type loan_installmentsWhereInput = {
@@ -29503,9 +29518,6 @@ export namespace Prisma {
     landAccountId?: IntNullableFilter<"loans"> | number | null
     landAccountName?: StringNullableFilter<"loans"> | string | null
     linkMap?: StringNullableFilter<"loans"> | string | null
-    estimatedValue?: DecimalNullableFilter<"loans"> | Decimal | DecimalJsLike | number | string | null
-    valuationDate?: DateTimeNullableFilter<"loans"> | Date | string | null
-    valuationResult?: JsonNullableFilter<"loans">
     latitude?: StringNullableFilter<"loans"> | string | null
     longitude?: StringNullableFilter<"loans"> | string | null
   }
@@ -29537,9 +29549,6 @@ export namespace Prisma {
     landAccountId?: SortOrderInput | SortOrder
     landAccountName?: SortOrderInput | SortOrder
     linkMap?: SortOrderInput | SortOrder
-    estimatedValue?: SortOrderInput | SortOrder
-    valuationDate?: SortOrderInput | SortOrder
-    valuationResult?: SortOrderInput | SortOrder
     latitude?: SortOrderInput | SortOrder
     longitude?: SortOrderInput | SortOrder
     _relevance?: loansOrderByRelevanceInput
@@ -29575,9 +29584,6 @@ export namespace Prisma {
     landAccountId?: IntNullableFilter<"loans"> | number | null
     landAccountName?: StringNullableFilter<"loans"> | string | null
     linkMap?: StringNullableFilter<"loans"> | string | null
-    estimatedValue?: DecimalNullableFilter<"loans"> | Decimal | DecimalJsLike | number | string | null
-    valuationDate?: DateTimeNullableFilter<"loans"> | Date | string | null
-    valuationResult?: JsonNullableFilter<"loans">
     latitude?: StringNullableFilter<"loans"> | string | null
     longitude?: StringNullableFilter<"loans"> | string | null
   }, "id" | "loanNumber" | "applicationId">
@@ -29609,9 +29615,6 @@ export namespace Prisma {
     landAccountId?: SortOrderInput | SortOrder
     landAccountName?: SortOrderInput | SortOrder
     linkMap?: SortOrderInput | SortOrder
-    estimatedValue?: SortOrderInput | SortOrder
-    valuationDate?: SortOrderInput | SortOrder
-    valuationResult?: SortOrderInput | SortOrder
     latitude?: SortOrderInput | SortOrder
     longitude?: SortOrderInput | SortOrder
     _count?: loansCountOrderByAggregateInput
@@ -29651,9 +29654,6 @@ export namespace Prisma {
     landAccountId?: IntNullableWithAggregatesFilter<"loans"> | number | null
     landAccountName?: StringNullableWithAggregatesFilter<"loans"> | string | null
     linkMap?: StringNullableWithAggregatesFilter<"loans"> | string | null
-    estimatedValue?: DecimalNullableWithAggregatesFilter<"loans"> | Decimal | DecimalJsLike | number | string | null
-    valuationDate?: DateTimeNullableWithAggregatesFilter<"loans"> | Date | string | null
-    valuationResult?: JsonNullableWithAggregatesFilter<"loans">
     latitude?: StringNullableWithAggregatesFilter<"loans"> | string | null
     longitude?: StringNullableWithAggregatesFilter<"loans"> | string | null
   }
@@ -31482,6 +31482,9 @@ export namespace Prisma {
     otherFee?: Decimal | DecimalJsLike | number | string | null
     termMonths?: number | null
     transferFee?: Decimal | DecimalJsLike | number | string | null
+    estimatedValue?: Decimal | DecimalJsLike | number | string | null
+    valuationDate?: Date | string | null
+    valuationResult?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type loan_applicationsUncheckedCreateInput = {
@@ -31520,6 +31523,9 @@ export namespace Prisma {
     otherFee?: Decimal | DecimalJsLike | number | string | null
     termMonths?: number | null
     transferFee?: Decimal | DecimalJsLike | number | string | null
+    estimatedValue?: Decimal | DecimalJsLike | number | string | null
+    valuationDate?: Date | string | null
+    valuationResult?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type loan_applicationsUpdateInput = {
@@ -31558,6 +31564,9 @@ export namespace Prisma {
     otherFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     termMonths?: NullableIntFieldUpdateOperationsInput | number | null
     transferFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    estimatedValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    valuationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    valuationResult?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type loan_applicationsUncheckedUpdateInput = {
@@ -31596,6 +31605,9 @@ export namespace Prisma {
     otherFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     termMonths?: NullableIntFieldUpdateOperationsInput | number | null
     transferFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    estimatedValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    valuationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    valuationResult?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type loan_applicationsCreateManyInput = {
@@ -31634,6 +31646,9 @@ export namespace Prisma {
     otherFee?: Decimal | DecimalJsLike | number | string | null
     termMonths?: number | null
     transferFee?: Decimal | DecimalJsLike | number | string | null
+    estimatedValue?: Decimal | DecimalJsLike | number | string | null
+    valuationDate?: Date | string | null
+    valuationResult?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type loan_applicationsUpdateManyMutationInput = {
@@ -31672,6 +31687,9 @@ export namespace Prisma {
     otherFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     termMonths?: NullableIntFieldUpdateOperationsInput | number | null
     transferFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    estimatedValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    valuationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    valuationResult?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type loan_applicationsUncheckedUpdateManyInput = {
@@ -31710,6 +31728,9 @@ export namespace Prisma {
     otherFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     termMonths?: NullableIntFieldUpdateOperationsInput | number | null
     transferFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    estimatedValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    valuationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    valuationResult?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type loan_installmentsCreateInput = {
@@ -31900,9 +31921,6 @@ export namespace Prisma {
     landAccountId?: number | null
     landAccountName?: string | null
     linkMap?: string | null
-    estimatedValue?: Decimal | DecimalJsLike | number | string | null
-    valuationDate?: Date | string | null
-    valuationResult?: NullableJsonNullValueInput | InputJsonValue
     latitude?: string | null
     longitude?: string | null
   }
@@ -31934,9 +31952,6 @@ export namespace Prisma {
     landAccountId?: number | null
     landAccountName?: string | null
     linkMap?: string | null
-    estimatedValue?: Decimal | DecimalJsLike | number | string | null
-    valuationDate?: Date | string | null
-    valuationResult?: NullableJsonNullValueInput | InputJsonValue
     latitude?: string | null
     longitude?: string | null
   }
@@ -31968,9 +31983,6 @@ export namespace Prisma {
     landAccountId?: NullableIntFieldUpdateOperationsInput | number | null
     landAccountName?: NullableStringFieldUpdateOperationsInput | string | null
     linkMap?: NullableStringFieldUpdateOperationsInput | string | null
-    estimatedValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    valuationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    valuationResult?: NullableJsonNullValueInput | InputJsonValue
     latitude?: NullableStringFieldUpdateOperationsInput | string | null
     longitude?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -32002,9 +32014,6 @@ export namespace Prisma {
     landAccountId?: NullableIntFieldUpdateOperationsInput | number | null
     landAccountName?: NullableStringFieldUpdateOperationsInput | string | null
     linkMap?: NullableStringFieldUpdateOperationsInput | string | null
-    estimatedValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    valuationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    valuationResult?: NullableJsonNullValueInput | InputJsonValue
     latitude?: NullableStringFieldUpdateOperationsInput | string | null
     longitude?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -32036,9 +32045,6 @@ export namespace Prisma {
     landAccountId?: number | null
     landAccountName?: string | null
     linkMap?: string | null
-    estimatedValue?: Decimal | DecimalJsLike | number | string | null
-    valuationDate?: Date | string | null
-    valuationResult?: NullableJsonNullValueInput | InputJsonValue
     latitude?: string | null
     longitude?: string | null
   }
@@ -32070,9 +32076,6 @@ export namespace Prisma {
     landAccountId?: NullableIntFieldUpdateOperationsInput | number | null
     landAccountName?: NullableStringFieldUpdateOperationsInput | string | null
     linkMap?: NullableStringFieldUpdateOperationsInput | string | null
-    estimatedValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    valuationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    valuationResult?: NullableJsonNullValueInput | InputJsonValue
     latitude?: NullableStringFieldUpdateOperationsInput | string | null
     longitude?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -32104,9 +32107,6 @@ export namespace Prisma {
     landAccountId?: NullableIntFieldUpdateOperationsInput | number | null
     landAccountName?: NullableStringFieldUpdateOperationsInput | string | null
     linkMap?: NullableStringFieldUpdateOperationsInput | string | null
-    estimatedValue?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    valuationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    valuationResult?: NullableJsonNullValueInput | InputJsonValue
     latitude?: NullableStringFieldUpdateOperationsInput | string | null
     longitude?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -34237,6 +34237,9 @@ export namespace Prisma {
     otherFee?: SortOrder
     termMonths?: SortOrder
     transferFee?: SortOrder
+    estimatedValue?: SortOrder
+    valuationDate?: SortOrder
+    valuationResult?: SortOrder
   }
 
   export type loan_applicationsAvgOrderByAggregateInput = {
@@ -34250,6 +34253,7 @@ export namespace Prisma {
     otherFee?: SortOrder
     termMonths?: SortOrder
     transferFee?: SortOrder
+    estimatedValue?: SortOrder
   }
 
   export type loan_applicationsMaxOrderByAggregateInput = {
@@ -34285,6 +34289,8 @@ export namespace Prisma {
     otherFee?: SortOrder
     termMonths?: SortOrder
     transferFee?: SortOrder
+    estimatedValue?: SortOrder
+    valuationDate?: SortOrder
   }
 
   export type loan_applicationsMinOrderByAggregateInput = {
@@ -34320,6 +34326,8 @@ export namespace Prisma {
     otherFee?: SortOrder
     termMonths?: SortOrder
     transferFee?: SortOrder
+    estimatedValue?: SortOrder
+    valuationDate?: SortOrder
   }
 
   export type loan_applicationsSumOrderByAggregateInput = {
@@ -34333,6 +34341,7 @@ export namespace Prisma {
     otherFee?: SortOrder
     termMonths?: SortOrder
     transferFee?: SortOrder
+    estimatedValue?: SortOrder
   }
 
   export type Enumloan_applications_loanTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -34548,9 +34557,6 @@ export namespace Prisma {
     landAccountId?: SortOrder
     landAccountName?: SortOrder
     linkMap?: SortOrder
-    estimatedValue?: SortOrder
-    valuationDate?: SortOrder
-    valuationResult?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
   }
@@ -34565,7 +34571,6 @@ export namespace Prisma {
     remainingBalance?: SortOrder
     collateralValue?: SortOrder
     landAccountId?: SortOrder
-    estimatedValue?: SortOrder
   }
 
   export type loansMaxOrderByAggregateInput = {
@@ -34594,8 +34599,6 @@ export namespace Prisma {
     landAccountId?: SortOrder
     landAccountName?: SortOrder
     linkMap?: SortOrder
-    estimatedValue?: SortOrder
-    valuationDate?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
   }
@@ -34626,8 +34629,6 @@ export namespace Prisma {
     landAccountId?: SortOrder
     landAccountName?: SortOrder
     linkMap?: SortOrder
-    estimatedValue?: SortOrder
-    valuationDate?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
   }
@@ -34642,7 +34643,6 @@ export namespace Prisma {
     remainingBalance?: SortOrder
     collateralValue?: SortOrder
     landAccountId?: SortOrder
-    estimatedValue?: SortOrder
   }
 
   export type Enumloans_loanTypeWithAggregatesFilter<$PrismaModel = never> = {

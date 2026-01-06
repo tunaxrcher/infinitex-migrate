@@ -235,7 +235,10 @@ exports.Prisma.Loan_applicationsScalarFieldEnum = {
   operationFee: 'operationFee',
   otherFee: 'otherFee',
   termMonths: 'termMonths',
-  transferFee: 'transferFee'
+  transferFee: 'transferFee',
+  estimatedValue: 'estimatedValue',
+  valuationDate: 'valuationDate',
+  valuationResult: 'valuationResult'
 };
 
 exports.Prisma.Loan_installmentsScalarFieldEnum = {
@@ -288,9 +291,6 @@ exports.Prisma.LoansScalarFieldEnum = {
   landAccountId: 'landAccountId',
   landAccountName: 'landAccountName',
   linkMap: 'linkMap',
-  estimatedValue: 'estimatedValue',
-  valuationDate: 'valuationDate',
-  valuationResult: 'valuationResult',
   latitude: 'latitude',
   longitude: 'longitude'
 };
